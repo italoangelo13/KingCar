@@ -1,10 +1,10 @@
 <?php
 session_start();
 if (!isset($_SESSION['usuario'])) {
-    header("Location: ../conta.php");
+    header("Location: ../login.php");
     echo "<script> alert('Sua Sessão Expirou, Faça o Login Novamente.');</script>";
 }
-$user = utf8_encode($_SESSION['usuario']->nome);
+$user = utf8_encode($_SESSION['usuario']);
 ?>
 <!DOCTYPE html>
 <html lang="en">

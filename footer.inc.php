@@ -6,6 +6,11 @@
                     <p style="color:white;">KING CAR SEMINOVOS</p>
                 </div>
             </div> 
+            <div class="row">
+                <div class="col-lg-12">
+                    <a href="login.php">Painel Administrativo</a>
+                </div>
+            </div>
         </div>
 
     </div>

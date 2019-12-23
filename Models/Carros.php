@@ -1,7 +1,45 @@
 <?php
 
-class Carros{
-    public function SelecionarListaCarros(){
+class Carros
+{
+    // public $Id;
+    // public $DtCadastro;
+    // public $User;
+    // public $Titulo;
+    // public $Marca;
+    // public $Modelo;
+    // public $Ano;
+    // public $Km;
+    // public $Cambio;
+    // public $Combustivel;
+    // public $Portas;
+    // public $Cor;
+    // public $Uf;
+    // public $Municipio;
+    // public $ImgCapa;
+
+    // public function Carros() {
+    //     // tratado como construtor no PHP 5.3.0-5.3.2
+    //     // tratado como método comum a partir do PHP 5.3.3
+    //     $Id           = "";
+    //     $DtCadastro   = "";
+    //     $User         = "";
+    //     $Titulo       = "";
+    //     $Marca        = "";
+    //     $Modelo       = "";
+    //     $Ano          = "";
+    //     $Km           = "";
+    //     $Cambio       = "";
+    //     $Combustivel  = "";
+    //     $Portas       = "";
+    //     $Cor          = "";
+    //     $Uf           = "";
+    //     $Municipio    = "";
+    //     $ImgCapa      = "";
+    // }
+
+    public function SelecionarListaCarros()
+    {
         $pdo = new PDO(server, user, senha);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
@@ -37,7 +75,7 @@ class Carros{
         if ($smtp->rowCount() > 0) {
             return $result = $smtp->fetchAll(PDO::FETCH_CLASS);
         }
-    }  
+    }
 
 
     public function SelecionarNumCarros($sql)
@@ -48,9 +86,8 @@ class Carros{
         $smtp = $pdo->prepare($sql);
         $smtp->execute();
 
-       
+
         return $result = $smtp->fetchAll(PDO::FETCH_CLASS);
-        
     }
 
 
@@ -62,21 +99,87 @@ class Carros{
         $smtp = $pdo->prepare("SELECT COUNT(*) AS NUMCARROS FROM KGCTBLCAR");
         $smtp->execute();
 
-       
+
         return $result = $smtp->fetchAll(PDO::FETCH_CLASS);
-        
     }
 
-    function SelecionaCarrosPaginados($inicio,$maximo){
+    function SelecionaCarrosPaginados($inicio, $maximo)
+    {
         $pdo = new PDO(server, user, senha);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         $smtp = $pdo->prepare("SELECT * FROM KGCTBLCAR LIMIT $inicio,$maximo");
         $smtp->execute();
 
-       
+
         return $result = $smtp->fetchAll(PDO::FETCH_CLASS);
     }
-    
 
+
+    function InsereCarro(
+$DtCadastro ,
+$User       ,
+$Titulo     ,
+$Marca      ,
+$Modelo     ,
+$Ano        ,
+$Km         ,
+$Cambio     ,
+$Combustivel,
+$Portas     ,
+$Cor        ,
+$Uf         ,
+$Municipio  ,
+$ImgCapa    
+    )
+    {
+        $pdo = new PDO(server, user, senha);
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        $smtp = $pdo->prepare("INSERT INTO (
+        CARNOME,
+        CARCODMARCA,
+        CARCODMODELO,
+        CARPRECO,
+        CARANO,
+        CARFOTO,
+        CARCODSTATUS,
+        CARKM,
+        CARCODCAMBIO,
+        CARPORTAS,
+        CARCODCOMBUSTIVEL,
+        CARCODCOR,
+        CARPLACA,
+        CARTROCA,
+        CARDESTAQUE,
+        CARDATCADASTRO,
+        CARUSER,
+        CARCODMUNICIPIO,
+        CARUF,
+        CARQTDEVISITAS)
+VALUES ($Titulo,
+$Titulo,
+$Titulo,
+$Titulo,
+$Titulo,
+$Titulo,
+        CARCODSTATUS,
+        CARKM,
+        CARCODCAMBIO,
+        CARPORTAS,
+        CARCODCOMBUSTIVEL,
+        CARCODCOR,
+        CARPLACA,
+        CARTROCA,
+        CARDESTAQUE,
+        CARDATCADASTRO,
+        CARUSER,
+        CARCODMUNICIPIO,
+        CARUF,
+        CARQTDEVISITAS)");
+        $smtp->execute();
+
+
+        return $result = $smtp->fetchAll(PDO::FETCH_CLASS);
+    }
 }
