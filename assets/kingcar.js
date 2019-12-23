@@ -1,3 +1,10 @@
+$(document).ready(function(){
+    
+});
+
+
+
+
 function CarregaDdlModelo() {
     let CodMarca = $( "#_ddlMarca option:selected" ).val();//$("#_ddlMarca").val();  
     var obj = {

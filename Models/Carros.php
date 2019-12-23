@@ -117,26 +117,34 @@ class Carros
 
 
     function InsereCarro(
-$DtCadastro ,
-$User       ,
-$Titulo     ,
-$Marca      ,
-$Modelo     ,
-$Ano        ,
-$Km         ,
-$Cambio     ,
-$Combustivel,
-$Portas     ,
-$Cor        ,
-$Uf         ,
-$Municipio  ,
-$ImgCapa    
-    )
-    {
+                            $DtCadastro ,
+                            $User       ,
+                            $Titulo     ,
+                            $Marca      ,
+                            $Modelo     ,
+                            $Ano        ,
+                            $Km         ,
+                            $Cambio     ,
+                            $Combustivel,
+                            $Portas     ,
+                            $Cor        ,
+                            $Uf         ,
+                            $Municipio  ,
+                            $ImgCapa,
+                            $Destaque,
+                            $Troca,
+                            $Valor    
+                        )
+    {  
         $pdo = new PDO(server, user, senha);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $Valor = str_replace('.', '', $Valor);
+        $Valor = FormatarMoedaUs($Valor);
 
-        $smtp = $pdo->prepare("INSERT INTO (
+        $Km = str_replace('.', '', $Km);
+        $Km = FormatarMoedaUs($Km);
+
+        $sqlInsert = "INSERT INTO (
         CARNOME,
         CARCODMARCA,
         CARCODMODELO,
@@ -149,34 +157,31 @@ $ImgCapa
         CARPORTAS,
         CARCODCOMBUSTIVEL,
         CARCODCOR,
-        CARPLACA,
         CARTROCA,
         CARDESTAQUE,
         CARDATCADASTRO,
         CARUSER,
         CARCODMUNICIPIO,
-        CARUF,
-        CARQTDEVISITAS)
-VALUES ($Titulo,
-$Titulo,
-$Titulo,
-$Titulo,
-$Titulo,
-$Titulo,
-        CARCODSTATUS,
-        CARKM,
-        CARCODCAMBIO,
-        CARPORTAS,
-        CARCODCOMBUSTIVEL,
-        CARCODCOR,
-        CARPLACA,
-        CARTROCA,
-        CARDESTAQUE,
-        CARDATCADASTRO,
-        CARUSER,
-        CARCODMUNICIPIO,
-        CARUF,
-        CARQTDEVISITAS)");
+        CARUF)
+        VALUES ('".$Titulo."',
+        $Marca,
+        $Modelo,
+        $Valor,
+        '$Ano',
+        '$ImgCapa',
+        1,
+        $Km,
+        $Cambio,
+        $Portas,
+        $Combustivel,
+        $Cor,
+        '$Troca',
+        '$Destaque',
+        '$DtCadastro',
+        '$User',
+        $Municipio  ,
+        '$Uf')";
+        $smtp = $pdo->prepare($sqlInsert);
         $smtp->execute();
 
 

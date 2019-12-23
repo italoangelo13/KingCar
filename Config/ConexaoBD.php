@@ -11,6 +11,9 @@ setlocale(LC_MONETARY,"pt_BR", "ptb");
 function FormatarMoeda($valor){
     return number_format($valor, 2, ',' , '.');
 }
+function FormatarMoedaUs($valor){
+    return number_format($valor, 2, '.' , ',');
+}
 
 function FormatarValorDecimal($valor){
     return number_format($valor, 2, ',' , '.');

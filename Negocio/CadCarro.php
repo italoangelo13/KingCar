@@ -7,11 +7,33 @@
 
     include_once('../Config/ConexaoBD.php');
     require_once('../Models/Carros.php');
-
+    session_start();
     $carro = new Carros();
 
+    $destaque   = "N";
+    $troca      = "N";
 
+    if(isset($_POST["_ckDestaque"])){
+        if($_POST["_ckDestaque"] == "on"){
+            $destaque = "S";
+        }
+        else{
+            $destaque = "N";
+        }
+    }
+
+    if(isset($_POST["_ckTroca"])){
+        if($_POST["_ckTroca"] == "on"){
+            $troca = "S";
+        }
+        else{
+            $troca = "N";
+        }
+    }
+
+    $User           = $_SESSION['usuario'];
     $titulo         = $_POST["_edTitulo"];
+    $valor          = $_POST["_edValor"];
     $dataCad        = $_POST["_edDtCadastro"];
     $marca          = $_POST["_ddlMarca"];
     $modelo         = $_POST["_ddlModelo"];
@@ -30,23 +52,33 @@
     $arquivo_tmp = $_FILES['_edImagemCapa']['tmp_name'];
 
     
+    try{
+        $result = $carro->InsereCarro(
+            $dataCad     ,
+            $User        ,
+            $titulo      ,
+            $marca       ,
+            $modelo      ,
+            $ano         ,
+            $km          ,
+            $cambio      ,
+            $combustivel ,
+            $portas      ,
+            $cor         ,
+            $uf          ,
+            $municipio   ,
+            $destino ,  
+            $destaque,
+            $troca,
+            $valor       
+        );
 
-    $carro->InsereCarro(
-        $User        ,
-        $dataCad     ,
-        $titulo      ,
-        $marca       ,
-        $modelo      ,
-        $ano         ,
-        $km          ,
-        $cambio      ,
-        $combustivel ,
-        $portas      ,
-        $cor         ,
-        $uf          ,
-        $municipio   ,
-        $destino     
-    );
+
+    }
+    catch(Exception $e){
+
+    }
+    
     move_uploaded_file( $arquivo_tmp, $destino  );
   
 

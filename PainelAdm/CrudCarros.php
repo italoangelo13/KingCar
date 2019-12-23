@@ -90,12 +90,13 @@ $resultado = $Carro->SelecionaCarrosPaginados($inicio, $maximo);
     <link rel="stylesheet" href="../assets/fontawesome/css/all.min.css">
     <link rel="stylesheet" href="../assets/kingcar.css">
     <link rel="stylesheet" href="../assets/jquery-confirm/jquery-confirm.min.css">
+    <link rel="stylesheet" href="../assets/inputmask/inputmask.min.css">
     <script src="../assets/jquery-3.3.1.min.js"></script>
     <script src="../assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="../assets/fontawesome/js/all.min.js"></script>
-    <script src="../assets/Mascara.js"></script>
     <script src="../assets/jquery-confirm/jquery-confirm.min.js"></script>
     <script src="../assets/Loader/jquery.loading.min.js"></script>
+    <script src="../assets/Mascaras.js"></script>
     <script src="../assets/kingcar.js"></script>
 </head>
 
@@ -205,56 +206,56 @@ $resultado = $Carro->SelecionaCarrosPaginados($inicio, $maximo);
                 <nav aria-label="Page navigation example">
                     <ul class="pagination">
                         <?php
-                                //determina de quantos em quantos links serão adicionados e removidos
-                                $max_links = 10;
-                                //dados para os botões
-                                $previous = $pagina - 1;
-                                $next = $pagina + 1;
-                                //usa uma funcção "ceil" para arrendondar o numero pra cima, ex 1,01 será 2
-                                $pgs = ceil($total / $maximo);
-                                if ($pgs > 1) {
-                                    //botao anterior
-                                    if ($previous > 0) {
+                        //determina de quantos em quantos links serão adicionados e removidos
+                        $max_links = 10;
+                        //dados para os botões
+                        $previous = $pagina - 1;
+                        $next = $pagina + 1;
+                        //usa uma funcção "ceil" para arrendondar o numero pra cima, ex 1,01 será 2
+                        $pgs = ceil($total / $maximo);
+                        if ($pgs > 1) {
+                            //botao anterior
+                            if ($previous > 0) {
 
                         ?>
                                 <li class="page-item"><a class="page-link" href="<?php echo $_SERVER['PHP_SELF'] . "?pagina=" . $previous; ?>">Anterior</a></li>
                             <?php
-                                                                                } else {
+                            } else {
 
                             ?>
                                 <li class="page-item" disabled='disabled'><a class="page-link" href="<?php echo $_SERVER['PHP_SELF'] . "?pagina=" . $previous; ?>">Anterior</a></li>
                                 <?php
-                                                                                                    }
+                            }
 
-                                                                                                    for ($i = $pagina - $max_links; $i <= $pgs - 1; $i++) {
-                                                                                                        if ($i <= 0) {
-                                                                                                            //enquanto for negativo, não faz nada
-                                                                                                        } else {
-                                                                                                            //senão adiciona os links para outra pagina
-                                                                                                            if ($i != $pagina) {
+                            for ($i = $pagina - $max_links; $i <= $pgs - 1; $i++) {
+                                if ($i <= 0) {
+                                    //enquanto for negativo, não faz nada
+                                } else {
+                                    //senão adiciona os links para outra pagina
+                                    if ($i != $pagina) {
                                 ?>
                                         <li class="page-item"><a class="page-link" href="<?php echo $_SERVER['PHP_SELF'] . "?pagina=" . ($i); ?>"><?php echo $i; ?></a></li>
                                     <?php
 
-                                                                                                                                                } else {
+                                    } else {
                                     ?>
                                         <li class="page-item" disabled='disabled'><a class="page-link" href="<?php echo $_SERVER['PHP_SELF'] . "?pagina=" . ($i); ?>"><?php echo $i; ?></a></li>
                                 <?php
-                                                                                                                                                                    }
-                                                                                                                                                                }
-                                                                                                                                                            }
-                                                                                                                                                            //botao proximo
-                                                                                                                                                            if ($next <= $pgs) {
+                                    }
+                                }
+                            }
+                            //botao proximo
+                            if ($next <= $pgs) {
 
                                 ?>
                                 <li class="page-item"><a class="page-link" href="<?php $_SERVER['PHP_SELF'] . "?pagina=" . $next; ?>">Proximo</a></li>
                             <?php
-                                                                                                                                                            } else {
+                            } else {
                             ?>
                                 <li class="page-item" disabled='disabled'><a class="page-link" href="<?php $_SERVER['PHP_SELF'] . "?pagina=" . $next; ?>">Proximo</a></li>
                         <?php
-                                                                                                                                                            }
-                                                                                                                                                        }
+                            }
+                        }
 
                         ?>
                     </ul>
@@ -289,7 +290,7 @@ $resultado = $Carro->SelecionaCarrosPaginados($inicio, $maximo);
                             </div>
                             <div class="form-group col-lg-3">
                                 <label for="_edDtCadastro">Dt. Cadastro</label>
-                                <input type="text" onkeyup="mascara('##/##/####',this,event,false)" class="form-control" id="_edDtCadastro" name="_edDtCadastro" value="<?php echo $dataAtual; ?>" readonly>
+                                <input type="text" onkeyup="Mascara(this,Data);" class="form-control" id="_edDtCadastro" name="_edDtCadastro" value="<?php echo $dataAtual; ?>" readonly>
                             </div>
                         </div>
 
@@ -326,7 +327,7 @@ $resultado = $Carro->SelecionaCarrosPaginados($inicio, $maximo);
                             </div>
                             <div class="form-group col-lg-3">
                                 <label for="_edKm">Quilometragem</label>
-                                <input type="text" class="form-control" id="_edKm" name="_edKm" maxlength="10"><!-- onkeyup="mascara('##########,##',this,event,false)" -->
+                                <input type="text" class="form-control" id="_edKm" name="_edKm" maxlength="10" placeholder="" onkeydown="Mascara(this,Valor);"><!-- onkeyup="mascara('##########,##',this,event,false)" -->
                             </div>
                             <div class="form-group col-lg-3">
                                 <label for="_ddlCamb">Câmbio</label>
@@ -352,7 +353,7 @@ $resultado = $Carro->SelecionaCarrosPaginados($inicio, $maximo);
                             </div>
                             <div class="form-group col-lg-1">
                                 <label for="_edNumPortas">Portas</label>
-                                <input type="text" class="form-control" id="_edNumPortas" name="_edNumPortas" maxlength="1" onkeyup="mascara('#',this,event,false)"><!-- onkeyup="mascara('##########,##',this,event,false)" -->
+                                <input type="text" class="form-control" id="_edNumPortas" name="_edNumPortas" maxlength="1" onkeyup="Mascara(this,Integer);"><!-- onkeyup="mascara('##########,##',this,event,false)" -->
                             </div>
                         </div>
 
@@ -389,7 +390,7 @@ $resultado = $Carro->SelecionaCarrosPaginados($inicio, $maximo);
                         </div>
 
                         <div class="row">
-                            <div class="form-group col-lg-4">
+                            <div class="form-group col-lg-3">
                                 <br>
                                 <img id="_ImgCapaPreview" src="../assets/img/sem-foto.gif" style="width: 100%;" alt="Capa do Anuncio" class="img-thumbnail">
                                 <br />
@@ -398,6 +399,41 @@ $resultado = $Carro->SelecionaCarrosPaginados($inicio, $maximo);
 
                                 <a class="btn btn-success btn-block text-white" id="_btnCarregaImg"><i class="icone-image"></i> Carregar Imagem</a>
                             </div>
+
+                            <div class="col-lg-3">
+                                <label for="_edValor">Valor</label>
+                                <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text"><i class="icone-money"></i></div>
+                                            </div>
+                                            <input type="text" class="form-control" onkeydown="Mascara(this,Valor);" id="_edValor" name="_edValor" placeholder="R$ 000,00">
+                                        </div>
+                            </div>
+
+                            <div class="form-group col-lg-2">
+                                <label for="_ddlStatus">Status</label>
+                                <select class="form-control" id="_ddlStatus" name="_ddlStatus">
+                                    <option value="0" selected="true">Selecionar</option>
+                                    <option value="1" >A Venda</option>
+                                    <option value="2" >Vendido</option>
+                                </select>
+                            </div>
+
+                            <div class="col-lg-2">
+                                <br>
+                                <br>
+                                <input type="checkbox" class="" id="_ckDestaque" name="_ckDestaque">
+                                <label for="_ckDestaque"> Destaque</label>
+                            </div>
+                            
+                            <div class="col-lg-2">
+                                <br>
+                                <br>
+                                <input type="checkbox" class="" id="_ckTroca" name="_ckTroca">
+                                <label for="_ckTroca"> Aceita Troca</label>
+                            </div>
+
+                            
                         </div>
                     </div>
             </div>
@@ -445,7 +481,29 @@ $resultado = $Carro->SelecionaCarrosPaginados($inicio, $maximo);
                 };
             });
 
+            $(".money").inputmask('decimal', {
+                'alias': 'numeric',
+                'groupSeparator': ',',
+                'autoGroup': true,
+                'digits': 2,
+                'radixPoint': ".",
+                'digitsOptional': false,
+                'allowMinus': false,
+                'prefix': 'R$ ',
+                'placeholder': ''
+    });
 
+    $(".decimal").inputmask('decimal', {
+        'alias': 'numeric',
+        'groupSeparator': ',',
+        'autoGroup': true,
+        'digits': 2,
+        'radixPoint': ".",
+        'digitsOptional': false,
+        'allowMinus': false,
+        'prefix': '',
+        'placeholder': ''
+});
 
 
 
@@ -507,7 +565,7 @@ $resultado = $Carro->SelecionaCarrosPaginados($inicio, $maximo);
             var uf = $('#_ddlUf');
             var municipio = $('#_ddlMun');
             var img = $('#_edImagemCapa');
-
+            var valor = $('#_edValor');
 
 
             if (titulo.val() === "" || titulo.val() === null) {
@@ -594,46 +652,18 @@ $resultado = $Carro->SelecionaCarrosPaginados($inicio, $maximo);
                 return;
             }
 
+            if (valor.val() === "" || valor.val() === null || valor.val() === "0" || valor.val() === "0,00" || valor.val() === "0,0") {
+                hideLoadModal("#CadCarro");
+                WarningBox('Campo valor é Obrigatório.');
+                valor.focus();
+                return;
+            }
+
 
             showLoadModal('Aguarde, <br> Salvando informações do Veiculo.', '#CadCarro');
 
             $('form#_formCadCarro').submit();
 
-            // var obj = {
-            //     Titulo: titulo.val(),
-            //     Marca: marca.val(),
-            //     Modelo: modelo.val(),
-            //     Km: km.val(),
-            //     Ano: ano.val(),
-            //     Cambio: cambio.val(),
-            //     Combustivel: combustivel.val(),
-            //     Portas: portas.val(),
-            //     Cor: cor.val(),
-            //     Uf: uf.val(),
-            //     Municipio: municipio.val(),
-            //     Img: img.val(),
-            // };
-
-            // var param = JSON.stringify(obj);
-
-            // $.ajax({
-            //     url: "../Negocio/CadCarro.php?acao=C",
-            //     type: 'POST',
-            //     contentType: "application/json; charset=utf-8",
-            //     dataType: "json",
-            //     success: function(data) {
-            //         debugger;
-            //         console.log(data);
-            //         var selectbox = $('#_ddlModelo');
-            //         selectbox.find('option').remove();
-            //         data.forEach(function(o, index) {
-            //             $('<option>').val(o.MODCOD).text(o.MODDESCRICAO).appendTo(selectbox);
-            //         });
-            //         $('<option>').val('0').text('Selecionar').appendTo(selectbox);
-            //         $('#_ddlModelo option[value=0]').attr('selected', 'selected');
-
-            //     }
-            // });
 
         }
 
