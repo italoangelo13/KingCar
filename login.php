@@ -5,6 +5,10 @@
     require_once 'Models/Usuarios.php';
     session_start();
 
+    if(isset($_SESSION['Usuario'])){
+        header('location: PainelAdm/admin.php');
+    }
+
     if(isset($_POST["login"])){
     $u = new Usuarios();
     $u->AutenticarUsuario($_POST["_edUsuario"],$_POST["_edSenha"]);

@@ -1,46 +1,11 @@
 <?php
+include_once 'header.inc.php';
 header("Content-type:text/html; charset=utf8");
-
-include_once '../Config/ConexaoBD.php';
 include_once '../Config/Util.php';
 require_once '../Models/Carros.php';
-require_once '../Models/Marcas.php';
-require_once '../Models/Modelos.php';
-require_once '../Models/Municipios.php';
-require_once '../Models/Cambios.php';
-require_once '../Models/Combustiveis.php';
-require_once '../Models/Cores.php';
 
-
-
-
-
-
-
-
-
-
-
-$util = new Util();
 $Carro = new Carros();
-$marca = new Marcas();
-$modelo = new Modelos();
-$municipio = new Municipios();
-$cambio = new Cambios();
-$combustivel = new Combustiveis();
-$cor = new Cores();
-
-
-
-
-
-
-$listaMarcas = $marca->SelecionarListaMarcas();
-$listaUf = $municipio->SelecionarListaUf();
-$listaCambios = $cambio->SelecionarListaCambio();
-$listaCombustiveis = $combustivel->SelecionarListaCombustivel();
-$listaCor = $cor->SelecionarListaCores();
-
+$util = new Util();
 
 $numCarros = 0;
 $dataAtual = date("d/m/Y");
@@ -60,48 +25,53 @@ $pagina = isset($_GET['pagina']) ? ($_GET['pagina']) : '1';
 $inicio = $pagina - 1;
 //multiplicamos a quantidade de registros da pagina pelo valor da pagina atual 
 $inicio = $maximo * $inicio;
+$total = 0; 
+BuscaTotalCarros($Carro);
 
-
-$strCount = $Carro->SelecionaTotalNumCarros();
-$total = 0;
-if (count($strCount)) {
-    foreach ($strCount as $row) {
-        //armazeno o total de registros da tabela para fazer a paginação
-        $total = $row->NUMCARROS;
-        $numCarros = $row->NUMCARROS;
+function BuscaTotalCarros($Carro){
+    $strCount = $Carro->SelecionaTotalNumCarros();
+    
+    if (count($strCount)) {
+        foreach ($strCount as $row) {
+            //armazeno o total de registros da tabela para fazer a paginação
+            $total = $row->NUMCARROS;
+            $numCarros = $row->NUMCARROS;
+        }
     }
 }
 
 
-$resultado = $Carro->SelecionaCarrosPaginados($inicio, $maximo);
+if(!isset($_GET['acao'])){
+    echo "<script>showLoad('Aguarde <br> Carregando os Veiculos Cadastrados.');</script> ";
+    $resultado = carregaGrid($Carro,$inicio,$maximo);
+    echo "<script>hideLoad();</script>";
+}
+else if(isset($_GET['acao'])){
+    if($_GET['acao'] == "del"){
+        echo "<script>showLoad('Aguarde <br> Excluindo Veiculo Selecionado.');</script> ";
+        if($Carro->DeletaCarroPorCod($_GET['cod'])){
+            echo "<script>hideLoad();</script>";
+            echo "<script>SuccessBox('Veiculo Excluido com Sucesso.');</script>";
+        }
+        else{
+            echo "<script>hideLoad();</script>";
+            echo "<script>ErrorBox('Não Foi Possivel Excluir este Veiculo.');</script>";
+        }
+        echo "<script>showLoad('Aguarde <br> Carregando os Veiculos Cadastrados.');</script> ";
+        $resultado = carregaGrid($Carro,$inicio,$maximo);
+        BuscaTotalCarros($Carro);
+        echo "<script>hideLoad();</script>";
+    }
+}
+
+function carregaGrid($Carro,$inicio,$maximo){
+    return $Carro->SelecionaCarrosPaginados($inicio, $maximo);
+}
+
+
+
 ?>
 
-
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>KingCar - Painel Administrativo</title>
-    <link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../assets/fontello/css/fontello.css">
-    <link rel="stylesheet" href="../assets/fontawesome/css/all.min.css">
-    <link rel="stylesheet" href="../assets/kingcar.css">
-    <link rel="stylesheet" href="../assets/jquery-confirm/jquery-confirm.min.css">
-    <link rel="stylesheet" href="../assets/inputmask/inputmask.min.css">
-    <script src="../assets/jquery-3.3.1.min.js"></script>
-    <script src="../assets/bootstrap/js/bootstrap.min.js"></script>
-    <script src="../assets/fontawesome/js/all.min.js"></script>
-    <script src="../assets/jquery-confirm/jquery-confirm.min.js"></script>
-    <script src="../assets/Loader/jquery.loading.min.js"></script>
-    <script src="../assets/Mascaras.js"></script>
-    <script src="../assets/kingcar.js"></script>
-</head>
-
-<body>
-    <div class="container-fluid">
         <div class="row bg-primary text-white">
             <div class="col-lg-10">
                 <h5>Cadastro de Carros</h5>
@@ -112,7 +82,7 @@ $resultado = $Carro->SelecionaCarrosPaginados($inicio, $maximo);
         </div>
         <div class="row" style="margin-top:5px;">
             <div class="col-lg-12">
-                <button class="btn btn-success" data-toggle="modal" data-target="#CadCarro"><i class="icone-plus"></i> Cadastrar Carro</button>
+                <a class="btn btn-success" href="InsereAtualizaCarro.php"><i class="icone-plus"></i> Cadastrar Carro</a>
             </div>
         </div>
 
@@ -160,8 +130,11 @@ $resultado = $Carro->SelecionaCarrosPaginados($inicio, $maximo);
         <div class="row" style="margin-top: 10px;">
             <div class="col-lg-12">
                 <?php if ($resultado) : ?>
-                    <table class="table table-stripped">
-                        <thead>
+                    <table class="table table-stripped bg-success">
+                        <thead class="text-white text-center">
+                            <th>
+                                
+                            </th>
                             <th>
                                 Cod.
                             </th>
@@ -187,12 +160,23 @@ $resultado = $Carro->SelecionaCarrosPaginados($inicio, $maximo);
                                 Excluir
                             </th>
                         </thead>
-                        <tbody>
-                            <? foreach ($linha as $resultado) : ?>
+                        <tbody class="table-success" style="font-size: 12pt; font-weight: 600;">
+                            <?php if($resultado):
+                            foreach ($resultado as $rowLinha) : 
+                            ?>
                                 <tr>
-                                    <td><?php echo $linha->CARCOD; ?></td>
+                                    <td class="text-center"><img src="../assets/img/Carros/<?php echo $rowLinha->CARFOTO; ?>" alt="" srcset="" width="100px"></td>
+                                    <td class="text-center"><?php echo $rowLinha->CARCOD; ?></td>
+                                    <td class="text-center"><?php echo $rowLinha->MARDESCRICAO; ?></td>
+                                    <td class="text-center"><?php echo $rowLinha->MODDESCRICAO; ?></td>
+                                    <td class="text-center"><?php echo $rowLinha->CARANO; ?></td>
+                                    <td class="text-center"><?php echo 'R$ '.FormatarMoeda($rowLinha->CARPRECO); ?></td>
+                                    <td class="text-center"><?php echo $util->convert_from_latin1_to_utf8_recursively($rowLinha->Localizacao); ?></td>
+                                    <td class="text-center"><a class="btn btn-success" href="InsereAtualizaCarro.php?acao=editar&cod=<?php echo $rowLinha->CARCOD; ?>"><i class="icone-pencil"></i></a></td>
+                                    <td class="text-center"><a class="btn btn-danger" href="CrudCarros.php?acao=del&cod=<?php echo $rowLinha->CARCOD; ?>"><i class="icone-trash"></i></a></td>
                                 </tr>
-                            <? endforeach ?>
+                            <?php endforeach ;
+                            endif;?>
                         </tbody>
                     </table>
                 <?php else : ?>
@@ -263,190 +247,7 @@ $resultado = $Carro->SelecionaCarrosPaginados($inicio, $maximo);
             </div>
         </div>
 
-    </div>
-
-
-
-    <!-- Modal Cad Carro -->
-    <div class="modal fade" id="CadCarro" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-xl" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Cadastrar Novo Carro</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <form name="_formCadCarro" id="_formCadCarro" method="POST" action="CrudCarros.php" enctype=multipart/form-data> <div class="modal-body">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="form-group col-lg-2">
-                                <label for="_edCodCarro">Cod</label>
-                                <input type="text" class="form-control" id="_edCodCarro" name="_edCodCarro" readonly>
-                            </div>
-                            <div class="form-group col-lg-6">
-                                <label for="_edTitulo">Titulo</label>
-                                <input type="text" class="form-control" id="_edTitulo" name="_edTitulo">
-                            </div>
-                            <div class="form-group col-lg-3">
-                                <label for="_edDtCadastro">Dt. Cadastro</label>
-                                <input type="text" onkeyup="Mascara(this,Data);" class="form-control" id="_edDtCadastro" name="_edDtCadastro" value="<?php echo $dataAtual; ?>" readonly>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="form-group col-lg-6">
-                                <label for="_ddlMarca">Marca</label>
-                                <select class="form-control form-control" id="_ddlMarca" name="_ddlMarca">
-                                    <option value="0" selected="true">Selecionar</option>
-                                    <?php if ($listaMarcas) : ?>
-                                        <?php foreach ($listaMarcas as $marca) : ?>
-                                            <option value="<?php echo $marca->MARCOD; ?>"><?php echo $marca->MARDESCRICAO; ?></option>
-                                        <?php endforeach; ?>
-                                        <!-- <?php else : ?>
-                                            <option value="0" selected>Selecionar</option>
-                                        <?php endif; ?> -->
-                                </select>
-                            </div>
-                            <div class="form-group col-lg-6">
-                                <label for="_ddlModelo">Modelo</label>
-                                <select class="form-control form-control" id="_ddlModelo" name="_ddlModelo">
-                                    <option value="0" selected="true">Selecionar</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="form-group col-lg-2">
-                                <label for="_ddlAno">Ano</label>
-                                <select class="form-control" id="_ddlAno" name="_ddlAno">
-                                    <?php for ($i = 0; $i <= $contador; $i++) : ?>
-                                        <?php $anoitem = $anoAtual - $i; ?>
-                                        <option value="<?php echo $anoitem; ?> "><?php echo $anoitem; ?></option>
-                                    <?php endfor; ?>
-                                </select>
-                            </div>
-                            <div class="form-group col-lg-3">
-                                <label for="_edKm">Quilometragem</label>
-                                <input type="text" class="form-control" id="_edKm" name="_edKm" maxlength="10" placeholder="" onkeydown="Mascara(this,Valor);"><!-- onkeyup="mascara('##########,##',this,event,false)" -->
-                            </div>
-                            <div class="form-group col-lg-3">
-                                <label for="_ddlCamb">Câmbio</label>
-                                <select class="form-control" id="_ddlCamb" name="_ddlCamb">
-                                    <option value="0" selected="true">Selecionar</option>
-                                    <?php if ($listaCambios) : ?>
-                                        <?php foreach ($listaCambios as $lcambio) : ?>
-                                            <option value="<?php echo $lcambio->CAMCOD; ?>"><?php echo $util->convert_from_latin1_to_utf8_recursively($lcambio->CAMDESCRICAO); ?></option>
-                                        <?php endforeach; ?>
-                                    <?php endif; ?> -->
-                                </select>
-                            </div>
-                            <div class="form-group col-lg-3">
-                                <label for="_ddlComb">Combustivel</label>
-                                <select class="form-control" id="_ddlComb" name="_ddlComb">
-                                    <option value="0" selected="true">Selecionar</option>
-                                    <?php if ($listaCombustiveis) : ?>
-                                        <?php foreach ($listaCombustiveis as $lcombustivel) : ?>
-                                            <option value="<?php echo $lcombustivel->COMCOD; ?>"><?php echo $util->convert_from_latin1_to_utf8_recursively($lcombustivel->COMDESCRICAO); ?></option>
-                                        <?php endforeach; ?>
-                                    <?php endif; ?>
-                                </select>
-                            </div>
-                            <div class="form-group col-lg-1">
-                                <label for="_edNumPortas">Portas</label>
-                                <input type="text" class="form-control" id="_edNumPortas" name="_edNumPortas" maxlength="1" onkeyup="Mascara(this,Integer);"><!-- onkeyup="mascara('##########,##',this,event,false)" -->
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="form-group col-lg-4">
-                                <label for="_ddlCor">Cor</label>
-                                <select class="form-control" id="_ddlCor" name="_ddlCor">
-                                    <option value="0" selected="true">Selecionar</option>
-                                    <?php if ($listaCor) : ?>
-                                        <?php foreach ($listaCor as $lcor) : ?>
-                                            <option value="<?php echo $lcor->CORCOD; ?>"><?php echo $lcor->CORDESCRICAO; ?></option>
-                                        <?php endforeach; ?>
-                                    <?php endif; ?>
-                                </select>
-                            </div>
-
-                            <div class="form-group col-lg-3">
-                                <label for="_ddlUf">Estado</label>
-                                <select class="form-control" id="_ddlUf" name="_ddlUf">
-                                    <option value="0" selected="true">Selecionar</option>
-                                    <?php if ($listaUf) : ?>
-                                        <?php foreach ($listaUf as $uf) : ?>
-                                            <option value="<?php echo $uf->MUNUF; ?>"><?php echo $uf->MUNUF; ?></option>
-                                        <?php endforeach; ?>
-                                    <?php endif; ?>
-                                </select>
-                            </div>
-                            <div class="form-group col-lg-5">
-                                <label for="_ddlMun">Cidade</label>
-                                <select class="form-control" id="_ddlMun" name="_ddlMun">
-                                    <option value="0" selected="true">Selecionar</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="form-group col-lg-3">
-                                <br>
-                                <img id="_ImgCapaPreview" src="../assets/img/sem-foto.gif" style="width: 100%;" alt="Capa do Anuncio" class="img-thumbnail">
-                                <br />
-                                <br />
-                                <input hidden type="file" name="_edImagemCapa" id="_edImagemCapa">
-
-                                <a class="btn btn-success btn-block text-white" id="_btnCarregaImg"><i class="icone-image"></i> Carregar Imagem</a>
-                            </div>
-
-                            <div class="col-lg-3">
-                                <label for="_edValor">Valor</label>
-                                <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <div class="input-group-text"><i class="icone-money"></i></div>
-                                            </div>
-                                            <input type="text" class="form-control" onkeydown="Mascara(this,Valor);" id="_edValor" name="_edValor" placeholder="R$ 000,00">
-                                        </div>
-                            </div>
-
-                            <div class="form-group col-lg-2">
-                                <label for="_ddlStatus">Status</label>
-                                <select class="form-control" id="_ddlStatus" name="_ddlStatus">
-                                    <option value="0" selected="true">Selecionar</option>
-                                    <option value="1" >A Venda</option>
-                                    <option value="2" >Vendido</option>
-                                </select>
-                            </div>
-
-                            <div class="col-lg-2">
-                                <br>
-                                <br>
-                                <input type="checkbox" class="" id="_ckDestaque" name="_ckDestaque">
-                                <label for="_ckDestaque"> Destaque</label>
-                            </div>
-                            
-                            <div class="col-lg-2">
-                                <br>
-                                <br>
-                                <input type="checkbox" class="" id="_ckTroca" name="_ckTroca">
-                                <label for="_ckTroca"> Aceita Troca</label>
-                            </div>
-
-                            
-                        </div>
-                    </div>
-            </div>
-            <div class="modal-footer">
-                <button type="reset" class="btn btn-danger" onclick="LimpaCampos()">Limpar</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                <button type="button" class="btn btn-primary" onclick="ValidarCampos()">Salvar</button>
-            </div>
-            </form>
-        </div>
-    </div>
-    </div>
-
+    
 
     <script>
         $(document).ready(function() {
@@ -481,65 +282,8 @@ $resultado = $Carro->SelecionaCarrosPaginados($inicio, $maximo);
                 };
             });
 
-            $(".money").inputmask('decimal', {
-                'alias': 'numeric',
-                'groupSeparator': ',',
-                'autoGroup': true,
-                'digits': 2,
-                'radixPoint': ".",
-                'digitsOptional': false,
-                'allowMinus': false,
-                'prefix': 'R$ ',
-                'placeholder': ''
-    });
-
-    $(".decimal").inputmask('decimal', {
-        'alias': 'numeric',
-        'groupSeparator': ',',
-        'autoGroup': true,
-        'digits': 2,
-        'radixPoint': ".",
-        'digitsOptional': false,
-        'allowMinus': false,
-        'prefix': '',
-        'placeholder': ''
-});
-
-
-
-
-
-
-
-            $("#_formCadCarro").on('submit', function(e) {
-                debugger;
-                e.preventDefault();
-                $.ajax({
-                    type: 'POST',
-                    url: '../Negocio/CadCarro.php',
-                    data: new FormData(this),
-                    dataType: 'json',
-                    contentType: false,
-                    cache: false,
-                    processData: false,
-                    // beforeSend: function() {
-                    //     $('.submitBtn').attr("disabled", "disabled");
-                    //     $('#fupForm').css("opacity", ".5");
-                    // },
-                    success: function(response) { //console.log(response);
-                        console.log(response);
-                        // $('.statusMsg').html('');
-                        // if (response.status == 1) {
-                        //     $('#fupForm')[0].reset();
-                        //     $('.statusMsg').html('<p class="alert alert-success">' + response.message + '</p>');
-                        // } else {
-                        //     $('.statusMsg').html('<p class="alert alert-danger">' + response.message + '</p>');
-                        // }
-                        // $('#fupForm').css("opacity", "");
-                        // $(".submitBtn").removeAttr("disabled");
-                    }
-                });
-            });
+            
+            
         });
 
         function executar() {
@@ -724,6 +468,6 @@ $resultado = $Carro->SelecionaCarrosPaginados($inicio, $maximo);
             });
         }
     </script>
-</body>
-
-</html>
+<?php
+include_once 'footer.inc.php';
+?>

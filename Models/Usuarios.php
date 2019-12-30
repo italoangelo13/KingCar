@@ -39,14 +39,15 @@ class Usuarios
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 
-        $sql = $pdo->prepare("SELECT USUNOME FROM kgctblusu WHERE USUUSUARIO=? AND USUSENHA=?");
+        $sql = $pdo->prepare("SELECT USUNOME,USUUSUARIO FROM kgctblusu WHERE USUUSUARIO=? AND USUSENHA=?");
         $sql->execute(array($usuario, md5($senha)));
 
         $row = $sql->fetchObject();  // devolve um único registro
 
         // Se o usuário foi localizado
         if ($row) {
-            $_SESSION['usuario'] = $row->USUNOME;
+            $_SESSION['NomeUsuario'] = $row->USUNOME;
+            $_SESSION['Usuario'] = $row->USUUSUARIO;
             header("Location: PainelAdm/admin.php");
         } else {
             header("Location: login.php");
@@ -54,5 +55,23 @@ class Usuarios
         }
         }
         
+    }
+
+
+    public function VerificaAutenticacao()
+    {
+        if (!isset($_SESSION['Usuario'])) {
+            echo "<script> alert('Sua Sessão Expirou, Faça o Login Novamente.');</script>";
+            header("Location: ../login.php");
+            return false;
+        }
+        else{
+            return true;
+        }
+    }
+
+    public function Logout(){
+        unset($_SESSION['usuario']);
+        header("location:../login.php");
     }
 }

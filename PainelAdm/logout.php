@@ -1,5 +1,6 @@
 <?php
 session_start();
-unset($_SESSION['usuario']);
-header("location:../login.php");
+require_once('../Models/Usuarios.php');
+$USUARIO = new Usuarios(); 
+$USUARIO->Logout();
 ?>

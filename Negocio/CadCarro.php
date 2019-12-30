@@ -1,85 +1,20 @@
 <?php
-    header("Cache-Control: no-cache, no-store, must-revalidate"); // limpa o cache
-    header("Access-Control-Allow-Origin: *");
-    header("Content-Type: application/json; charset=utf-8");
+require_once('../Models/Carros.php');
+session_start();
+$carro = new Carros();
 
-    clearstatcache(); // limpa o cache
 
-    include_once('../Config/ConexaoBD.php');
-    require_once('../Models/Carros.php');
-    session_start();
-    $carro = new Carros();
-
-    $destaque   = "N";
-    $troca      = "N";
-
-    if(isset($_POST["_ckDestaque"])){
-        if($_POST["_ckDestaque"] == "on"){
-            $destaque = "S";
-        }
-        else{
-            $destaque = "N";
-        }
-    }
-
-    if(isset($_POST["_ckTroca"])){
-        if($_POST["_ckTroca"] == "on"){
-            $troca = "S";
-        }
-        else{
-            $troca = "N";
-        }
-    }
-
-    $User           = $_SESSION['usuario'];
-    $titulo         = $_POST["_edTitulo"];
-    $valor          = $_POST["_edValor"];
-    $dataCad        = $_POST["_edDtCadastro"];
-    $marca          = $_POST["_ddlMarca"];
-    $modelo         = $_POST["_ddlModelo"];
-    $ano            = $_POST["_ddlAno"];
-    $km             = $_POST["_edKm"];
-    $cambio         = $_POST["_ddlCamb"];
-    $combustivel    = $_POST["_ddlComb"];
-    $portas         = $_POST["_edNumPortas"];
-    $cor            = $_POST["_ddlCor"];
-    $uf             = $_POST["_ddlUf"];
-    $municipio      = $_POST["_ddlMun"];
-    $img            = $_FILES["_edImagemCapa"];
-    $dir            = $path_parts = pathinfo($_FILES['_edImagemCapa']['name']);
-    $ext            = $path_parts['extension'];
-    $destino        = trim(date('YmdGis').'-' .$marca.$modelo.$ano.$uf.$municipio.'.'.$ext);
-    $arquivo_tmp = $_FILES['_edImagemCapa']['tmp_name'];
 
     
+
     try{
-        $result = $carro->InsereCarro(
-            $dataCad     ,
-            $User        ,
-            $titulo      ,
-            $marca       ,
-            $modelo      ,
-            $ano         ,
-            $km          ,
-            $cambio      ,
-            $combustivel ,
-            $portas      ,
-            $cor         ,
-            $uf          ,
-            $municipio   ,
-            $destino ,  
-            $destaque,
-            $troca,
-            $valor       
-        );
-
-
+        
     }
     catch(Exception $e){
-
+        echo json_encode('{"TransCod":0, "erro":"Não foi possivel Realizar o cadastro deste automovel, contate o suporte tecnico para auxilia-lo."}');
     }
     
-    move_uploaded_file( $arquivo_tmp, $destino  );
+    
   
 
 ?>

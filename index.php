@@ -110,7 +110,7 @@ $listaMarcas = $marca->SelecionarListaMarcas();
                                         </div>
                                     </div>
                                 <?php endif; ?>
-                                <img class="card-img-top" src="img/<?php echo $carros->CARFOTO; ?>" title="<?php echo strtoupper(utf8_encode($carros->CARNOME)); ?>" alt="<?php echo utf8_encode($carros->CARNOME); ?>">
+                                <img class="card-img-top" src="assets/img/Carros/<?php echo $carros->CARFOTO; ?>" title="<?php echo strtoupper(utf8_encode($carros->CARNOME)); ?>" alt="<?php echo utf8_encode($carros->CARNOME); ?>">
                                 <div class="card-body bg-light" style="width: 100%">
 
                                     <p class="card-text" style="margin:0px">
