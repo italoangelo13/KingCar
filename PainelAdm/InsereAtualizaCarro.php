@@ -91,6 +91,8 @@ if(isset($_GET['acao'])){
             echo "<script>localStorage.setItem('ModCod', '$vxvaModelo');</script>";
             echo "<script>localStorage.setItem('Mun', '$vxvaMunicipio');</script>";
         }
+
+        echo "<script>hideLoad();</script>";
         
     }
 }
@@ -137,30 +139,31 @@ try {
         $dir                = $path_parts = pathinfo($_FILES['_edImagemCapa']['name']);
         $dirNovo            = "../assets/img/Carros/"; //diretorio de destino
         $ext                = $path_parts['extension'];
-        $nomeNovo            = trim(date('YmdGis') . '-' . $vxvaMarca . $vxvaModelo . $vxvaAno . $vxvaUf . $vxvaMunicipio . '.' . $ext);
+        $nomeNovo            = trim(date('YmdGis') . '-' . $vxvaMarca . $vxvaModelo . trim($vxvaAno) . trim($vxvaUf) . $vxvaMunicipio . '.' . $ext);
         $destino            = $dirNovo . $nomeNovo;
         $arquivo_tmp        = $_FILES['_edImagemCapa']['tmp_name'];
 
         if(strlen($vxvaCod) == 0 ){
             $sqlInsert = "INSERT INTO KGCTBLCAR (CARNOME,CARCODMARCA,CARCODMODELO,CARPRECO,CARANO,CARFOTO,CARCODSTATUS,CARKM,CARCODCAMBIO,CARPORTAS,CARCODCOMBUSTIVEL,CARCODCOR,CARTROCA,CARDESTAQUE,CARDATCADASTRO,CARUSER,CARCODMUNICIPIO,CARUF)
-                VALUES ('".$vxvaTitulo."',
-                $vxvaMarca,
-                $vxvaModelo,
-                $vxvaValor,
-                '".trim($vxvaAno)."',
-                '$nomeNovo',
-                $vxvaStatus,
-                $vxvaKm,
-                $vxvaCambio,
-                $vxvaPortas,
-                $vxvaCombustivel,
-                $vxvaCor,
-                '$vxvaTroca',
-                '$vxvaDestaque',
-                CURRENT_TIMESTAMP,
-                '$vxvaUser',
-                $vxvaMunicipio,
-                '$vxvaUf')";
+                VALUES (    '".$vxvaTitulo."',
+                            $vxvaMarca,
+                            $vxvaModelo,
+                            $vxvaValor,
+                            '".trim($vxvaAno)."',
+                            '$nomeNovo',
+                            $vxvaStatus,
+                            $vxvaKm,
+                            $vxvaCambio,
+                            $vxvaPortas,
+                            $vxvaCombustivel,
+                            $vxvaCor,
+                            '$vxvaTroca',
+                            '$vxvaDestaque',
+                            CURRENT_TIMESTAMP,
+                            '$vxvaUser',
+                            $vxvaMunicipio,
+                            '$vxvaUf'
+                            )";
             $result = $Carro->InsereCarro($sqlInsert);
 
 
@@ -186,7 +189,41 @@ try {
             echo "<script>SuccessBox('Veiculo Cadastrado com Sucesso.');</script>";
         }
         else{
+            $sqlUpdate = "update kgctblcar set
+            CARNOME             = '".$vxvaTitulo."',
+            CARCODMARCA         = $vxvaMarca,
+            CARCODMODELO        = $vxvaModelo,
+            CARPRECO            = $vxvaValor,
+            CARANO              = '".trim($vxvaAno)."',
+            CARFOTO             = '$nomeNovo',
+            CARCODSTATUS        = $vxvaStatus,
+            CARKM               = $vxvaKm,
+            CARCODCAMBIO        = $vxvaCambio,
+            CARPORTAS           = $vxvaPortas,
+            CARCODCOMBUSTIVEL   = $vxvaCombustivel,
+            CARCODCOR           = $vxvaCor,
+            CARTROCA            = '$vxvaTroca',
+            CARDESTAQUE         = '$vxvaDestaque',
+            CARDATCADASTRO      = CURRENT_TIMESTAMP,
+            CARUSER             = '$vxvaUser',
+            CARCODMUNICIPIO     = $vxvaMunicipio,
+            CARUF               = '$vxvaUf'            
+            where CARCOD = $vxvaCod";
+            $result = $Carro->AtualizaCarro($sqlUpdate);
 
+
+            move_uploaded_file( $arquivo_tmp, $destino);
+
+            $qtdeCarros = $Carro->SelecionaTotalNumCarros();
+            if (count($qtdeCarros)) {
+                foreach ($qtdeCarros as $row) {
+                    $numCarros = $row->NUMCARROS;
+                }
+            }
+
+
+            echo "<script>hideLoad();</script>";
+            echo "<script>SuccessBox('Veiculo Atualizado com Sucesso.');</script>";
         }
         
     }
@@ -289,18 +326,26 @@ try {
                                             <?php endif; ?>
                                         <?php } ?>
                                     <?php } else { ?>
-                                        <option value="" selected="true">Selecionar</option>
+                                        <?php if($vxvaMarca){ ?>
+                                            <option value="">Selecionar</option>
+                                            <?php if ($listaMarcas) : ?>
+                                                <?php foreach ($listaMarcas as $marca) : ?>
+                                                    <option value="<?php echo $marca->MARCOD; ?>" <?php if($marca->MARCOD == $vxvaMarca){echo 'selected';} ?>><?php echo $marca->MARDESCRICAO; ?></option>
+                                                <?php endforeach; ?>
+                                            <?php endif; ?>
+                                        <?php } else { ?>
+                                            <option value="" selected="true">Selecionar</option>
                                             <?php if ($listaMarcas) : ?>
                                                 <?php foreach ($listaMarcas as $marca) : ?>
                                                     <option value="<?php echo $marca->MARCOD; ?>"><?php echo $marca->MARDESCRICAO; ?></option>
                                                 <?php endforeach; ?>
                                             <?php endif; ?>
+                                        <?php } ?>
                                     <?php } ?>
                                 </select>
                                 
                             </div>
                             <div class="form-group col-lg-3">
-                                <?php DisparaEventoJs("<script>$('#_ddlMarca').change();</script>"); ?>
                                 <label for="_ddlModelo">Modelo</label>
                                 <select class="form-control form-control" id="_ddlModelo" name="_ddlModelo" required>
                                     <option value="" selected="true">Selecionar</option>
@@ -310,22 +355,48 @@ try {
                             <div class="form-group col-lg-2">
                                 <label for="_ddlAno">Ano</label>
                                 <select class="form-control" id="_ddlAno" name="_ddlAno">
-                                    <?php for ($i = 0; $i <= $contador; $i++) : ?>
-                                        <?php $anoitem = $anoAtual - $i; ?>
-                                        <option value="<?php echo $anoitem; ?> "><?php echo $anoitem; ?></option>
-                                    <?php endfor; ?>
+                                <?php if(isset($_GET['acao'])){ ?>
+                                        <?php if($_GET['acao'] == "editar") { ?>
+                                            <?php for ($i = 0; $i <= $contador; $i++) : ?>
+                                                <?php $anoitem = $anoAtual - $i; ?>
+                                                <option value="<?php echo $anoitem; ?>" <?php if(strval($anoitem) == $vxvaAno){ echo 'selected';} ?>><?php echo $anoitem; ?></option>
+                                            <?php endfor; ?>
+                                        <?php } else { ?>
+                                            <?php for ($i = 0; $i <= $contador; $i++) : ?>
+                                                <?php $anoitem = $anoAtual - $i; ?>
+                                                <option value="<?php echo $anoitem; ?> "><?php echo $anoitem; ?></option>
+                                            <?php endfor; ?>
+                                        <?php } ?>
+                                <?php } else { ?>
+                                        <?php if($vxvaAno){ ?>
+                                                <?php for ($i = 0; $i <= $contador; $i++) : ?>
+                                                <?php $anoitem = $anoAtual - $i; ?>
+                                                <option value="<?php echo $anoitem; ?>" <?php if(strval($anoitem) == $vxvaAno){ echo 'selected';} ?>><?php echo $anoitem; ?></option>
+                                            <?php endfor; ?>
+                                        <?php } else { ?>
+                                            <?php for ($i = 0; $i <= $contador; $i++) : ?>
+                                                <?php $anoitem = $anoAtual - $i; ?>
+                                                <option value="<?php echo $anoitem; ?> "><?php echo $anoitem; ?></option>
+                                            <?php endfor; ?>
+                                        <?php } ?>
+                                <?php } ?>
                                 </select>
                             </div>
                             <div class="form-group col-lg-2">
                                 <label for="_edKm">Quilometragem</label>
-                                <input required type="text" class="form-control" id="_edKm" name="_edKm" maxlength="10" placeholder="" onkeydown="Mascara(this,Valor);"><!-- onkeyup="mascara('##########,##',this,event,false)" -->
+                                <input required type="text" class="form-control" value="<?php if($vxvaKm){echo $vxvaKm;} ?>" id="_edKm" name="_edKm" maxlength="10" placeholder="" onkeydown="Mascara(this,Valor);"><!-- onkeyup="mascara('##########,##',this,event,false)" -->
                             </div>
                             <div class="form-group col-lg-2">
                                 <label for="_ddlStatus">Status</label>
                                 <select class="form-control" id="_ddlStatus" name="_ddlStatus" required>
-                                    <option value="" selected="true">Selecionar</option>
-                                    <option value="1">A Venda</option>
-                                    <option value="2">Vendido</option>
+                                <?php if($vxvaStatus){ ?>
+                                        <option value="1" <?php if($vxvaTroca == "1"){echo 'selected';} ?>>Ativo</option>
+                                        <option value="2" <?php if($vxvaTroca == "2"){echo 'selected';} ?>>Inativo</option>
+                                    <?php } else { ?>
+                                        <option value="1">Ativo</option>
+                                        <option value="2">Inativo</option>
+                                    <?php } ?>
+                                </select>
                                 </select>
                             </div>
                         </div>
@@ -333,38 +404,65 @@ try {
                             <div class="form-group col-lg-3">
                                 <label for="_ddlCamb">Câmbio</label>
                                 <select class="form-control" id="_ddlCamb" name="_ddlCamb" required>
+                                <?php if($vxvaCambio){ ?>
+                                    <option value="" >Selecionar</option>
+                                    <?php if ($listaCambios) : ?>
+                                        <?php foreach ($listaCambios as $lcambio) : ?>
+                                            <option value="<?php echo $lcambio->CAMCOD; ?>" <?php if($lcambio->CAMCOD == $vxvaCambio){echo 'selected';} ?>><?php echo $util->convert_from_latin1_to_utf8_recursively($lcambio->CAMDESCRICAO); ?></option>
+                                        <?php endforeach; ?>
+                                    <?php endif; ?> -->
+                                <?php } else { ?>
                                     <option value="" selected="true">Selecionar</option>
                                     <?php if ($listaCambios) : ?>
                                         <?php foreach ($listaCambios as $lcambio) : ?>
                                             <option value="<?php echo $lcambio->CAMCOD; ?>"><?php echo $util->convert_from_latin1_to_utf8_recursively($lcambio->CAMDESCRICAO); ?></option>
                                         <?php endforeach; ?>
                                     <?php endif; ?> -->
+                                <?php } ?>
                                 </select>
                             </div>
                             <div class="form-group col-lg-3">
                                 <label for="_ddlComb">Combustivel</label>
                                 <select class="form-control" id="_ddlComb" name="_ddlComb" required>
+                                <?php if($vxvaCombustivel){ ?>
+                                    <option value="" >Selecionar</option>
+                                    <?php if ($listaCombustiveis) : ?>
+                                        <?php foreach ($listaCombustiveis as $lcombustivel) : ?>
+                                            <option value="<?php echo $lcombustivel->COMCOD; ?>" <?php if($lcombustivel->COMCOD == $vxvaCombustivel){echo 'selected';} ?>><?php echo $util->convert_from_latin1_to_utf8_recursively($lcombustivel->COMDESCRICAO); ?></option>
+                                        <?php endforeach; ?>
+                                    <?php endif; ?>
+                                <?php } else { ?>
                                     <option value="" selected="true">Selecionar</option>
                                     <?php if ($listaCombustiveis) : ?>
                                         <?php foreach ($listaCombustiveis as $lcombustivel) : ?>
                                             <option value="<?php echo $lcombustivel->COMCOD; ?>"><?php echo $util->convert_from_latin1_to_utf8_recursively($lcombustivel->COMDESCRICAO); ?></option>
                                         <?php endforeach; ?>
                                     <?php endif; ?>
+                                <?php } ?>
                                 </select>
                             </div>
                             <div class="form-group col-lg-2">
                                 <label for="_edNumPortas">Portas</label>
-                                <input type="number" required class="form-control" id="_edNumPortas" name="_edNumPortas" maxlength="1" onkeyup="Mascara(this,Integer);"><!-- onkeyup="mascara('##########,##',this,event,false)" -->
+                                <input type="number" required class="form-control" value="<?php if($vxvaPortas){echo $vxvaPortas;} ?>" id="_edNumPortas" name="_edNumPortas" maxlength="1" onkeyup="Mascara(this,Integer);"><!-- onkeyup="mascara('##########,##',this,event,false)" -->
                             </div>
                             <div class="form-group col-lg-2">
                                 <label for="_ddlCor">Cor</label>
                                 <select class="form-control" id="_ddlCor" name="_ddlCor" required>
-                                    <option value="" selected="true">Selecionar</option>
-                                    <?php if ($listaCor) : ?>
-                                        <?php foreach ($listaCor as $lcor) : ?>
-                                            <option value="<?php echo $lcor->CORCOD; ?>"><?php echo $lcor->CORDESCRICAO; ?></option>
-                                        <?php endforeach; ?>
-                                    <?php endif; ?>
+                                    <?php if($vxvaCor){ ?>
+                                        <option value="">Selecionar</option>
+                                        <?php if ($listaCor) : ?>
+                                            <?php foreach ($listaCor as $lcor) : ?>
+                                                <option value="<?php echo $lcor->CORCOD; ?>" <?php if($lcor->CORCOD == $vxvaCor){echo 'selected';} ?>><?php echo $lcor->CORDESCRICAO; ?></option>
+                                            <?php endforeach; ?>
+                                        <?php endif; ?>
+                                    <?php } else { ?>
+                                        <option value="" selected="true">Selecionar</option>
+                                        <?php if ($listaCor) : ?>
+                                            <?php foreach ($listaCor as $lcor) : ?>
+                                                <option value="<?php echo $lcor->CORCOD; ?>"><?php echo $lcor->CORDESCRICAO; ?></option>
+                                            <?php endforeach; ?>
+                                        <?php endif; ?>
+                                    <?php } ?>
                                 </select>
                             </div>
                             <div class="col-lg-2">
@@ -373,7 +471,7 @@ try {
                                     <div class="input-group-prepend">
                                         <div class="input-group-text"><i class="icone-money"></i></div>
                                     </div>
-                                    <input type="text" required class="form-control" onkeydown="Mascara(this,Valor);" maxlength="10" id="_edValor" name="_edValor" placeholder="R$ 000.00">
+                                    <input type="text" required class="form-control" value="<?php if($vxvaValor){echo $vxvaValor;} ?>" onkeydown="Mascara(this,Valor);" maxlength="10" id="_edValor" name="_edValor" placeholder="R$ 000.00">
                                 </div>
                             </div>
                         </div>
@@ -382,12 +480,21 @@ try {
                             <div class="form-group col-lg-3">
                                 <label for="_ddlUf">Estado</label>
                                 <select class="form-control" id="_ddlUf" name="_ddlUf" required>
+                                <?php if($vxvaUf){ ?>
+                                    <option value="" >Selecionar</option>
+                                    <?php if ($listaUf) : ?>
+                                        <?php foreach ($listaUf as $uf) : ?>
+                                            <option value="<?php echo $uf->MUNUF; ?>" <?php if($uf->MUNUF == $vxvaUf){echo 'selected';} ?>><?php echo $uf->MUNUF; ?></option>
+                                        <?php endforeach; ?>
+                                    <?php endif; ?>
+                                <?php } else { ?>
                                     <option value="" selected="true">Selecionar</option>
                                     <?php if ($listaUf) : ?>
                                         <?php foreach ($listaUf as $uf) : ?>
                                             <option value="<?php echo $uf->MUNUF; ?>"><?php echo $uf->MUNUF; ?></option>
                                         <?php endforeach; ?>
                                     <?php endif; ?>
+                                <?php } ?>
                                 </select>
                             </div>
                             <div class="form-group col-lg-4">
@@ -404,16 +511,16 @@ try {
                         <div class="row alert-secondary">
                             <div class="form-group col-lg-4">
                                 <br>
-                                <img id="_ImgCapaPreview" src="../assets/img/sem-foto.gif" style="width: 100%;" alt="Capa do Anuncio" class="img-thumbnail">
+                                <img id="_ImgCapaPreview" src="<?php if($vxvaImg){echo '../assets/img/Carros/'.$vxvaImg;} else {echo '../assets/img/sem-foto.gif';} ?>" style="width: 100%;" alt="Capa do Anuncio" class="img-thumbnail">
                                 <br />
                                 <br />
-                                <input hidden required type="file" name="_edImagemCapa" id="_edImagemCapa">
+                                <input hidden required type="file" name="_edImagemCapa" id="_edImagemCapa" value="<?php if($vxvaImg){echo $vxvaImg;} ?>">
 
                                 <a class="btn btn-success btn-block text-white" id="_btnCarregaImg"><i class="icone-image"></i> Carregar Imagem</a>
                             </div>
                         </div>
 
-                        <div class="row" style="margin-top:5px;">
+                        <div class="row" style="margin-top:5px; margin-bottom:10px; padding:5px;">
                             <div class="col-lg-12">
                                 <button class="btn btn-success" type="submit" name="salvar"><i class="icone-floppy"></i> Salvar</button>
                                 <button class="btn btn-danger" type="reset" onclick="LimpaCampos()"><i class="icone-cancel"></i> Limpar</button>
@@ -482,121 +589,7 @@ try {
         img.attr('src', '../assets/img/sem-foto.gif');
     }
 
-    function ValidarCampos() {
-        showLoad('Validando Informações do veículo');
-        var titulo = $('#_edTitulo');
-        var marca = $('#_ddlMarca');
-        var modelo = $('#_ddlModelo');
-        var ano = $('#_ddlAno');
-        var km = $('#_edKm');
-        var cambio = $('#_ddlCamb');
-        var combustivel = $('#_ddlComb');
-        var portas = $('#_edNumPortas');
-        var cor = $('#_ddlCor');
-        var uf = $('#_ddlUf');
-        var municipio = $('#_ddlMun');
-        var img = $('#_edImagemCapa');
-        var valor = $('#_edValor');
-
-
-        if (titulo.val() === "" || titulo.val() === null) {
-            hideLoadModal("#CadCarro");
-            WarningBox('Campo Titulo é Obrigatório.');
-            titulo.focus();
-            return;
-        }
-
-        if (marca.val() === "" || marca.val() === null || marca.val() === "0") {
-            hideLoadModal("#CadCarro");
-            WarningBox('Campo marca é Obrigatório.');
-            marca.focus();
-            return;
-        }
-
-        if (modelo.val() === "" || modelo.val() === null || modelo.val() === "0") {
-            hideLoadModal("#CadCarro");
-            WarningBox('Campo modelo é Obrigatório.');
-            modelo.focus();
-            return;
-        }
-
-        if (ano.val() === "" || ano.val() === null || ano.val() === "0") {
-            hideLoadModal("#CadCarro");
-            WarningBox('Campo ano é Obrigatório.');
-            ano.focus();
-            return;
-        }
-
-        if (km.val() === "" || km.val() === null) {
-            hideLoadModal("#CadCarro");
-            WarningBox('Campo Quilometragem é Obrigatório.');
-            km.focus();
-            return;
-        }
-
-        if (cambio.val() === "" || cambio.val() === null || cambio.val() === "0") {
-            hideLoadModal("#CadCarro");
-            WarningBox('Campo cambio é Obrigatório.');
-            cambio.focus();
-            return;
-        }
-
-        if (combustivel.val() === "" || combustivel.val() === null || combustivel.val() === "0") {
-            hideLoadModal("#CadCarro");
-            WarningBox('Campo combustivel é Obrigatório.');
-            combustivel.focus();
-            return;
-        }
-
-        if (portas.val() === "" || portas.val() === null) {
-            hideLoadModal("#CadCarro");
-            WarningBox('Campo portas é Obrigatório.');
-            portas.focus();
-            return;
-        }
-
-        if (cor.val() === "" || cor.val() === null || cor.val() === "0") {
-            hideLoadModal("#CadCarro");
-            WarningBox('Campo cor é Obrigatório.');
-            cor.focus();
-            return;
-        }
-
-        if (uf.val() === "" || uf.val() === null || uf.val() === "0") {
-            hideLoadModal("#CadCarro");
-            WarningBox('Campo Estado é Obrigatório.');
-            uf.focus();
-            return;
-        }
-
-        if (municipio.val() === "" || municipio.val() === null || municipio.val() === "0") {
-            hideLoadModal("#CadCarro");
-            WarningBox('Campo Cidade é Obrigatório.');
-            municipio.focus();
-            return;
-        }
-
-        if (img.val() === "" || municipio.val() === null) {
-            hideLoadModal("#CadCarro");
-            WarningBox('Capa do Anuncio é Obrigatório.');
-            img.focus();
-            return;
-        }
-
-        if (valor.val() === "" || valor.val() === null || valor.val() === "0" || valor.val() === "0,00" || valor.val() === "0,0") {
-            hideLoadModal("#CadCarro");
-            WarningBox('Campo valor é Obrigatório.');
-            valor.focus();
-            return;
-        }
-
-
-        showLoadModal('Aguarde, <br> Salvando informações do Veiculo.', '#CadCarro');
-
-        $('form#_formCadCarro').submit();
-
-
-    }
+    
 
     
 

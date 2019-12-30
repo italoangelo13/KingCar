@@ -26,10 +26,9 @@ $inicio = $pagina - 1;
 //multiplicamos a quantidade de registros da pagina pelo valor da pagina atual 
 $inicio = $maximo * $inicio;
 $total = 0; 
-BuscaTotalCarros($Carro);
+//BuscaTotalCarros($Carro);
 
-function BuscaTotalCarros($Carro){
-    $strCount = $Carro->SelecionaTotalNumCarros();
+$strCount = $Carro->SelecionaTotalNumCarros();
     
     if (count($strCount)) {
         foreach ($strCount as $row) {
@@ -38,7 +37,8 @@ function BuscaTotalCarros($Carro){
             $numCarros = $row->NUMCARROS;
         }
     }
-}
+
+
 
 
 if(!isset($_GET['acao'])){
@@ -59,7 +59,6 @@ else if(isset($_GET['acao'])){
         }
         echo "<script>showLoad('Aguarde <br> Carregando os Veiculos Cadastrados.');</script> ";
         $resultado = carregaGrid($Carro,$inicio,$maximo);
-        BuscaTotalCarros($Carro);
         echo "<script>hideLoad();</script>";
     }
 }

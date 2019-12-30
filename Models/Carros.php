@@ -188,6 +188,17 @@ class Carros
         return $result = $smtp->rowCount();
     }
 
+    function AtualizaCarro($sqlUpdate)
+    {  
+        $pdo = new PDO(server, user, senha);
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $smtp = $pdo->prepare($sqlUpdate);
+        $smtp->execute();
+
+
+        return $result = $smtp->rowCount();
+    }
+
     public function BuscaUltimoCodCarroUser($vxvaUser){
         $pdo = new PDO(server, user, senha);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
