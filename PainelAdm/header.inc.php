@@ -28,12 +28,14 @@ $user = utf8_encode($_SESSION['NomeUsuario']);
     <link rel="stylesheet" href="../assets/fontawesome/css/all.min.css">
     <link rel="stylesheet" href="../assets/kingcar.css">
     <link rel="stylesheet" href="../assets/jquery-confirm/jquery-confirm.min.css">
+    <link rel="stylesheet" href="../assets/chartjs/chart.min.css">
     <script src="../assets/jquery-3.3.1.min.js"></script>
     <script src="../assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="../assets/fontawesome/js/all.min.js"></script>
     <script src="../assets/jquery-confirm/jquery-confirm.min.js"></script>
     <script src="../assets/Loader/jquery.loading.min.js"></script>
     <script src="../assets/Mascaras.js"></script>
+    <script src="../assets/chartjs/chart.min.js"></script>
     <script src="../assets/kingcar.js"></script>
 </head>
 

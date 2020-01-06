@@ -42,9 +42,41 @@ $strCount = $Carro->SelecionaTotalNumCarros();
 
 
 if(!isset($_GET['acao'])){
-    echo "<script>showLoad('Aguarde <br> Carregando os Veiculos Cadastrados.');</script> ";
-    $resultado = carregaGrid($Carro,$inicio,$maximo);
-    echo "<script>hideLoad();</script>";
+    if(isset($_POST['pesquisa'])){
+        echo "<script>showLoad('Aguarde <br> Carregando os Veiculos Cadastrados.');</script> ";
+        $filtro = "";
+        if($_POST['_edPesquisa']){
+            $campo = $_POST['_ddlPesquisa'];
+            $valor = $_POST['_edPesquisa'];
+            
+            if($campo == "CARCOD"){
+                if(is_numeric($valor)){
+                    $cod = intval($valor);
+                }
+                else{
+                    echo "<script>hideLoad();</script>";
+                    echo "<script>ErrorBox('Codigo Pesquisado é invalido.');</script>";
+                    exit();
+                }
+                $filtro = " AND $campo  = $cod";
+            }
+            else{
+                $filtro = " AND $campo like '%$valor%'";
+            }
+           
+        }
+        
+        $ord = " order by ".$_POST['_ddlPesquisa'].' '.$_POST['_ddlOrd'];
+
+        $resultado = carregaGridPesq($Carro,$inicio,$maximo,$filtro,$ord);
+        echo "<script>hideLoad();</script>";
+    }
+    else{
+        echo "<script>showLoad('Aguarde <br> Carregando os Veiculos Cadastrados.');</script> ";
+        $resultado = carregaGrid($Carro,$inicio,$maximo);
+        echo "<script>hideLoad();</script>";
+    }
+    
 }
 else if(isset($_GET['acao'])){
     if($_GET['acao'] == "del"){
@@ -65,6 +97,10 @@ else if(isset($_GET['acao'])){
 
 function carregaGrid($Carro,$inicio,$maximo){
     return $Carro->SelecionaCarrosPaginados($inicio, $maximo);
+}
+
+function carregaGridPesq($Carro,$inicio,$maximo,$filtro,$ord){
+    return $Carro->SelecionaCarrosPaginadosPesq($inicio, $maximo,$filtro,$ord);
 }
 
 
@@ -96,7 +132,7 @@ function carregaGrid($Carro,$inicio,$maximo){
                                     <div class="row">
                                         <div class="col-lg-3">
                                             <select name="_ddlPesquisa" id="_ddlPesquisa" class="form-control">
-                                                <option value="CODCAR" selected>CÓDIGO</option>
+                                                <option value="CARCOD" selected>CÓDIGO</option>
                                                 <option value="MARDESCRICAO">MARCA</option>
                                                 <option value="MODDESCRICAO">MODELO</option>
                                             </select>
@@ -105,7 +141,7 @@ function carregaGrid($Carro,$inicio,$maximo){
                                             <input type="text" name="_edPesquisa" id="_edPesquisa" class="form-control" placeholder="Pesquisar Carro">
                                         </div>
                                         <div class="col-lg-2">
-                                            <button type="submit" class="btn btn-success" name="pesquisa"><i class="icone-search"></i></button>
+                                            <button type="submit" id="_btnPesquisa" class="btn btn-success" name="pesquisa"><i class="icone-search"></i></button>
                                         </div>
                                     </div>
                                 </div>
@@ -114,7 +150,7 @@ function carregaGrid($Carro,$inicio,$maximo){
                         <div class="col-lg-3">
                             <div class="form-group">
                                 <label for="">Ordem de Pesquisa:</label>
-                                <select name="_ddlPesquisa" id="_ddlOrd" class="form-control">
+                                <select name="_ddlOrd" id="_ddlOrd" class="form-control">
                                     <option value="ASC" selected>CRESCENTE</option>
                                     <option value="DESC">DECRESCENTE</option>
                                 </select>
@@ -250,6 +286,14 @@ function carregaGrid($Carro,$inicio,$maximo){
 
     <script>
         $(document).ready(function() {
+
+            $('#_edPesquisa').keypress(function(e) {
+                if(e.which == 13){
+                    $('#_btnPesquisa').click();
+                } 
+            });
+
+
             $("#_ddlMarca").change(function() {
                 CarregaDdlModelo();
             });

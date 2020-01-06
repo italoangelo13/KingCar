@@ -90,6 +90,17 @@ class Carros
         return $result = $smtp->fetchAll(PDO::FETCH_CLASS);
     }
 
+    public function SelecionarNumCarrosDetIncompletos($SQLCARDET){
+        $pdo = new PDO(server, user, senha);
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        $smtp = $pdo->prepare($SQLCARDET);
+        $smtp->execute();
+
+
+        return $result = $smtp->fetchAll(PDO::FETCH_CLASS);
+    }
+
 
     public function SelecionaTotalNumCarros()
     {
@@ -124,6 +135,33 @@ class Carros
                                         inner join kgctblmun
                                         on carcodmunicipio = muncodigoibge
                                 LIMIT $inicio,$maximo ");
+        $smtp->execute();
+
+
+        return $result = $smtp->fetchAll(PDO::FETCH_CLASS);
+    }
+
+    function SelecionaCarrosPaginadosPesq($inicio, $maximo,$filtro,$ord){
+        $pdo = new PDO(server, user, senha);
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        $query = "SELECT CARCOD,
+                                        MARDESCRICAO,
+                                        MODDESCRICAO,
+                                        CARPRECO,
+                                        CARANO,
+                                        CARFOTO,
+                                        CARPORTAS,
+                                        CONCAT(mundescricao,' - ',munuf) AS Localizacao
+                                        FROM kgctblcar
+                                        INNER JOIN kgctblmar
+                                        ON CARCODMARCA = MARCOD
+                                        INNER JOIN kgctblMOD
+                                        ON CARCODMODELO = MODCOD
+                                        inner join kgctblmun
+                                        on carcodmunicipio = muncodigoibge
+                                        where 1=1 $filtro $ord LIMIT $inicio,$maximo";
+        $smtp = $pdo->prepare($query);
         $smtp->execute();
 
 

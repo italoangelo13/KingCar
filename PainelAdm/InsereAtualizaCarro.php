@@ -62,6 +62,9 @@ $vxvaStatus         = "";
 $vxvaDestaque       = "";
 $vxvaTroca          = "";
 $vxvaImg            = "";
+if (!isset($_POST['salvar'])) {
+    $_SESSION['imgCar'] = "";
+}
 
 if(isset($_GET['acao'])){
     if($_GET['acao'] == "editar"){
@@ -76,6 +79,7 @@ if(isset($_GET['acao'])){
             $vxvaValor          = $linhaInfoCarro->CARPRECO;
             $vxvaAno            = $linhaInfoCarro->CARANO;
             $vxvaImg            = $linhaInfoCarro->CARFOTO;
+            $_SESSION['imgCar'] = $linhaInfoCarro->CARFOTO;
             $vxvaStatus         = $linhaInfoCarro->CARCODSTATUS;
             $vxvaKm             = $linhaInfoCarro->CARKM;
             $vxvaCambio         = $linhaInfoCarro->CARCODCAMBIO;
@@ -135,13 +139,24 @@ try {
         $vxvaStatus         = $_POST["_ddlStatus"];
         $vxvaDestaque       = $_POST["_ddlDestaque"];
         $vxvaTroca          = $_POST["_ddlTroca"];
-        $vxvaImg            = $_FILES["_edImagemCapa"];
-        $dir                = $path_parts = pathinfo($_FILES['_edImagemCapa']['name']);
-        $dirNovo            = "../assets/img/Carros/"; //diretorio de destino
-        $ext                = $path_parts['extension'];
-        $nomeNovo            = trim(date('YmdGis') . '-' . $vxvaMarca . $vxvaModelo . trim($vxvaAno) . trim($vxvaUf) . $vxvaMunicipio . '.' . $ext);
-        $destino            = $dirNovo . $nomeNovo;
-        $arquivo_tmp        = $_FILES['_edImagemCapa']['tmp_name'];
+        if(isset($_FILES["_edImagemCapa"])){
+            if(strlen($_FILES["_edImagemCapa"]["name"]) > 0){
+                
+                $dir                = $path_parts = pathinfo($_FILES['_edImagemCapa']['name']);
+                $dirNovo            = "../assets/img/Carros/"; //diretorio de destino
+                $ext                = $path_parts['extension'];
+                $nomeNovo            = trim(date('YmdGis') . '-' . $vxvaMarca . $vxvaModelo . trim($vxvaAno) . trim($vxvaUf) . $vxvaMunicipio . '.' . $ext);
+                $destino            = $dirNovo . $nomeNovo;
+                $arquivo_tmp        = $_FILES['_edImagemCapa']['tmp_name'];
+                $vxvaImg            = $nomeNovo;
+            }
+            else{
+                $nomeNovo           = $_SESSION['imgCar'];
+                $vxvaImg            = $_SESSION['imgCar'];
+            }
+        }
+        
+        
 
         if(strlen($vxvaCod) == 0 ){
             $sqlInsert = "INSERT INTO KGCTBLCAR (CARNOME,CARCODMARCA,CARCODMODELO,CARPRECO,CARANO,CARFOTO,CARCODSTATUS,CARKM,CARCODCAMBIO,CARPORTAS,CARCODCOMBUSTIVEL,CARCODCOR,CARTROCA,CARDESTAQUE,CARDATCADASTRO,CARUSER,CARCODMUNICIPIO,CARUF)
@@ -211,8 +226,11 @@ try {
             where CARCOD = $vxvaCod";
             $result = $Carro->AtualizaCarro($sqlUpdate);
 
-
-            move_uploaded_file( $arquivo_tmp, $destino);
+            if(isset($_FILES["_edImagemCapa"])){
+                if(strlen($_FILES["_edImagemCapa"]["name"]) > 0){
+                    move_uploaded_file( $arquivo_tmp, $destino);
+                }
+            }
 
             $qtdeCarros = $Carro->SelecionaTotalNumCarros();
             if (count($qtdeCarros)) {
@@ -245,15 +263,18 @@ try {
         <div class="col-lg-12 text-center">
             <ul class="nav nav-tabs">
                 <li class="nav-item">
-                    <a class="nav-link active" href="#">Informações Principais</a>
+                    <a class="nav-link active" onclick="TrocaTela(1)" href="#"><i class="icone-vcard"></i> Informações Principais</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" onclick="VerificaCadastro()" href="#">Detalhes</a>
+                    <a class="nav-link" onclick="TrocaTela(2)" href="#"><i class="icone-doc-text-1"></i> Detalhes</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" onclick="TrocaTela(3)" href="#"><i class="icone-picture-1"></i> Fotos</a>
                 </li>
             </ul>
         </div>
     </div>
-    <div class="painel-CadCarro">
+    <div class="painel-CadCarro" class="display-show">
         <form name="_formCadCarro" id="_formCadCarro" method="POST" action="InsereAtualizaCarro.php" enctype=multipart/form-data> 
             <div class="row " style="margin-top:5px;" >
                 <div class="col-lg-12">
@@ -511,10 +532,10 @@ try {
                         <div class="row alert-secondary">
                             <div class="form-group col-lg-4">
                                 <br>
-                                <img id="_ImgCapaPreview" src="<?php if($vxvaImg){echo '../assets/img/Carros/'.$vxvaImg;} else {echo '../assets/img/sem-foto.gif';} ?>" style="width: 100%;" alt="Capa do Anuncio" class="img-thumbnail">
+                                <img name="_ImgCapaPreview"  id="_ImgCapaPreview" src="<?php if($vxvaImg){echo '../assets/img/Carros/'.$vxvaImg;} else {echo '../assets/img/sem-foto.gif';} ?>" style="width: 100%;" alt="Capa do Anuncio" class="img-thumbnail">
                                 <br />
                                 <br />
-                                <input hidden required type="file" name="_edImagemCapa" id="_edImagemCapa" value="<?php if($vxvaImg){echo $vxvaImg;} ?>">
+                                <input hidden type="file" name="_edImagemCapa" id="_edImagemCapa">
 
                                 <a class="btn btn-success btn-block text-white" id="_btnCarregaImg"><i class="icone-image"></i> Carregar Imagem</a>
                             </div>
@@ -534,6 +555,15 @@ try {
     </div>
 
 
+    <div id="infoComp" class="display-hide">
+
+    </div>
+
+    <div id="fotosCarro" class="display-hide">
+
+    </div>
+
+
 <script>
     $(document).ready(function() {
         $("#_ddlMarca").change(function() {
@@ -541,6 +571,14 @@ try {
         });
 
         $("#_ddlUf").change(function() {
+            CarregaDdlCidade();
+        });
+
+        $("#_ddlMarca").blur(function() {
+            CarregaDdlModelo();
+        });
+
+        $("#_ddlUf").blur(function() {
             CarregaDdlCidade();
         });
 
@@ -571,12 +609,65 @@ try {
 
     });
 
+    function TrocaTela(tela){
+        debugger;
+        if(tela == 2 || tela == 3){
+            if(!VerificaCadastro()){
+                return;
+            }
+        }
+
+        switch (tela){
+            case 1:
+                AlternaPainelCad();
+            break;
+
+            case 2:
+                //AlternaPainelDet();
+            break;
+
+            case 3:
+                AlternaPainelDet();
+            break;
+        }
+        
+    }
+
+    function AlternaPainelDet() {
+        //s -> Tela a ser mostrada
+        //h -> Tela a ser ocultada
+        $("#painel-CadCarro").removeClass("display-show");
+        $("#painel-CadCarro").addClass("display-hide");
+
+        $("#fotosCarro").removeClass("display-show");
+        $("#fotosCarro").addClass("display-hide");
+
+        $("#infoComp").removeClass("display-hide");
+        $("#infoComp").addClass("display-show");
+    }
+
+    function AlternaPainelCad() {
+        //s -> Tela a ser mostrada
+        //h -> Tela a ser ocultada
+        $("#infoComp").removeClass("display-show");
+        $("#infoComp").addClass("display-hide");
+
+        $("#fotosCarro").removeClass("display-show");
+        $("#fotosCarro").addClass("display-hide");
+
+        $("#painel-CadCarro").removeClass("display-hide");
+        $("#painel-CadCarro").addClass("display-show");
+    }
+
     function VerificaCadastro(){
         var codCarro = $("#_edCodCarro");
         if(codCarro.val() == '' || codCarro.val() == NULL){
             WarningBox('Conclua o cadastro do Carro Antes de acessar os Detalhes do Veiculo.');
             codCarro.focus();
-            return;
+            return false;
+        }
+        else{
+            return true;
         }
     }
 
@@ -599,8 +690,6 @@ try {
             CODMARCA: CodMarca,
         };
 
-        //var param = JSON.stringify(obj);
-        console.log(location.pathname + ' ../service/BuscaModelos.php?codMarca=' + CodMarca);
         $.ajax({
             url: "../service/BuscaModelos.php?codMarca=" + CodMarca,
             type: 'GET',
@@ -613,15 +702,7 @@ try {
                     $('<option>').val(o.MODCOD).text(o.MODDESCRICAO).appendTo(selectbox);
                 });
                 $('<option>').val('0').text('Selecionar').appendTo(selectbox);
-
-                debugger;
-                if(localStorage.getItem('ModCod') == null || localStorage.getItem('ModCod') == ''){
-                    $('#_ddlModelo option[value=0]').attr('selected', 'selected');
-                }
-                else{
-                    var modcod = localStorage.getItem('ModCod');
-                    $('#_ddlModelo option[value='+modcod+']').attr('selected', 'selected');
-                }
+                $('#_ddlModelo option[value=0]').attr('selected', 'selected');
 
             }
         });
