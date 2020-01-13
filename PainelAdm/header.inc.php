@@ -29,6 +29,7 @@ $user = utf8_encode($_SESSION['NomeUsuario']);
     <link rel="stylesheet" href="../assets/kingcar.css">
     <link rel="stylesheet" href="../assets/jquery-confirm/jquery-confirm.min.css">
     <link rel="stylesheet" href="../assets/chartjs/chart.min.css">
+    <link rel="stylesheet" href="../assets/jQueryte.1.4.0/jquery-te-1.4.0.css">
     <script src="../assets/jquery-3.3.1.min.js"></script>
     <script src="../assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="../assets/fontawesome/js/all.min.js"></script>
@@ -36,6 +37,7 @@ $user = utf8_encode($_SESSION['NomeUsuario']);
     <script src="../assets/Loader/jquery.loading.min.js"></script>
     <script src="../assets/Mascaras.js"></script>
     <script src="../assets/chartjs/chart.min.js"></script>
+    <script src="../assets/jQueryte.1.4.0/jquery-te-1.4.0.min.js"></script>
     <script src="../assets/kingcar.js"></script>
 </head>
 

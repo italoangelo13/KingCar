@@ -68,3 +68,7 @@
 .display-show{
     display: block;
 }
+
+.nav-link{
+  cursor: pointer;
+}
