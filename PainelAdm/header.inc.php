@@ -30,6 +30,7 @@ $user = utf8_encode($_SESSION['NomeUsuario']);
     <link rel="stylesheet" href="../assets/jquery-confirm/jquery-confirm.min.css">
     <link rel="stylesheet" href="../assets/chartjs/chart.min.css">
     <link rel="stylesheet" href="../assets/jQueryte.1.4.0/jquery-te-1.4.0.css">
+    <link rel="stylesheet" href="../assets/DataTables/datatables.min.css">
     <script src="../assets/jquery-3.3.1.min.js"></script>
     <script src="../assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="../assets/fontawesome/js/all.min.js"></script>
@@ -38,6 +39,7 @@ $user = utf8_encode($_SESSION['NomeUsuario']);
     <script src="../assets/Mascaras.js"></script>
     <script src="../assets/chartjs/chart.min.js"></script>
     <script src="../assets/jQueryte.1.4.0/jquery-te-1.4.0.min.js"></script>
+    <script src="../assets/DataTables/datatables.min.js"></script>
     <script src="../assets/kingcar.js"></script>
 </head>
 
@@ -62,7 +64,7 @@ $user = utf8_encode($_SESSION['NomeUsuario']);
                 <div class="collapse navbar-collapse" id="conteudoNavbarSuportado">
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item ">
-                        <a class="nav-link" href="#" ><i class="icone-user"></i> <label>Usuários</label></a>
+                        <a class="nav-link" href="CrudUsuario.php" ><i class="icone-user"></i> <label>Usuários</label></a>
                         
                         </li>
                         <li class="nav-item">

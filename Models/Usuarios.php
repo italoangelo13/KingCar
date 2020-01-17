@@ -71,7 +71,25 @@ class Usuarios
     }
 
     public function Logout(){
-        unset($_SESSION['usuario']);
+        unset($_SESSION['Usuario']);
         header("location:../login.php");
+    }
+
+
+    public function SelecionarUsuarios(){
+        $pdo = new PDO(server, user, senha);
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        $smtp = $pdo->prepare("SELECT
+                                USUCOD,
+                                USUNOME,
+                                USUUSUARIO,
+                                USUDATCADASTRO
+                                FROM kgctblusu");
+        $smtp->execute();
+
+        if ($smtp->rowCount() > 0) {
+            return $result = $smtp->fetchAll(PDO::FETCH_CLASS);
+        }
     }
 }

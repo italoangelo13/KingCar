@@ -808,19 +808,11 @@ try {
 </div>
 
 <div id="fotosCarro" class="display-hide">
-<div class="row" tyle="margin-top:5px;">
-            <div class="col-lg-12 text-center bg-dark text-white">
-                FOTOS DO VEÍCULO
-            </div>
+    <div class="row" tyle="margin-top:5px;">
+        <div class="col-lg-12 text-center bg-dark text-white">
+            FOTOS DO VEÍCULO
         </div>
-    <form action="" method="post">
-        <div class="row" tyle="margin-top:5px;">
-            <div class="col-lg-12 text-center bg-dark text-white">
-                FOTOS DO VEÍCULO
-            </div>
-        </div>
-    </form>
-    TESTE
+    </div>
 </div>
 
 
