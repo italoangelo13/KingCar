@@ -185,6 +185,65 @@ class Carros
         }
     }
 
+    public function AtualizaInfoComp($sqlInfoComp)
+    {
+        $pdo = new PDO(server, user, senha);
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        $smtp = $pdo->prepare($sqlInfoComp);
+        $smtp->execute();
+
+        $result = $smtp->rowCount();
+
+        if($result > 0){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    public function VerificaExisteInfoComp($codCar){
+        $pdo = new PDO(server, user, senha);
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        $smtp = $pdo->prepare("SELECT DETCOD FROM kgctbldetcar where DETCODCARRO = $codCar");
+        $smtp->execute();
+
+
+        $result = $smtp->rowCount();
+
+        if($result > 0){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    public function BuscaCodInfoComp($codCar){
+        $pdo = new PDO(server, user, senha);
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        $smtp = $pdo->prepare("SELECT min(DETCOD) as DETCOD FROM kgctbldetcar where DETCODCARRO = $codCar");
+        $smtp->execute();
+
+
+        $result = $smtp->fetchAll(PDO::FETCH_CLASS);
+
+        return $result[0]->DETCOD;
+    }
+
+    public function InsereDetCarro($codCar,$usu){
+        $pdo = new PDO(server, user, senha);
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        $smtp = $pdo->prepare("INSERT INTO kgctbldetcar (DETUSER, DETDATCADASTRO,DETCODCARRO) values ('$usu',CURRENT_TIMESTAMP,$codCar)");
+        $smtp->execute();
+
+        return $result = $smtp->rowCount();
+    }
+
     function SelecionaCarroPorCod($cod){
         $pdo = new PDO(server, user, senha);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -225,6 +284,7 @@ class Carros
 
         return $result = $smtp->rowCount();
     }
+    
 
     function AtualizaCarro($sqlUpdate)
     {  

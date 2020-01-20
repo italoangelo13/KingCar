@@ -53,7 +53,7 @@ if($CarrosIncomp){
 ?>
 <div class="row alert-warning" style="margin-top:10px;">
     <div class="col-lg-12">
-        <h5><i class="icone-warning"></i> Existe <?php echo $CarrosIncomp; ?> Veiculo(s) com pendencias de cadastros, <a href="#">Clique Aqui</a> para Visualizar os Veiculos Inconsistentes.</h5>
+        <h5><i class="icone-warning"></i> Existe <?php echo $CarrosIncomp; ?> Veiculo(s) com pendencias de cadastros, <a href="relatorioCarrosIncompletos.php">Clique Aqui</a> para Visualizar os Veiculos Inconsistentes.</h5>
     </div>
 </div>
 <?php } ?>

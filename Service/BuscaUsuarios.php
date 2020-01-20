@@ -15,7 +15,7 @@ include_once('../Config/Util.php');
 require_once('../Models/Usuarios.php');
 $usuario = new Usuarios();
 $util = new Util();
-
+$Json = null;
 
 try {
 
@@ -26,20 +26,29 @@ try {
     // $smtp->execute();
     // $result = $smtp->fetchAll(PDO::FETCH_CLASS);
     $listaUsu = $usuario->SelecionarUsuarios();
-    if (count($listaUsu) === 0) {
-        echo '[{"TransCod":0, "erro":"Nenhum Usuario encontrado."}]';
+    if($listaUsu){
+        if (count($listaUsu) === 0) {
+            $Json = '[]';
+            echo json_encode($Json);
+        }
     }
+    else{
+        $Json = '[]';
+        echo json_encode($Json);
+        return;
+    }
+    
 
     if (count($listaUsu)) {
         $Json = '[';
         $cont = 1;
         $total = count($listaUsu);
         foreach ($listaUsu as $usu) {
-
+            $date = new DateTime($usu->USUDATCADASTRO);
             if ($cont == $total) {
-                $Json = $Json .  '{"id":"' . $usu->USUCOD . '","nome":"' . $usu->USUNOME . '","usuario":"' . $usu->USUUSUARIO . '","dtcadastro":"' . $usu->USUDATCADASTRO . '","editar":"<a class="btn btn-success" href="InsereAtualizaUsuario.php?acao=editar&cod='. $usu->USUCOD . '> <i class="icone-pencil"></i></a>","excluir":"<a class="btn btn-danger" href="CrudUsuario.php?acao=del&cod='. $usu->USUCOD . '> <i class="icone-trash"></i></a>"}]';
+                $Json = $Json .  '{"id":"' . $usu->USUCOD . '","nome":"' . $usu->USUNOME . '","usuario":"' . $usu->USUUSUARIO . '","dtcadastro":"' . $date->format( 'd/m/Y') . '","editar":"'. $usu->USUCOD . '","excluir":"'. $usu->USUCOD . '"}]';
             } else {
-                //$Json = $Json . '{"MUNCODIGOIBGE":"' . $usu->MUNCODIGOIBGE . '","MUNDESCRICAO":"' . $usu->MUNDESCRICAO . '"},';
+                $Json = $Json .  '{"id":"' . $usu->USUCOD . '","nome":"' . $usu->USUNOME . '","usuario":"' . $usu->USUUSUARIO . '","dtcadastro":"' . $date->format( 'd/m/Y') . '","editar":"'. $usu->USUCOD . '","excluir":"'. $usu->USUCOD . '"},';
             }
             $cont++;
         }

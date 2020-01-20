@@ -66,10 +66,27 @@ if (!isset($_POST['salvar'])) {
     $_SESSION['imgCar'] = "";
 }
 
+if(isset($_POST['Fotos'])){
+    $diretorio = "../assets/img/carros/".$_POST['_edCodCarroFotos'];
+    if(!is_dir($diretorio)){
+        mkdir($diretorio);
+    }
+    $arquivo = isset($_FILES['_edFotosCarro']) ? $_FILES['_edFotosCarro'] : FALSE;
+    for ($controle = 0; $controle < count($arquivo['name']); $controle++){        
+        $destino = $diretorio."/".$arquivo['name'][$controle];
+        //realizar o upload da imagem em php
+        //move_uploaded_file — Move um arquivo enviado para uma nova localização
+        move_uploaded_file($arquivo['tmp_name'][$controle], $destino);    
+    }
+
+}
+
 if (isset($_GET['acao'])) {
     if ($_GET['acao'] == "editar") {
         echo "<script>showLoad('Aguarde <br> Carregando as informações do Veículo.');</script> ";
         $vxvaCod = $_GET['cod'];
+        $_SESSION['codCar'] = $vxvaCod;
+
         $InfoCarro = $Carro->SelecionaCarroPorCod($vxvaCod);
 
         foreach ($InfoCarro as $linhaInfoCarro) {
@@ -98,6 +115,43 @@ if (isset($_GET['acao'])) {
 
         echo "<script>hideLoad();</script>";
     }
+    else if($_GET['acao'] == "delFoto"){
+        echo "<script>showLoad('Aguarde <br> Excluindo Foto do Veículo.');</script> ";
+        $vxvaCod = $_GET['cod'];
+        $_SESSION['codCar'] = $vxvaCod;
+
+        $InfoCarro = $Carro->SelecionaCarroPorCod($vxvaCod);
+
+        foreach ($InfoCarro as $linhaInfoCarro) {
+            $vxvaTitulo         = $linhaInfoCarro->CARNOME;
+            $vxvaMarca          = $linhaInfoCarro->CARCODMARCA;
+            $vxvaModelo         = $linhaInfoCarro->CARCODMODELO;
+            $vxvaValor          = $linhaInfoCarro->CARPRECO;
+            $vxvaAno            = $linhaInfoCarro->CARANO;
+            $vxvaImg            = $linhaInfoCarro->CARFOTO;
+            $_SESSION['imgCar'] = $linhaInfoCarro->CARFOTO;
+            $vxvaStatus         = $linhaInfoCarro->CARCODSTATUS;
+            $vxvaKm             = $linhaInfoCarro->CARKM;
+            $vxvaCambio         = $linhaInfoCarro->CARCODCAMBIO;
+            $vxvaPortas         = $linhaInfoCarro->CARPORTAS;
+            $vxvaCombustivel    = $linhaInfoCarro->CARCODCOMBUSTIVEL;
+            $vxvaCor            = $linhaInfoCarro->CARCODCOR;
+            $vxvaTroca          = $linhaInfoCarro->CARTROCA;
+            $vxvaDestaque       = $linhaInfoCarro->CARDESTAQUE;
+            $vxvaDataCad        = $linhaInfoCarro->CARDATCADASTRO;
+            $vxvaMunicipio      = $linhaInfoCarro->CARCODMUNICIPIO;
+            $vxvaUf             = $linhaInfoCarro->CARUF;
+
+            echo "<script>localStorage.setItem('ModCod', '$vxvaModelo');</script>";
+            echo "<script>localStorage.setItem('Mun', '$vxvaMunicipio');</script>";
+        }
+
+        $foto = $_GET['foto'];
+        $caminho = '../assets/img/Carros/'.$foto;
+        unlink($caminho);
+
+        echo "<script>hideLoad();</script>";
+    }
 } else {
     echo "<script>localStorage.setItem('ModCod', '');</script>";
     echo "<script>localStorage.setItem('Mun', '');</script>";
@@ -107,6 +161,88 @@ if (isset($_GET['acao'])) {
 function DisparaEventoJs($evento)
 {
     echo $evento;
+}
+
+
+
+if(isset($_POST['salvarInfoComp'])){
+    echo "<script>showLoad('Aguarde <br> Registrando as Informações Complementares do Veiculo.');</script> ";
+    $vxvaCod = $_SESSION['codCar'];
+
+    $InfoCarro = $Carro->SelecionaCarroPorCod($vxvaCod);
+
+    foreach ($InfoCarro as $linhaInfoCarro) {
+        $vxvaTitulo         = $linhaInfoCarro->CARNOME;
+        $vxvaMarca          = $linhaInfoCarro->CARCODMARCA;
+        $vxvaModelo         = $linhaInfoCarro->CARCODMODELO;
+        $vxvaValor          = $linhaInfoCarro->CARPRECO;
+        $vxvaAno            = $linhaInfoCarro->CARANO;
+        $vxvaImg            = $linhaInfoCarro->CARFOTO;
+        $_SESSION['imgCar'] = $linhaInfoCarro->CARFOTO;
+        $vxvaStatus         = $linhaInfoCarro->CARCODSTATUS;
+        $vxvaKm             = $linhaInfoCarro->CARKM;
+        $vxvaCambio         = $linhaInfoCarro->CARCODCAMBIO;
+        $vxvaPortas         = $linhaInfoCarro->CARPORTAS;
+        $vxvaCombustivel    = $linhaInfoCarro->CARCODCOMBUSTIVEL;
+        $vxvaCor            = $linhaInfoCarro->CARCODCOR;
+        $vxvaTroca          = $linhaInfoCarro->CARTROCA;
+        $vxvaDestaque       = $linhaInfoCarro->CARDESTAQUE;
+        $vxvaDataCad        = $linhaInfoCarro->CARDATCADASTRO;
+        $vxvaMunicipio      = $linhaInfoCarro->CARCODMUNICIPIO;
+        $vxvaUf             = $linhaInfoCarro->CARUF;
+        echo "<script>localStorage.setItem('ModCod', '$vxvaModelo');</script>";
+        echo "<script>localStorage.setItem('Mun', '$vxvaMunicipio');</script>";
+    }
+
+
+    $det = null;
+    $infoComplementar = null;
+    $codInfoComp = null;
+    if(isset($_POST['det'])){
+        $det = $_POST['det'];
+    }
+
+    $infoComplementar = $_POST['_edInfoAd'];
+
+    if($Carro->VerificaExisteInfoComp($_SESSION['codCar'])){
+        $codInfoComp = $Carro->BuscaCodInfoComp($_SESSION['codCar']);
+    }
+    else{
+        $res = $Carro->InsereDetCarro($_SESSION['codCar'],$_SESSION['Usuario']);
+        if($res > 0){
+            $codInfoComp = $Carro->BuscaCodInfoComp($_SESSION['codCar']);
+        }
+        else{
+            $codInfoComp = null; 
+        }
+    }
+
+
+    if($codInfoComp == null){
+        echo "<script>hideLoad();</script>";
+        echo "<script>ErrorBox('Ocorreu um erro ao Registrar as Informações Complementares do Veiculo.');</script>";
+    }
+    else{
+        $sqlInfoComp = "UPDATE KGCTBLDETCAR SET ";
+        if($det){
+            foreach($det as $linha){
+                if($linha != 'on')
+                $sqlInfoComp .= " ".$linha." = 'S', ";
+            }
+        }
+        $sqlInfoComp .= " DETINFOCOMP = '$infoComplementar'  where detcod = $codInfoComp";
+
+        if($Carro->AtualizaInfoComp($sqlInfoComp)){
+            echo "<script>hideLoad();</script>";
+            echo "<script>SuccessBox('Informações Complementares do Veiculo Atualizadas com sucesso.');</script>";
+        }
+        else{
+            echo "<script>hideLoad();</script>";
+            echo "<script>ErrorBox('Ocorreu um erro ao Registrar as Informações Complementares do Veiculo.');</script>";
+        }
+    }
+    
+    
 }
 
 ?>
@@ -187,6 +323,7 @@ try {
                 foreach ($UltCod as $row) {
                     //armazeno o total de registros da tabela para fazer a paginação
                     $vxvaCod = $row->CARCOD;
+                    $_SESSION['codCar'] = $vxvaCod;
                 }
             }
 
@@ -265,7 +402,7 @@ try {
                 <div id="_lkInfoComp" class="nav-link" onclick="TrocaTela(2)"><i class="icone-doc-text-1"></i> Detalhes</div>
             </li>
             <li class="nav-item">
-                <div id="_lkFotos" class="nav-link" onclick="TrocaTela(3)"><i class="icone-picture-1"></i> Fotos</div>
+                <div id="_lkFotos" class="nav-link" onclick="TrocaTela(3)"><i class="icone-picture"></i> Fotos</div>
             </li>
         </ul>
     </div>
@@ -602,12 +739,13 @@ try {
 </div>
 
 <div id="infoComp" class="display-hide">
-    <form action="" method="post">
-        <div class="row " tyle="margin-top:5px;">
-            <div class="col-lg-12 text-center bg-dark text-white">
-                DETALHES DO VEÍCULO
-            </div>
+
+    <div class="row " tyle="margin-top:5px;">
+        <div class="col-lg-12 text-center bg-dark text-white">
+            DETALHES DO VEÍCULO
         </div>
+    </div>
+    <form action="InsereAtualizaCarro.php" method="post">
         <div class="row" style="margin-top:5px;">
             <div class="col-lg-12">
                 <div class="container-fluid bg-light" style="padding-top:5px; padding-bottom:5px;">
@@ -794,30 +932,79 @@ try {
                         </div>
                     </div>
 
-                    <div class="row" style="margin-top:5px;">
-                        <div class="col-lg-12">
-                            <button class="btn btn-success" type="submit" name="salvarInfoComp"><i class="icone-floppy"></i> Salvar</button>
-                            <button class="btn btn-danger" type="reset"><i class="icone-cancel"></i> Limpar</button>
-                            <a class="btn btn-dark" href="CrudCarros.php"><i class="icone-reply-1"></i> Voltar</a>
-                            <input type="checkbox" onclick="marcarTodos(this.checked);" name="det[]" id="_cktodos"><label for="_cktodos">Marcar Todos</label>
-                        </div>
-                    </div>
+
                 </div>
+
             </div>
+        </div>
     </form>
 </div>
 
-<div id="fotosCarro" class="display-hide">
+<div id="pnlFotos" class="display-hide">
     <div class="row" tyle="margin-top:5px;">
         <div class="col-lg-12 text-center bg-dark text-white">
             FOTOS DO VEÍCULO
         </div>
+    </div>
+    <form enctype="multipart/form-data" action="InsereAtualizaCarro.php" method="post">
+        <div class="row bg-light" style="margin-top:5px; padding:5px">
+
+            <div class="col-lg-2">
+                <button type="submit" name="Fotos" class="btn btn-success btn-block"><i class="icone-upload"></i> Carregar</button>
+            </div>
+            <div class="col-lg-10">
+                <input type="file" name="_edFotosCarro[]" id="_edFotos" multiple="multiple">
+                <input type="hidden" value="<?php if ($_SESSION['codCar']) {
+                                                    echo $_SESSION['codCar'];
+                                                } ?>" class="form-control" name="_edCodCarroFotos" readonly>
+            </div>
+
+        </div>
+    </form>
+    <div class="row"  style="margin-top:5px;">
+                <?php
+                    if($_SESSION['codCar']){
+                        $dir = '../assets/img/Carros/'.$_SESSION['codCar'];
+                        if(!is_dir($dir)){
+                            mkdir($dir);
+                        }
+
+                        $files = scandir($dir,1);
+                        $cont = count($files);
+                        if(count($files) > 2){
+                            foreach($files as $f){
+                                if ($f != '.' && $f != '..'){
+                                ?>
+                                <div class="card col-lg-3" style="padding: 5px;">
+                                    <img class="card-img-top" src="<?php echo $dir.'/'.$f; ?>" title="<?php echo strtoupper(utf8_encode($f)); ?>" alt="<?php echo utf8_encode($f); ?>">
+                                        <a href="InsereAtualizaCarro.php?acao=delFoto&cod=<?php echo $_SESSION['codCar']; ?>&foto=<?php echo $_SESSION['codCar'].'/'.$f; ?>" class="card-footer bg-danger  text-center text-white" style="cursor: pointer;">
+                                            <i class="icone-trash"></i> Remover
+                                        </a>
+                                </div>
+                                <?php
+                                }
+                            }
+                        }
+                        else{
+                            ?>
+                            <div class="col-lg-12">
+                                <h4 class="alert alert-danger">Nenhuma Foto Encontrada!</h4>
+                            </div>
+                            <?php
+                        }
+                        
+                    }
+                    
+                ?>
+        
     </div>
 </div>
 
 
 <script>
     $(document).ready(function() {
+        lightGallery(document.getElementById('_galfotos'));
+
         $("#_edInfoAd").jqte();
 
         $("#_ddlMarca").change(function() {
@@ -873,7 +1060,7 @@ try {
     }
 
     function TrocaTela(tela) {
-        if (tela == 2 || tela == 3) {
+        if (tela == 2) {
             if (!VerificaCadastro()) {
                 return;
             }
@@ -889,8 +1076,9 @@ try {
                 break;
 
             case 3:
-                AlternaPainelFoto();
+                AlternaPainelFotos();
                 break;
+
         }
 
     }
@@ -902,13 +1090,31 @@ try {
         $("#painel-CadCarro").addClass("display-hide");
         $('#_lkInfoCad').removeClass('active');
 
-        $("#fotosCarro").removeClass("display-show");
-        $("#fotosCarro").addClass("display-hide");
-        $('#_lkFoto').removeClass('active');
-
         $("#infoComp").removeClass("display-hide");
         $("#infoComp").addClass("display-show");
         $('#_lkInfoComp').addClass('active');
+
+        $("#pnlFotos").removeClass("display-show");
+        $("#pnlFotos").addClass("display-hide");
+        $('#_lkFotos').removeClass('active');
+    }
+
+    function AlternaPainelFotos() {
+        //s -> Tela a ser mostrada
+        //h -> Tela a ser ocultada
+        $("#painel-CadCarro").removeClass("display-show");
+        $("#painel-CadCarro").addClass("display-hide");
+        $('#_lkInfoCad').removeClass('active');
+
+        $("#infoComp").removeClass("display-show");
+        $("#infoComp").addClass("display-hide");
+        $('#_lkInfoComp').removeClass('active');
+
+        $("#pnlFotos").removeClass("display-hide");
+        $("#pnlFotos").addClass("display-show");
+        $('#_lkFotos').addClass('active');
+
+        $("#_edCodCarroFotos").val($("_edCodCarro").val());
     }
 
     function AlternaPainelCad() {
@@ -918,30 +1124,15 @@ try {
         $("#infoComp").addClass("display-hide");
         $('#_lkInfoCad').addClass('active');
 
-        $("#fotosCarro").removeClass("display-show");
-        $("#fotosCarro").addClass("display-hide");
-        $('#_lkFoto').removeClass('active');
-
         $("#painel-CadCarro").removeClass("display-hide");
         $("#painel-CadCarro").addClass("display-show");
         $('#_lkInfoComp').removeClass('active');
+
+        $("#pnlFotos").removeClass("display-show");
+        $("#pnlFotos").addClass("display-hide");
+        $('#_lkFotos').removeClass('active');
     }
 
-    function AlternaPainelFoto() {
-        //s -> Tela a ser mostrada
-        //h -> Tela a ser ocultada
-        $("#infoComp").removeClass("display-show");
-        $("#infoComp").addClass("display-hide");
-        $('#_lkInfoCad').removeClass('active');
-
-        $("#fotosCarro").addClass("display-show");
-        $("#fotosCarro").removeClass("display-hide");
-        $('#_lkFoto').addClass('active');
-
-        $("#painel-CadCarro").addClass("display-hide");
-        $("#painel-CadCarro").removeClass("display-show");
-        $('#_lkInfoComp').removeClass('active');
-    }
 
     function VerificaCadastro() {
         var codCarro = $("#_edCodCarro");
