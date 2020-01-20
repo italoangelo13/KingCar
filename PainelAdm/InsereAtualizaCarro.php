@@ -928,7 +928,7 @@ try {
                     <div class="row" style="margin-top:5px;">
                         <div class="form-group col-lg-12">
                             <label for="_edInfoAd">Informações Adicionais</label>
-                            <textarea name="_edInfoAd" id="_edInfoAd" style="width: 100%" rows="10"></textarea>
+                            <textarea name="_edInfoAd" id="_edInfoAd"  style="width: 100%" rows="10"></textarea>
                         </div>
                     </div>
 
@@ -1007,6 +1007,10 @@ try {
 
         $("#_edInfoAd").jqte();
 
+        $("#_edInfoAd").keydown(function(){
+            MaxLenght(this,500);
+        });
+
         $("#_ddlMarca").change(function() {
             CarregaDdlModelo();
         });
@@ -1049,6 +1053,13 @@ try {
 
 
     });
+
+    function MaxLenght(field, maxlimit) {
+        debugger;
+        if (field.value.length > maxlimit) {
+            field.value = field.value.substring(0, maxlimit);
+        }
+    } 
 
     function marcarTodos(marcar) {
         var itens = document.getElementsByName('det[]');

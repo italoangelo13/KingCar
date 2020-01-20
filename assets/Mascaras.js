@@ -28,6 +28,8 @@ function leech(v) {
     return v
 }
 
+
+
 /*Função que permite apenas numeros*/
 function Integer(v) {
     return v.replace(/\D/g, "")

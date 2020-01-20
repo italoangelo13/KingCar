@@ -5,7 +5,7 @@ class Marcas{
         $pdo = new PDO(server, user, senha);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $smtp = $pdo->prepare("SELECT MARCOD, MARDESCRICAO FROM kgctblmar WHERE MARATIVO = 'S'");
+        $smtp = $pdo->prepare("SELECT MARCOD, MARDESCRICAO FROM kgctblmar WHERE MARATIVO = 'S' order by MARDESCRICAO ASC");
         $smtp->execute();
 
         if ($smtp->rowCount() > 0) {

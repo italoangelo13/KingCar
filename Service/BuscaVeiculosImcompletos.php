@@ -45,9 +45,9 @@ try {
         foreach ($listaCar as $car) {
             $date = new DateTime($car->CARDATCADASTRO);
             if ($cont == $total) {
-                $Json = $Json .  '{"id":"' . $car->CARCOD . '","marca":"' . $car->MARDESCRICAO . '","modelo":"' . $car->MODDESCRICAO . '","dtcadastro":"' . $date->format( 'd/m/Y') . '","foto":"'. $car->CARFOTO . '","ano":"'. $car->CARANO . '","usuario":"'. $car->CARUSER . '","link":"'. $car->CARCOD . '"}]';
+                $Json = $Json .  '{"foto":"'. $car->CARFOTO . '","id":"' . $car->CARCOD . '","marca":"' . $car->MARDESCRICAO . '","modelo":"' . $car->MODDESCRICAO . '","ano":"'. $car->CARANO . '","usuario":"'. $car->CARUSER . '","dtcadastro":"' . $date->format( 'd/m/Y') . '","link":"'. $car->CARCOD . '"}]';
             } else {
-                $Json = $Json .  '{"id":"' . $car->CARCOD . '","marca":"' . $car->MARDESCRICAO . '","modelo":"' . $car->MODDESCRICAO . '","dtcadastro":"' . $date->format( 'd/m/Y') . '","foto":"'. $car->CARFOTO . '","ano":"'. $car->CARANO . '","usuario":"'. $car->CARUSER . '","link":"'. $car->CARCOD . '"},';
+                $Json = $Json .  '{"foto":"'. $car->CARFOTO . '","id":"' . $car->CARCOD . '","marca":"' . $car->MARDESCRICAO . '","modelo":"' . $car->MODDESCRICAO . '","ano":"'. $car->CARANO . '","usuario":"'. $car->CARUSER . '","dtcadastro":"' . $date->format( 'd/m/Y') . '","link":"'. $car->CARCOD . '"},';
             }
             $cont++;
         }

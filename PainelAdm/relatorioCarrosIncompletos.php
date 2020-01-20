@@ -47,6 +47,7 @@ if (count($strCount)) {
                         <th>Ano</th>
                         <th>Usuario</th>
                         <th>Dt. Cadastro</th>
+                        <th>Editar</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -133,7 +134,7 @@ if (count($strCount)) {
                             "data": "foto",
                             "render": function(data, type, row, meta) {
                                 if (type === 'display') {
-                                    data = '<img  src="' + data + '" />';
+                                    data = '<img class="img-fot-ret"  src="../assets/img/Carros/' + data + '" />';
                                 }
 
                                 return data;
@@ -203,7 +204,7 @@ if (count($strCount)) {
                             "data": "link",
                             "render": function(data, type, row, meta) {
                                 if (type === 'display') {
-                                    data = '<a  href="InsereAtualizaCarro.php?acao=editar$cod=' + data + '" class="btn btn-success"><i class="icone-pencil"></i></a>';
+                                    data = '<a  href="InsereAtualizaCarro.php?acao=editar&cod=' + data + '" class="btn btn-success"><i class="icone-pencil"></i></a>';
                                 }
 
                                 return data;

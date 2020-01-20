@@ -18,7 +18,7 @@ $caminhoImg = null;
 
 
 //determina o numero de registros que serão mostrados na tela
-$maximo = 10;
+$maximo = 5;
 //armazenamos o valor da pagina atual
 $pagina = isset($_GET['pagina']) ? ($_GET['pagina']) : '1';
 //subtraimos 1, porque os registros sempre começam do 0 (zero), como num array
@@ -242,7 +242,7 @@ function carregaGridPesq($Carro,$inicio,$maximo,$filtro,$ord){
                             } else {
 
                             ?>
-                                <li class="page-item" disabled='disabled'><a class="page-link" href="<?php echo $_SERVER['PHP_SELF'] . "?pagina=" . $previous; ?>">Anterior</a></li>
+                                <li class="page-item disabled"><a class="page-link" href="<?php echo $_SERVER['PHP_SELF'] . "?pagina=" . $previous; ?>">Anterior</a></li>
                                 <?php
                             }
 
@@ -258,7 +258,7 @@ function carregaGridPesq($Carro,$inicio,$maximo,$filtro,$ord){
 
                                     } else {
                                     ?>
-                                        <li class="page-item" disabled='disabled'><a class="page-link" href="<?php echo $_SERVER['PHP_SELF'] . "?pagina=" . ($i); ?>"><?php echo $i; ?></a></li>
+                                        <li class="page-item disabled" disabled='disabled'><a class="page-link" href="<?php echo $_SERVER['PHP_SELF'] . "?pagina=" . ($i); ?>"><?php echo $i; ?></a></li>
                                 <?php
                                     }
                                 }
@@ -267,11 +267,11 @@ function carregaGridPesq($Carro,$inicio,$maximo,$filtro,$ord){
                             if ($next <= $pgs) {
 
                                 ?>
-                                <li class="page-item"><a class="page-link" href="<?php $_SERVER['PHP_SELF'] . "?pagina=" . $next; ?>">Proximo</a></li>
+                                <li class="page-item"><a class="page-link" href="<?php echo $_SERVER['PHP_SELF'] . "?pagina=" . $next; ?>">Proximo</a></li>
                             <?php
                             } else {
                             ?>
-                                <li class="page-item" disabled='disabled'><a class="page-link" href="<?php $_SERVER['PHP_SELF'] . "?pagina=" . $next; ?>">Proximo</a></li>
+                                <li class="page-item disabled" disabled='disabled'><a class="page-link" href="<?php echo $_SERVER['PHP_SELF'] . "?pagina=" . $next; ?>">Proximo</a></li>
                         <?php
                             }
                         }

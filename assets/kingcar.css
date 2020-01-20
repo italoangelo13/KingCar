@@ -79,6 +79,16 @@
   margin: 5px;
 }
 
+.img-fot-ret{
+  width: 100px;
+  height: 100px;
+}
+
+.disabled {
+  pointer-events:none; 
+  opacity:0.6;         
+}
+
 .img-wrap {
   position: relative;
   display: inline-block;
