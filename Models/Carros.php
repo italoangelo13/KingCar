@@ -183,6 +183,38 @@ class Carros
         return $result = $smtp->fetchAll(PDO::FETCH_CLASS);
     }
 
+    public function SelecionarCarro($codCarro)
+    {
+        $pdo = new PDO(server, user, senha);
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        $smtp = $pdo->prepare("SELECT CARCOD,MARDESCRICAO,MODDESCRICAO,CARPRECO,CARANO,CARFOTO,CARKM,CARPORTAS,CARTROCA,CARDESTAQUE,COMDESCRICAO,CORDESCRICAO,CORCODHEXADECIMAL,CONCAT(mundescricao,' - ',munuf) AS Localizacao
+                                FROM kgctblCAR
+                                INNER JOIN kgctblmar ON CARCODMARCA = MARCOD
+                                INNER JOIN kgctblMOD ON CARCODMODELO = MODCOD
+                                inner join kgctblmun on carcodmunicipio = muncodigoibge
+                                INNER JOIN kgctblCOR ON CARCODCOR = CORCOD
+                                INNER JOIN kgctblcom ON CARCODCOMBUSTIVEL = comCOD
+                                where carcod =". $codCarro);
+        $smtp->execute();
+
+
+        return $result = $smtp->fetchAll(PDO::FETCH_CLASS);
+    }
+
+    public function SelecionarDetCarro($codCarro)
+    {
+        $pdo = new PDO(server, user, senha);
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        $smtp = $pdo->prepare("SELECT DETVIDELETRICA, DETTRAELETRICA, DETDIRHIDRAULICA, DETALARME, DETFARMILHA, DETFARXENON, DETARQUENTE, DETARCONDICIONADO, DETBANCOURO, DETSOMVOLANTE, DETDESEMBTRASEIRO, DETDIRELETRICA, DETFARNEBLINA, DETFREIOABS, DETGPS, DETMULTIMIDIA, DETPORTACOPOS, DETRETROELETRICO, DETRODLIGA, DETTETOSOLAR, DETAIRBAGLAT, DETAIRBAGMOT, DETAIRBAGPAS, DETBANAJUSTAVEL, DETCAMRE, DETCD, DETDVD, DETBLUERAY, DETCOMPBORDO, DETENCTRASEIRO, DETUSB, DETPILOTOAUTO, DETSENSOREST, DETVOLAJUSTAVEL, DETUNICODONO, DETINFOCOMP
+                                FROM kgctbldetcar where DETCODCARRO =". $codCarro);
+        $smtp->execute();
+
+
+        return $result = $smtp->fetchAll(PDO::FETCH_CLASS);
+    }
+
     function SelecionaCarrosPaginadosPesq($inicio, $maximo,$filtro,$ord){
         $pdo = new PDO(server, user, senha);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);

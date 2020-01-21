@@ -11,11 +11,13 @@
     <link rel="stylesheet" href="assets/fontawesome/css/all.min.css">
     <link rel="stylesheet" href="assets/kingcar.css">
     <link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<script src="assets/bootstrap/js/bootstrap.min.js"></script>
-<script src="assets/fontawesome/js/all.min.js"></script>
-<script src="//code.jivosite.com/widget.js" data-jv-id="M8AgwKTtAZ" async></script>
-<script src="assets/kingcar.js"></script>
+    <script src="assets/jquery-3.3.1.min.js"></script>
+    <link rel="stylesheet" href="assets/lightgallery/css/lightgallery.min.css" />
+    <script src="assets/lightgallery/js/lightgallery-all.min.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/fontawesome/js/all.min.js"></script>
+    
+    <script src="assets/kingcar.js"></script>
 <script>
 $(document).ready(function () {
     $("#_ddlMarca").change(function(){ 

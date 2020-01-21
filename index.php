@@ -157,12 +157,12 @@ $listaPub = $pub->SelecionarListaPublicidades();
                                             </div>
                                             <div class="row">
                                                 <div class="col-lg-6">
-                                                    <h6 class="text-dark">Preço</h6>
-                                                    <h1 class="text-danger"><?php echo "R$ " . FormatarMoeda($destaque->CARPRECO); ?></h1>
+                                                    <br>
+                                                    <a class="btn btn-primary btn-block" href="DetCarro.php?id=<?php echo $destaque->CARCOD; ?>"><i class="icone-doc"></i> Detalhes do Veiculo</a>
                                                 </div>
                                                 <div class="col-lg-6">
-                                                    <br>
-                                                    <a class="btn btn-primary btn-block" href=""><i class="icone-doc"></i> Detalhes do Veiculo</a>
+                                                    <h6 class="text-dark">Preço</h6>
+                                                    <h1 class="text-danger"><?php echo "R$ " . FormatarMoeda($destaque->CARPRECO); ?></h1>
                                                 </div>
                                             </div>
                                         </div>
@@ -231,12 +231,12 @@ $listaPub = $pub->SelecionarListaPublicidades();
                                             </div>
                                             <div class="row">
                                                 <div class="col-lg-6">
-                                                    <h6 class="text-dark">Preço</h6>
-                                                    <h1 class="text-danger"><?php echo "R$ " . FormatarMoeda($destaque->CARPRECO); ?></h1>
+                                                    <br>
+                                                    <a class="btn btn-primary btn-block" href="DetCarro.php?id=<?php echo $destaque->CARCOD; ?>"><i class="icone-doc"></i> Detalhes do Veiculo</a>
                                                 </div>
                                                 <div class="col-lg-6">
-                                                    <br>
-                                                    <a class="btn btn-primary btn-block" href=""><i class="icone-doc"></i> Detalhes do Veiculo</a>
+                                                    <h6 class="text-dark">Preço</h6>
+                                                    <h1 class="text-danger"><?php echo "R$ " . FormatarMoeda($destaque->CARPRECO); ?></h1>
                                                 </div>
                                             </div>
                                         </div>
@@ -276,7 +276,7 @@ $listaPub = $pub->SelecionarListaPublicidades();
                         <div class="col-lg-4" style="padding-top: 10px; padding-bottom: 10px;">
                             <div class="card bg-light" style="width: 100%; padding: 5px;">
 
-                                <img class="card-img-top" style="width: 391px; height: 260px" src="assets/img/Carros/<?php echo $carros->CARFOTO; ?>" title="<?php echo strtoupper(utf8_encode($carros->CARNOME)); ?>" alt="<?php echo utf8_encode($carros->CARNOME); ?>">
+                                <img class="card-img-top" style="width: 100%; height: 260px" src="assets/img/Carros/<?php echo $carros->CARFOTO; ?>" title="<?php echo strtoupper(utf8_encode($carros->CARNOME)); ?>" alt="<?php echo utf8_encode($carros->CARNOME); ?>">
 
                                 <div class="card-title bg-dark" style="padding-left:5px; margin:0px;">
                                     <div class="row">
@@ -318,7 +318,7 @@ $listaPub = $pub->SelecionarListaPublicidades();
                                             </div>
                                         </div>
                                     </p>
-                                    <a href="detalhescarro.php?id=<?php echo $carros->CARCOD; ?>" class="btn btn-primary btn-block"><i class="icone-doc"></i> Detalhes do Veiculo</a>
+                                    <a href="DetCarro.php?id=<?php echo $carros->CARCOD; ?>" class="btn btn-primary btn-block"><i class="icone-doc"></i> Detalhes do Veiculo</a>
                                 </div>
                             </div>
                         </div>
@@ -405,7 +405,7 @@ else{ ?>
                                             </div>
                                         </div>
                                     </p>
-                                    <a href="detalhescarro.php?id=<?php echo $carros->CARCOD; ?>" class="btn btn-primary btn-block"><i class="icone-doc"></i> Detalhes do Veiculo</a>
+                                    <a href="DetCarro.php?id=<?php echo $carros->CARCOD; ?>" class="btn btn-primary btn-block"><i class="icone-doc"></i> Detalhes do Veiculo</a>
                                 </div>
                             </div>
                         </div>
