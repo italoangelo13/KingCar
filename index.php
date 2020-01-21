@@ -276,7 +276,7 @@ $listaPub = $pub->SelecionarListaPublicidades();
                         <div class="col-lg-4" style="padding-top: 10px; padding-bottom: 10px;">
                             <div class="card bg-light" style="width: 100%; padding: 5px;">
 
-                                <img class="card-img-top" src="assets/img/Carros/<?php echo $carros->CARFOTO; ?>" title="<?php echo strtoupper(utf8_encode($carros->CARNOME)); ?>" alt="<?php echo utf8_encode($carros->CARNOME); ?>">
+                                <img class="card-img-top" style="width: 391px; height: 260px" src="assets/img/Carros/<?php echo $carros->CARFOTO; ?>" title="<?php echo strtoupper(utf8_encode($carros->CARNOME)); ?>" alt="<?php echo utf8_encode($carros->CARNOME); ?>">
 
                                 <div class="card-title bg-dark" style="padding-left:5px; margin:0px;">
                                     <div class="row">
@@ -363,7 +363,7 @@ else{ ?>
                         <div class="col-lg-4" style="padding-top: 10px; padding-bottom: 10px;">
                             <div class="card bg-light" style="width: 100%; padding: 5px;">
 
-                                <img class="card-img-top" src="assets/img/Carros/<?php echo $carros->CARFOTO; ?>" title="<?php echo strtoupper(utf8_encode($carros->CARNOME)); ?>" alt="<?php echo utf8_encode($carros->CARNOME); ?>">
+                                <img class="card-img-top" style="width: 391px; height: 260px" src="assets/img/Carros/<?php echo $carros->CARFOTO; ?>" title="<?php echo strtoupper(utf8_encode($carros->CARNOME)); ?>" alt="<?php echo utf8_encode($carros->CARNOME); ?>">
 
                                 <div class="card-title bg-dark" style="padding-left:5px; margin:0px;">
                                     <div class="row">
