@@ -188,13 +188,14 @@ class Carros
         $pdo = new PDO(server, user, senha);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $smtp = $pdo->prepare("SELECT CARCOD,MARDESCRICAO,MODDESCRICAO,CARPRECO,CARANO,CARFOTO,CARKM,CARPORTAS,CARTROCA,CARDESTAQUE,COMDESCRICAO,CORDESCRICAO,CORCODHEXADECIMAL,CONCAT(mundescricao,' - ',munuf) AS Localizacao
+        $smtp = $pdo->prepare("SELECT CARCOD,MARDESCRICAO,MODDESCRICAO,CARPRECO,CARANO,CARFOTO,CARKM,CARPORTAS,CARTROCA,CARDESTAQUE,CAMDESCRICAO, COMDESCRICAO,CORDESCRICAO,CORCODHEXADECIMAL,CONCAT(mundescricao,' - ',munuf) AS LOCALIZACAO
                                 FROM kgctblCAR
                                 INNER JOIN kgctblmar ON CARCODMARCA = MARCOD
                                 INNER JOIN kgctblMOD ON CARCODMODELO = MODCOD
                                 inner join kgctblmun on carcodmunicipio = muncodigoibge
                                 INNER JOIN kgctblCOR ON CARCODCOR = CORCOD
                                 INNER JOIN kgctblcom ON CARCODCOMBUSTIVEL = comCOD
+                                INNER JOIN kgctblCAM ON CARCODCAMBIO = CAMCOD
                                 where carcod =". $codCarro);
         $smtp->execute();
 

@@ -40,7 +40,7 @@ $(document).ready(function () {
                     </button>
 
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul class="navbar-nav mr-auto">
+                        <ul class="navbar-nav mr-auto" style="font-weight: 700">
                             <li class="nav-item"><a class="nav-link" href="index.php">Inicio</a></li>
                             <li class="nav-item"><a class="nav-link" href="carros.php">Carros</a></li>
                             <li class="nav-item"><a class="nav-link" href="anunciar.php">Anuncie</a></li>
