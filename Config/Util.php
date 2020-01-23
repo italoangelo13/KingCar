@@ -32,6 +32,19 @@ class Util{
 
         return $result = $smtp->fetchAll(PDO::FETCH_CLASS);
     }
+
+
+    public function FormatarTelefone($var)
+    {
+        $var = str_replace('(','',$var);
+        $var = str_replace(')','',$var);
+        $var = str_replace('-','',$var);
+        $var = str_replace(' ','',$var);
+        return $var;
+    }
+
+
+    
 }
 
 ?>

@@ -70,11 +70,30 @@ class Carros
         inner join kgctblmun
         on carcodmunicipio = muncodigoibge
         WHERE CARDESTAQUE = 'N'
-        ORDER BY CARQTDEVISITAS DESC");
+        ORDER BY CARQTDEVISITAS DESC limit 12");
         $smtp->execute();
 
         if ($smtp->rowCount() > 0) {
             return $result = $smtp->fetchAll(PDO::FETCH_CLASS);
+        }
+    }
+
+    public function UtualizaNumVisitas($codCarro)
+    {
+        $pdo = new PDO(server, user, senha);
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $smtp = $pdo->prepare("SELECT (CARQTDEVISITAS + 1) AS QTDE FROM KGCTBLCAR WHERE CARCOD = $codCarro");
+        $smtp->execute();
+        $result = $smtp->fetchAll(PDO::FETCH_CLASS);
+        $qtdeAtu = $result[0]->QTDE;
+        $smtp = $pdo->prepare("UPDATE KGCTBLCAR SET CARQTDEVISITAS = $qtdeAtu WHERE CARCOD = $codCarro");
+        $smtp->execute();
+        $result = $smtp->rowCount();
+        if($result > 0){
+            return true;
+        }
+        else{
+            return false;
         }
     }
 
@@ -213,7 +232,7 @@ class Carros
         $smtp->execute();
 
 
-        return $result = $smtp->fetchAll(PDO::FETCH_CLASS);
+        return $result = $smtp->fetchAll(PDO::FETCH_ASSOC);
     }
 
     function SelecionaCarrosPaginadosPesq($inicio, $maximo,$filtro,$ord){

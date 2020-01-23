@@ -5,16 +5,43 @@ include_once 'Config/ConexaoBD.php';
 require_once 'Config/Util.php';
 require_once 'Models/Carros.php';
 require_once 'Models/Publicidades.php';
+require_once 'Models/Compra.php';
 $carro = new Carros();
 $util = new Util();
 $pub = new Publicidades();
+$compra = new Compra();
 $codCarro = null;
+
+if(isset($_POST['compra'])){
+    echo "<script>showLoad('Aguarde <br> Estamos Enviando a sua solicitação.');</script> ";
+    $codCarro = $_POST['codCarro'];
+    $nome = $_POST['nome'];
+    $email = $_POST['email'];
+    $telefone = $_POST['telefone'];
+    $telefone = $util->FormatarTelefone($telefone);
+    $mensagem = $_POST['mensagem'];
+
+    if($compra->CadastraSolicitacaoCompra($codCarro,$nome,$email,$telefone,$mensagem)){
+        echo "<script>SuccessBox('Solicitação Enviada com Sucesso.');</script>";
+        echo "<script>hideLoad();</script>";
+    }
+    else{
+        echo "<script>hideLoad();</script>";
+        echo "<script>ErrorBox('Ocorreu um erro ao Enviar a Sua Solicitação.');</script>";
+    }
+}
+
 if(!isset($_GET['id'])){
     header("Location:index.php");
 }
 else{
     $codCarro = $_GET['id'];
+    if(!$carro->UtualizaNumVisitas($codCarro)){
+        $msg = "Quantidade não Atualizada.";
+    }
 }
+
+
 
 
 $Carro = $carro->SelecionarCarro($codCarro);
@@ -132,14 +159,40 @@ $listaPub = $pub->SelecionarListaPublicidades();
            <div class="row">
                <?php
                     if($Detcarro){
-                        for($i = 0; $i < count($Detcarro); $i++){
+                        foreach($Detcarro as $det){
+                            foreach($InfoComp as $info){
+                                $valor = $det[$info->COMPNOMCAMPO];
+                                $DescCampo = $info->COMPDESC;
 
+                                if($valor == 'S'){ ?>
+                                <div class="col-lg-6" style="margin-top: 10px;">
+                                <i class="icone-check-3 text-success"></i> <label class="text-warning" style="font-weight: 700"> <?php echo utf8_encode($DescCampo); ?></label>
+                                </div>
+                                <?php
+                                }
+                            }
                         }
                     }
+                    else{
+                        ?>
+                                <div class="col-lg-12 text-warning" style="margin-top: 10px;">
+                                    Nenhum item vinculado a este Veículo!
+                                </div>
+                                <?php
+                    }
                 ?>
-               <div class="col-lg-3"></div>
+           </div>
+
+           <div class="row" style="margin-top: 15px;">
+               <div class="col-lg-12 bg-light">
+                    <?php if($Detcarro){
+                    if($Detcarro[0]['DETINFOCOMP']){ ?>
+                        <h5 class="text-justify"><?php echo $util->convert_from_latin1_to_utf8_recursively($Detcarro[0]['DETINFOCOMP']); ?> </h5>
+                    <?php }} ?>
+               </div>
            </div>
        </div>
+     
     </section>
     <aside class="col-lg-4" style="border-left: 2px solid yellow; border-right: 2px solid yellow;">
         <h1 class="text-warning text-center" style="font-weight: 600"><?php echo "R$ ". FormatarMoeda(strtoupper(utf8_encode($Carro[0]->CARPRECO))); ?></h1>
@@ -152,28 +205,29 @@ $listaPub = $pub->SelecionarListaPublicidades();
                 </div>
                 <div class="row" style="margin-top: 5px;">
                     <div class="col-lg-12">
-                        <input class="form-control form-control-lg" type="text" name="nome" placeholder="Nome" id="_edNome">
+                        <input type="hidden" name="codCarro" value="<?php echo $codCarro; ?>">
+                        <input class="form-control form-control-lg" required type="text" maxlength="255" name="nome" placeholder="Nome" id="_edNome">
                     </div>
                 </div>
                 <div class="row" style="margin-top: 5px;">
                     <div class="col-lg-12">
-                        <input class="form-control form-control-lg" type="email" name="email" placeholder="Email" id="_edEmail">
+                        <input class="form-control form-control-lg" required type="email" name="email" maxlength="255" placeholder="Email" id="_edEmail">
                     </div>
                 </div>
                 <div class="row" style="margin-top: 5px;">
                     <div class="col-lg-12">
-                        <input class="form-control form-control-lg" type="tel" name="telefone" placeholder="Telefone" id="_edTelefone">
+                        <input class="form-control form-control-lg" onkeyup="Mascara(this,Telefone)" required type="tel" maxlength="15" name="telefone" placeholder="Telefone" id="_edTelefone">
                     </div>
                 </div>
                 <div class="row" style="margin-top: 5px;">
                     <div class="col-lg-12">
-                        <textarea class="form-control form-control-lg" placeholder="Mensagem" name="mensagem" maxlength="500" id="_edMensagem" style="width: 100%" rows="10"></textarea>
+                        <textarea class="form-control form-control-lg" required placeholder="Mensagem" name="mensagem" maxlength="500" id="_edMensagem" style="width: 100%" rows="10"></textarea>
                     </div>
                 </div>
 
                 <div class="row" style="margin-top: 5px;">
                     <div class="col-lg-12">
-                        <button type="submit" class="btn btn-success btn-block btn-lg"><i class="icone-email"></i> Enviar</button>
+                        <button type="submit" name="compra" class="btn btn-success btn-block btn-lg"><i class="icone-email"></i> Enviar</button>
                     </div>
                 </div>
             </form>
@@ -200,13 +254,21 @@ $listaPub = $pub->SelecionarListaPublicidades();
                     }
 
                     $files = scandir($dir,1);
-                    foreach($files as $f){
-                        if($f != '.' && $f != '..'){ ?>
-                            <a class="col-lg-2" href="<?php echo $dir.'/'.$f; ?>" style="margin-top: 5px;">
-                                <img class="card-img-top" style="width: 100%; border-radius: 2px;" src="<?php echo $dir.'/'.$f; ?>" title="<?php echo $dir.'/'.$f; ?>" alt="<?php echo utf8_encode($f); ?>">
-                            </a>
-                <?php
+                    if(count($files) > 2){
+                        foreach($files as $f){
+                            if($f != '.' && $f != '..'){ ?>
+                                <a class="col-lg-2" href="<?php echo $dir.'/'.$f; ?>" style="margin-top: 5px;">
+                                    <img class="card-img-top" style="width: 100%; border-radius: 2px;" src="<?php echo $dir.'/'.$f; ?>" title="<?php echo $dir.'/'.$f; ?>" alt="<?php echo utf8_encode($f); ?>">
+                                </a>
+                    <?php
+                            }
                         }
+                    }
+                    else{ ?>
+                        <div class="col-lg-12">
+                            <h4 class="alert alert-warning">Nenhuma Foto Encontrada.</h4>
+                        </div>
+                    <?php
                     }
             ?>
             </div>

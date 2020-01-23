@@ -43,6 +43,30 @@ $user = utf8_encode($_SESSION['NomeUsuario']);
     <script src="../assets/DataTables/datatables.min.js"></script>
     <script src="../assets/lightgallery/js/lightgallery.min.js"></script>
     <script src="../assets/kingcar.js"></script>
+    <script>
+
+
+    setInterval("atualizaNumMsg()",3000);
+
+
+
+        function atualizaNumMsg(){
+            $.ajax({
+                url: "../service/BuscaNumSolicitacaoCompra.php",
+                type: 'GET',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function(data) {
+                    debugger;
+                    console.log(data);
+                    var dados = JSON.parse(data);
+                    console.log(dados[0]);
+                    $("#_lblContMsg").text(dados[0].Msg);
+
+                }
+            });
+        }
+    </script>
 </head>
 
 <body style="height: 100vh; background-color: gainsboro;">
@@ -81,6 +105,17 @@ $user = utf8_encode($_SESSION['NomeUsuario']);
                         <a class="nav-link" href="#" ><i class="icone-question"></i> <label>Sobre </label></a>
                         </li>
                     </ul>
+
+                    <div class="form-inline my-2 my-lg-0">
+                    <a href="SolicitacaoDeCompra.php" style="position:relative;" title="Solicitações de Compras">
+                        <span class="icone-mail text-light" style="font-size: 30px;" aria-hidden="true"></span>
+                        <span id="_lblContMsg" class="badge badge-danger" style="position: absolute; z-index: 1; top:0px; right:0px; ">0</span>
+                    </a>
+
+                    <a href="ConfiguracaoParametros.php"  title="Configurações">
+                        <span class="icone-cog text-light" style="font-size: 30px;" aria-hidden="true"></span>
+                    </a>
+                    </div>
                 </div>
             </nav>
         </div>
