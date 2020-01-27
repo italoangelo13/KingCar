@@ -2,8 +2,10 @@
 session_start();
 require_once '../Config/ConexaoBD.php';
 require_once('../Models/Usuarios.php');
+require_once('../Models/Compra.php');
 
 $USUARIO = new Usuarios(); 
+$compra = new Compra();
 
 if(!$USUARIO->VerificaAutenticacao()){
     echo "<script> alert('Sua Sessão Expirou, Faça o Login Novamente.');</script>";
@@ -12,6 +14,9 @@ if(!$USUARIO->VerificaAutenticacao()){
 
 
 $user = utf8_encode($_SESSION['NomeUsuario']);
+
+$r = $compra->SelecionarNumSolicitacaoCompra();
+        
 ?>
 
 
@@ -57,7 +62,6 @@ $user = utf8_encode($_SESSION['NomeUsuario']);
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: function(data) {
-                    debugger;
                     console.log(data);
                     var dados = JSON.parse(data);
                     console.log(dados[0]);
@@ -101,18 +105,25 @@ $user = utf8_encode($_SESSION['NomeUsuario']);
                         <a class="nav-link" href="#" ><i class="icone-newspaper-2"></i> <label>Publicidades</label></a>
                         
                         </li>
+                        <li class="nav-item ">
+                        <a class="nav-link" href="#" ><i class="icone-exclamation"></i> <label>Anuncios</label></a>
+                        
+                        </li>
+                        <li class="nav-item ">
+                        <a class="nav-link" href="#" ><i class="icone-plus"></i> <label>Cadastros Basicos</label></a>
+                        </li>
                         <li class="nav-item">
                         <a class="nav-link" href="#" ><i class="icone-question"></i> <label>Sobre </label></a>
                         </li>
                     </ul>
 
                     <div class="form-inline my-2 my-lg-0">
-                    <a href="SolicitacaoDeCompra.php" style="position:relative;" title="Solicitações de Compras">
+                    <a href="SolicitacoesCompra.php" style="position:relative;" title="Solicitações de Compras">
                         <span class="icone-mail text-light" style="font-size: 30px;" aria-hidden="true"></span>
-                        <span id="_lblContMsg" class="badge badge-danger" style="position: absolute; z-index: 1; top:0px; right:0px; ">0</span>
+                        <?php if($r[0]->QTDE > 0){ echo '<span id="_lblContMsg" class="badge badge-danger" style="position: absolute; z-index: 1; top:0px; right:0px; ">0</span>'; }?>
                     </a>
 
-                    <a href="ConfiguracaoParametros.php"  title="Configurações">
+                    <a href="ConfiguracoesParam.php"  title="Configurações">
                         <span class="icone-cog text-light" style="font-size: 30px;" aria-hidden="true"></span>
                     </a>
                     </div>

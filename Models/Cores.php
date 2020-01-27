@@ -11,7 +11,7 @@ class Cores{
         $pdo = new PDO(server, user, senha);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $smtp = $pdo->prepare("SELECT CORCOD, CORDESCRICAO FROM kgctblcor");
+        $smtp = $pdo->prepare("SELECT CORCOD, CORDESCRICAO, CORCODHEXADECIMAL FROM kgctblcor");
         $smtp->execute();
 
         if ($smtp->rowCount() > 0) {

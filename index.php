@@ -47,7 +47,7 @@ $listaPub = $pub->SelecionarListaPublicidades();
 
 <div class="row bg-dark text-white" style="margin-top: 10px; padding:5px; padding-bottom:15px">
     <div class="col-lg-12 text-warning">
-        <h4>Busque por um modelo específico!</h4>
+        <h4>Procurando por um modelo específico?</h4>
         <hr>
     </div>
     <div class="col-lg-4">

@@ -20,6 +20,38 @@ class Util{
         }
     }
 
+    public function AtualizaParametroPorCod($val,$codParam)
+    {
+        $pdo = new PDO(server, user, senha);
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        $smtp = $pdo->prepare("UPDATE kgctblprm SET PRMVAL = '$val' WHERE PRMCOD = $codParam");
+        $smtp->execute();
+
+        $r = $smtp->rowCount();
+
+        if($r){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    public function SelecionarParametros()
+    {
+        $pdo = new PDO(server, user, senha);
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        $smtp = $pdo->prepare("SELECT
+        PRMCOD, PRMNOMECAMPO, PRMCAMPO, PRMVAL, PRMDESCRICAO
+        FROM kgctblprm");
+        $smtp->execute();
+
+
+        return $result = $smtp->fetchAll(PDO::FETCH_CLASS);
+    }
+
 
     public function SelecionarInformaçõesComplementares()
     {
@@ -27,6 +59,20 @@ class Util{
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         $smtp = $pdo->prepare("SELECT COMPDESC, COMPNOMCAMPO FROM KGCTBLINFOCOMP");
+        $smtp->execute();
+
+
+        return $result = $smtp->fetchAll(PDO::FETCH_CLASS);
+    }
+
+    public function SelecionarParametroPorCod($codParametro)
+    {
+        $pdo = new PDO(server, user, senha);
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        $smtp = $pdo->prepare("SELECT
+        PRMNOMECAMPO, PRMCAMPO, PRMVAL, PRMDESCRICAO
+        FROM kgctblprm where PRMCOD = $codParametro");
         $smtp->execute();
 
 

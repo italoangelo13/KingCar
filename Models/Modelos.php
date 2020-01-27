@@ -20,6 +20,19 @@ class Modelos{
         }
     }  
 
+    public function SelecionarListaModelosPorVariasMarca($SqlModelo)
+    {
+        $pdo = new PDO(server, user, senha);
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        $smtp = $pdo->prepare($SqlModelo);
+        $smtp->execute();
+
+        if ($smtp->rowCount() > 0) {
+            return $result = $smtp->fetchAll(PDO::FETCH_CLASS);
+        }
+    }
+
 
     public function SelecionarListaModelosPorMarca($CODMARCA){
         $pdo = new PDO(server, user, senha);

@@ -1,6 +1,6 @@
 <?php
 include_once 'header.inc.php';
-header("Content-type:text/html; charset=utf8");
+//header("Content-type:text/html; charset=utf8");
 include_once '../Config/Util.php';
 require_once '../Models/Carros.php';
 require_once '../Models/Marcas.php';
