@@ -12,17 +12,20 @@
     <link rel="stylesheet" href="assets/fontawesome/css/all.min.css">
     <link rel="stylesheet" href="assets/kingcar.css">
     <link rel="stylesheet" href="assets/jquery-confirm/jquery-confirm.min.css">
-    <link rel="stylesheet" href="assets/jquery-Ui/jquery-ui.min.css" />
-    <link rel="stylesheet" href="assets/lightgallery/css/lightgallery.min.css" />
-    <link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico">
+    <link rel="stylesheet" href="assets/chartjs/chart.min.css">
+    <link rel="stylesheet" href="assets/jQueryte.1.4.0/jquery-te-1.4.0.css">
+    <link rel="stylesheet" href="assets/DataTables/datatables.min.css">
+    <link rel="stylesheet" href="assets/lightgallery/css/lightgallery.min.css">
     <script src="assets/jquery-3.3.1.min.js"></script>
-    <script src="assets/jquery-Ui/jquery-Ui.min.js"></script>
-    <script src="assets/lightgallery/js/lightgallery-all.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/fontawesome/js/all.min.js"></script>
     <script src="assets/jquery-confirm/jquery-confirm.min.js"></script>
     <script src="assets/Loader/jquery.loading.min.js"></script>
     <script src="assets/Mascaras.js"></script>
+    <script src="assets/chartjs/chart.min.js"></script>
+    <script src="assets/jQueryte.1.4.0/jquery-te-1.4.0.min.js"></script>
+    <script src="assets/DataTables/datatables.min.js"></script>
+    <script src="assets/lightgallery/js/lightgallery.min.js"></script>
     <script src="assets/kingcar.js"></script>
 <script>
 $(document).ready(function () {

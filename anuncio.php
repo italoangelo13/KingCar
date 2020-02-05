@@ -4,6 +4,21 @@ header("Content-type:text/html; charset=utf8");
 include_once 'Config/ConexaoBD.php';
 include_once 'Config/Util.php';
 require_once 'Models/Anuncios.php';
+require_once 'Models/Marcas.php';
+require_once 'Models/Cambios.php';
+require_once 'Models/Combustiveis.php';
+
+$anuncios = new Anuncios();
+$marcas = new Marcas();
+$cambios = new Cambios();
+$combs = new Combustiveis();
+
+
+
+$listaMarcas = $marcas->SelecionarListaMarcas();
+$listaCambio = $cambios->SelecionarListaCambio();
+$listaComb = $combs->SelecionarListaCombustivel();
+
 
 $anoAtual = date("Y");
 $contador = 80;
@@ -50,21 +65,62 @@ include 'header.inc.php';
                 <div class="row">
                     <div class="form-group col-lg-4">
                     <label class="text-warning" for="_edMarca">Marca</label>
-                        <select class="form-control" name="marca" id="_edMarca">
+                        <select class="form-control" name="marca" id="_ddlMarca" required>
                             <option value="">Selecionar</option>
+                            <?php if ($listaMarcas) : ?>
+                                <?php foreach ($listaMarcas as $marca) : ?>
+                                    <option value="<?php echo $marca->MARCOD; ?>"><?php echo $marca->MARDESCRICAO; ?></option>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
                         </select>
                     </div>
                     <div class="form-group col-lg-4">
                         <label class="text-warning" for="_edModelo">Modelo</label>
-                        <select class="form-control" name="modelo" id="_edModelo">
+                        <select class="form-control" name="modelo" id="_ddlModelo" required>
                             <option value="">Selecionar</option>
                         </select>
                     </div>
                     <div class="form-group col-lg-4">
                         <label class="text-warning" for="_edCombustivel">Combustivel</label>
-                        <select class="form-control" name="combustivel" id="_edCombustivel">
+                        <select class="form-control" name="combustivel" id="_edCombustivel" required>
                             <option value="">Selecionar</option>
+                            <?php if ($listaComb) : ?>
+                                <?php foreach ($listaComb as $comb) : ?>
+                                    <option value="<?php echo $comb->COMCOD; ?>"><?php echo $comb->COMDESCRICAO; ?></option>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
                         </select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-lg-4">
+                        <label class="text-warning" for="_edCambio">Cambio</label>
+                        <select class="form-control" name="cambio" id="_edCambio" required>
+                            <option value="">Selecionar</option>
+                            <?php if ($listaComb) : ?>
+                                <?php foreach ($listaComb as $comb) : ?>
+                                    <option value="<?php echo $comb->COMCOD; ?>"><?php echo $comb->COMDESCRICAO; ?></option>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                        </select>
+                    </div>
+
+                    <div class="form-group col-lg-4">
+                        <label class="text-warning" for="_edCor">Cor</label>
+                        <select class="form-control" name="cor" id="_edCor" required>
+                            <option value="">Selecionar</option>
+                            <?php if ($listaComb) : ?>
+                                <?php foreach ($listaComb as $comb) : ?>
+                                    <option value="<?php echo $comb->COMCOD; ?>"><?php echo $comb->COMDESCRICAO; ?></option>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                        </select>
+                    </div>
+
+                    <div class="form-group col-lg-4">
+                        <label class="text-warning" for="_edKm">Quilometragem</label>
+                        <input type="text" class="form-control" name="combustivel" id="_edKm" required />
                     </div>
                 </div>
             </div>
