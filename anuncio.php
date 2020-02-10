@@ -7,24 +7,75 @@ require_once 'Models/Anuncios.php';
 require_once 'Models/Marcas.php';
 require_once 'Models/Cambios.php';
 require_once 'Models/Combustiveis.php';
+require_once 'Models/Cores.php';
 
 $anuncios = new Anuncios();
 $marcas = new Marcas();
 $cambios = new Cambios();
 $combs = new Combustiveis();
+$cores = new Cores();
 
 
 
 $listaMarcas = $marcas->SelecionarListaMarcas();
 $listaCambio = $cambios->SelecionarListaCambio();
 $listaComb = $combs->SelecionarListaCombustivel();
+$listaCores = $cores->SelecionarListaCores();
 
-
+$dataAtual = date("d/m/Y");
 $anoAtual = date("Y");
 $contador = 80;
-$anoMin = $anoAtual - $contador;
 $util = new Util();
 $anuncio = new Anuncios();
+
+
+
+if(isset($_POST['enviar'])){
+    $troca          = null;
+    $nome           = null;
+    $email          = null;
+    $marca          = null;
+    $modelo         = null;
+    $cambio         = null;
+    $combustivel    = null;
+    $ano            = null;
+    $cor            = null;
+    $km             = null;
+    $imagem         = null;
+
+
+    if(isset($_POST['troca'])){
+        $troca = $_POST['troca'];
+    }
+
+    if(isset($_FILES['imagem'])){
+        $imagem = $_FILES['imagem'];
+        if (strlen($_FILES["imagem"]["name"]) > 0) {
+
+            $dir                = $path_parts = pathinfo($_FILES['imagem']['name']);
+            $dirNovo            = "assets/img/Anuncios/"; //diretorio de destino
+            $ext                = $path_parts['extension'];
+            $nomeNovo            = trim($nome . '-' . date('YmdGis') . '-' . $vxvaMarca . $vxvaModelo . trim($vxvaAno) . trim($vxvaUf) . $vxvaMunicipio . '.' . $ext);
+            $destino            = $dirNovo . $nomeNovo;
+            $arquivo_tmp        = $_FILES['imagem']['tmp_name'];
+            $vxvaImg            = $nomeNovo;
+        } else {
+            
+        }
+    }
+
+    $nome           = $_POST['nome'];      
+    $email          = $_POST['email'];
+    $marca          = $_POST['marca'];
+    $modelo         = $_POST['modelo'];
+    $cambio         = $_POST['cambio'];
+    $combustivel    = $_POST['combustivel'];
+    $ano            = $_POST['ano'];
+    $preco          = $_POST['ano'];
+    $cor            = $_POST['cor'];
+    $km             = $_POST['km'];
+    
+}
 
 include 'header.inc.php';
 ?>
@@ -54,11 +105,11 @@ include 'header.inc.php';
                 <div class="row">
                     <div class="form-group col-lg-6">
                         <label class="text-warning" for="_edNome">Nome</label>
-                        <input type="text" name="nome" id="_edNome" class="form-control">
+                        <input type="text" name="nome" id="_edNome" class="form-control" required>
                     </div>
                     <div class="form-group col-lg-6">
                         <label class="text-warning" for="_edNome">Email</label>
-                        <input type="email" name="email" id="_edEmail" class="form-control">
+                        <input type="email" name="email" id="_edEmail" class="form-control" required>
                     </div>
                 </div>
 
@@ -86,7 +137,7 @@ include 'header.inc.php';
                             <option value="">Selecionar</option>
                             <?php if ($listaComb) : ?>
                                 <?php foreach ($listaComb as $comb) : ?>
-                                    <option value="<?php echo $comb->COMCOD; ?>"><?php echo $comb->COMDESCRICAO; ?></option>
+                                    <option value="<?php echo $comb->COMCOD; ?>"><?php echo $util->convert_from_latin1_to_utf8_recursively($comb->COMDESCRICAO); ?></option>
                                 <?php endforeach; ?>
                             <?php endif; ?>
                         </select>
@@ -98,9 +149,9 @@ include 'header.inc.php';
                         <label class="text-warning" for="_edCambio">Cambio</label>
                         <select class="form-control" name="cambio" id="_edCambio" required>
                             <option value="">Selecionar</option>
-                            <?php if ($listaComb) : ?>
-                                <?php foreach ($listaComb as $comb) : ?>
-                                    <option value="<?php echo $comb->COMCOD; ?>"><?php echo $comb->COMDESCRICAO; ?></option>
+                            <?php if ($listaCambio) : ?>
+                                <?php foreach ($listaCambio as $camb) : ?>
+                                    <option value="<?php echo $camb->CAMCOD; ?>"><?php echo $util->convert_from_latin1_to_utf8_recursively($camb->CAMDESCRICAO); ?></option>
                                 <?php endforeach; ?>
                             <?php endif; ?>
                         </select>
@@ -110,9 +161,9 @@ include 'header.inc.php';
                         <label class="text-warning" for="_edCor">Cor</label>
                         <select class="form-control" name="cor" id="_edCor" required>
                             <option value="">Selecionar</option>
-                            <?php if ($listaComb) : ?>
-                                <?php foreach ($listaComb as $comb) : ?>
-                                    <option value="<?php echo $comb->COMCOD; ?>"><?php echo $comb->COMDESCRICAO; ?></option>
+                            <?php if ($listaCores) : ?>
+                                <?php foreach ($listaCores as $cor) : ?>
+                                    <option value="<?php echo $cor->CORCOD; ?>"><?php echo $util->convert_from_latin1_to_utf8_recursively($cor->CORDESCRICAO); ?></option>
                                 <?php endforeach; ?>
                             <?php endif; ?>
                         </select>
@@ -120,7 +171,37 @@ include 'header.inc.php';
 
                     <div class="form-group col-lg-4">
                         <label class="text-warning" for="_edKm">Quilometragem</label>
-                        <input type="text" class="form-control" name="combustivel" id="_edKm" required />
+                        <input required type="text" class="form-control" value="" id="km" name="_edKm" maxlength="10" placeholder="0,00" onkeydown="Mascara(this,Valor);">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-lg-4">
+                        <label class="text-warning" for="_edAno">Ano</label>
+                        <select class="form-control" name="ano" id="_edAno" required>
+                            <option value="">Selecionar</option>
+                            <?php for ($i = 0; $i <= $contador; $i++) : ?>
+                                    <?php $anoitem = $anoAtual - $i; ?>
+                                    <option value="<?php echo $anoitem; ?> "><?php echo $anoitem; ?></option>
+                                <?php endfor; ?>
+                        </select>
+                    </div>
+
+                    <div class="form-group col-lg-4">
+                        <label class="text-warning" for="_edCor">Preço</label>
+                        <input required type="text" class="form-control" value="" id="_edPreco" name="preco" maxlength="10" placeholder="0.00" onkeydown="Mascara(this,Valor);">
+                    </div>
+
+                    <div class="form-group col-lg-4">
+                        <br>
+                        <br>
+                        <input type="checkbox" class="" value="" id="_ckTroca" name="troca"> <label class="text-warning" for="_ckTroca">Aceita Troca</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <button type="submit" name="enviar" class="btn btn-success btn-lg btn-block"><i class="icone-paper-plane-1"></i> Enviar</button>
                     </div>
                 </div>
             </div>
