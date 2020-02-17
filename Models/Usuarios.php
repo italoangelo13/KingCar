@@ -8,7 +8,7 @@ class Usuarios
     public $senha;
     public $user;
 
-    public function Carros() {
+    public function Usuarios() {
          // tratado como construtor no PHP 5.3.0-5.3.2
          // tratado como método comum a partir do PHP 5.3.3
          $cod = null;
@@ -157,8 +157,9 @@ class Usuarios
     public function AutenticarUsuario($usuario, $senha)
     {
         if(strtoupper($usuario) == "ADMIN" && $senha == "kingcar2020"){
-            $_SESSION['usuario'] = "ADMIN";
-            header("Location: PainelAdm/admin.php");
+            $_SESSION['Usuario'] = "ADMIN";
+            $_SESSION['NomeUsuario'] = "ADMIN";
+            echo '<script>window.location.href = "PainelAdm/admin.php"</script>';
         }
         else{
             $pdo = new PDO(server, user, senha);

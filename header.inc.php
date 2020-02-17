@@ -1,3 +1,12 @@
+<?php
+$telefone = null;
+$facebook = '#';
+$whatsapp = '#';
+$instagram = '#';
+
+$telefone = '(031) 3671 - 0000';
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -92,11 +101,40 @@ function hideLoad() {
 
 <body  style="background: black;">
     <div class="container-fluid">
-        <header class="row" >
+        <header class="row bg-white" style="padding: 5px;">
+            <div class="col-lg-8">
+                <img src="assets/img/logo-preto.png" alt="logo" style="width:15vw;">
+            </div>
+            <div class="col-lg-4 text-right">
+                <div class="container-fluid" >
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <a href="<?php echo $facebook; ?>" class="text-dark" style="text-decoration: none;"><i class="icone-facebook-rect-1"></i> Facebook </a>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <a href="<?php echo $instagram; ?>" class="text-dark" style="text-decoration: none;"><i class="icone-instagram-filled"></i> Instagram </a>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <a href="<?php echo $whatsapp; ?>" class="text-dark" style="text-decoration: none;"><i class="icone-whatsapp"></i> Whatsapp </a>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12 text-dark">
+                            <i class="icone-phone"></i> <?php echo $telefone; ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="row">
             <div class="col-lg-12" style="padding: 0px;">
                 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
                     <a class="navbar-brand" href="index.php">
-                        <img src="assets/img/logo.png" alt="logo" style="width:6vw;">
+                        
                     </a>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
@@ -111,9 +149,9 @@ function hideLoad() {
                             <li class="nav-item"><a class="nav-link" href="faleConosco.php">Contato</a></li>
                         </ul>
                         <form class="form-inline my-2 my-lg-0">
-                            <label class="text-white"><i class="icone-phone"></i> (031) 3671 - 0000</label>
+                            <label class="text-white"></label>
                         </form>
                     </div>
                 </nav>
             </div>
-        </header>
+</div>

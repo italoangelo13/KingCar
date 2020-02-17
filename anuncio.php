@@ -1,4 +1,5 @@
 <?php
+session_start();
 header("Content-type:text/html; charset=utf8");
 
 include_once 'Config/ConexaoBD.php';
@@ -28,7 +29,7 @@ $contador = 80;
 $util = new Util();
 $anuncio = new Anuncios();
 
-
+include 'header.inc.php';
 
 if(isset($_POST['enviar'])){
     $troca          = null;
@@ -48,22 +49,6 @@ if(isset($_POST['enviar'])){
         $troca = $_POST['troca'];
     }
 
-    if(isset($_FILES['imagem'])){
-        $imagem = $_FILES['imagem'];
-        if (strlen($_FILES["imagem"]["name"]) > 0) {
-
-            $dir                = $path_parts = pathinfo($_FILES['imagem']['name']);
-            $dirNovo            = "assets/img/Anuncios/"; //diretorio de destino
-            $ext                = $path_parts['extension'];
-            $nomeNovo            = trim($nome . '-' . date('YmdGis') . '-' . $vxvaMarca . $vxvaModelo . trim($vxvaAno) . trim($vxvaUf) . $vxvaMunicipio . '.' . $ext);
-            $destino            = $dirNovo . $nomeNovo;
-            $arquivo_tmp        = $_FILES['imagem']['tmp_name'];
-            $vxvaImg            = $nomeNovo;
-        } else {
-            
-        }
-    }
-
     $nome           = $_POST['nome'];      
     $email          = $_POST['email'];
     $marca          = $_POST['marca'];
@@ -71,13 +56,62 @@ if(isset($_POST['enviar'])){
     $cambio         = $_POST['cambio'];
     $combustivel    = $_POST['combustivel'];
     $ano            = $_POST['ano'];
-    $preco          = $_POST['ano'];
+    $preco          = $_POST['preco'];
     $cor            = $_POST['cor'];
-    $km             = $_POST['km'];
+    $km             = $_POST['_edKm'];
+
     
+
+    if(isset($_FILES['imagem'])){
+        $imagem = $_FILES['imagem'];
+        if (strlen($_FILES["imagem"]["name"]) > 0) {
+
+            $dir                = $path_parts = pathinfo($_FILES['imagem']['name']);
+            $dirNovo            = "assets/img/Anuncios/"; //diretorio de destino
+            $ext                = $path_parts['extension'];
+            $nomeNovo            = trim($nome . '-' . date('YmdGis') . '-' . $marca . $modelo . trim($ano)  . '.' . $ext);
+            $destino            = $dirNovo . $nomeNovo;
+            $arquivo_tmp        = $_FILES['imagem']['tmp_name'];
+            $vxvaImg            = $nomeNovo;
+        } else {
+            echo "<script>alert('Favor selecionar uma foto para o seu veiculo.');</script>";
+            exit;
+        }
+    }
+
+
+    $anuncio->nome           = $nome;
+    $anuncio->email          = $email;      
+    $anuncio->marca          = $marca;      
+    $anuncio->modelo         = $modelo;     
+    $anuncio->cambio         = $cambio;     
+    $anuncio->combustivel    = $combustivel;
+    $anuncio->ano            = $ano;        
+    $anuncio->preco          = $preco;      
+    $anuncio->cor            = $cor;        
+    $anuncio->km             = $km ; 
+    $anuncio->imagem         = $vxvaImg;       
+    $anuncio->user           = 'Visitante';
+
+    
+
+    if($anuncio->InserirSolicitacaoAnuncio()){
+        try{
+            move_uploaded_file($arquivo_tmp, $destino);
+            echo "<script>alert('Sua Solicitação foi enviada com sucesso.');</script>";
+        }
+        catch(Exception $e){
+            echo "<script>alert('Não foi possivel enviar a usa imagem. <br>". $e->getMessage() ."');</script>";
+            exit;
+        }
+        
+    }
+    else{
+        echo "<script>alert('Não foi possivel enviar sua solicitação.');</script>";
+    }
 }
 
-include 'header.inc.php';
+
 ?>
 <div class="row bg-warning" style="margin-top: 5px;">
     <div class="col-lg-12 text-center">

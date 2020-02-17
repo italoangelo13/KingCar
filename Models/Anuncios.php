@@ -13,6 +13,7 @@ class Anuncios{
     public $km;
     public $cor;
     public $troca;
+    public $imagem;
     public $dtCadastro;
     public $user;
 
@@ -32,18 +33,54 @@ class Anuncios{
         $troca = null;
         $dtCadastro = null;
         $user = null;
+        $imagem = null;
     }
 
     public function InserirSolicitacaoAnuncio()
     {
         $pdo = new PDO(server, user, senha);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $sql = "";
+        $sql = "INSERT INTO KGCTBLSOLANU
+        (SOLANOME,
+        SOLEMAIL,
+        SOLCODMARCA,
+        SOLCODMODELO,
+        SOLCAMBIO,
+        SOLCOMBUSTIVEL,
+        SOLCOR,
+        SOLANO,
+        SOLKM,
+        SOLPRECO,
+        SOLFOTOCAPA,
+        SOLUSER,
+        SOLDTCADASTRO)
+        VALUES
+        ('$this->nome',
+        '$this->email',
+        $this->marca,
+        $this->modelo,
+        $this->cambio,
+        $this->combustivel,
+        $this->cor,
+        $this->ano,
+        $this->km,
+        $this->preco,
+        '$this->imagem',
+        '$this->user',
+        CURRENT_TIMESTAMP)";
+
         $smtp = $pdo->prepare($sql);
         $smtp->execute();
 
 
-        return $result = $smtp->rowCount();
+        $result = $smtp->rowCount();
+
+        if($result > 0){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 }
 

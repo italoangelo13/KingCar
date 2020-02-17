@@ -110,7 +110,7 @@ $r = $compra->SelecionarNumSolicitacaoCompra();
                         
                         </li>
                         <li class="nav-item ">
-                        <a class="nav-link" href="#" ><i class="icone-plus"></i> <label>Cadastros Basicos</label></a>
+                        <a class="nav-link" href="CadastrosBasicos.php" ><i class="icone-plus"></i> <label>Cadastros Basicos</label></a>
                         </li>
                         <li class="nav-item">
                         <a class="nav-link" href="#" ><i class="icone-question"></i> <label>Sobre </label></a>
