@@ -48,6 +48,7 @@ $r = $compra->SelecionarNumSolicitacaoCompra();
     <script src="../assets/DataTables/datatables.min.js"></script>
     <script src="../assets/lightgallery/js/lightgallery.min.js"></script>
     <script src="../assets/kingcar.js"></script>
+    
     <script>
 
 

@@ -8,7 +8,7 @@ class Usuarios
     public $senha;
     public $user;
 
-    public function Usuarios() {
+    function Usuarios() {
          // tratado como construtor no PHP 5.3.0-5.3.2
          // tratado como método comum a partir do PHP 5.3.3
          $cod = null;

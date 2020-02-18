@@ -1,20 +1,64 @@
 <?php
 include_once 'header.inc.php';
 ?>
+<style>
+    .card {
+        width: 100%;
+        border: 2px solid #28A745;
+        text-decoration: none;
+        border-radius: 8px;
+    }
 
-<div class="row" style="margin-top:5px;">
-    <div class="col-lg-3">
-        <div class="card">
-            <div class="card-body text-center">
-                <label for="" class="icone-botao-cad">
-                    <i  class="icone-plus-circled "></i>
-                </label>
-                
+    .card:hover {
+        box-shadow: 2px 5px 5px rgba(0, 0, 0, 0.5);
+        text-decoration: none;
+    }
+</style>
+
+<div class="row bg-light" style="margin-top:5px;">
+    <div class="col-lg-3" style="padding:10px;">
+        <a href="CrudMarca.php" class="card">
+            <img class="card-img-top" src="../assets/img/bg-marca.jpg" style="width: 100%; height: 200px;" alt="Cadastro de Marcas" title="Cadastro de Marcas">
+            <div class="card-footer bg-success text-center">
+                <p style="font-size: 25px; text-decoration: none;" class="card-text text-light">Marcas</p>
             </div>
-            <div class="card-footer text-center alert-success" style="padding-bottom: 5px; padding-top: 5px;">
-                <label for="">Marcas</label>
+        </a>
+    </div>
+
+    <div class="col-lg-3" style="padding:10px;">
+        <a href="CrudMarca.php" class="card">
+            <img class="card-img-top" src="../assets/img/bg-modelo.jpg" style="width: 100%; height: 200px;" alt="Cadastro de Modelos" title="Cadastro de Modelos">
+            <div class="card-footer bg-success text-center">
+                <p style="font-size: 25px; text-decoration: none;" class="card-text text-light">Modelos</p>
             </div>
-        </div>
+        </a>
+    </div>
+
+    <div class="col-lg-3" style="padding:10px;">
+        <a href="CrudMarca.php" class="card">
+            <img class="card-img-top" src="../assets/img/bg-pintura.png" style="width: 100%; height: 200px;" alt="Cadastro de Cores" title="Cadastro de Cores">
+            <div class="card-footer bg-success text-center">
+                <p style="font-size: 25px; text-decoration: none;" class="card-text text-light">Cores</p>
+            </div>
+        </a>
+    </div>
+
+    <div class="col-lg-3" style="padding:10px;">
+        <a href="CrudMarca.php" class="card">
+            <img class="card-img-top" src="../assets/img/bg-cambio.jpg" style="width: 100%; height: 200px;" alt="Cadastro de Cambios" title="Cadastro de Cambios">
+            <div class="card-footer bg-success text-center">
+                <p style="font-size: 25px; text-decoration: none;" class="card-text text-light">Cambios</p>
+            </div>
+        </a>
+    </div>
+
+    <div class="col-lg-3" style="padding:10px;">
+        <a href="CrudMarca.php" class="card">
+            <img class="card-img-top" src="../assets/img/bg-combustivel.jpg" style="width: 100%; height: 200px;" alt="Cadastro de Combustiveis" title="Cadastro de Combustiveis">
+            <div class="card-footer bg-success text-center">
+                <p style="font-size: 25px; text-decoration: none;" class="card-text text-light">Combustiveis</p>
+            </div>
+        </a>
     </div>
 </div>
 
