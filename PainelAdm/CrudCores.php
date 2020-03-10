@@ -2,20 +2,18 @@
 include_once 'header.inc.php';
 //header("Content-type:text/html; charset=utf8");
 include_once '../Config/Util.php';
-require_once '../Models/Marcas.php';
+require_once '../Models/Cores.php';
 
-$Marca = new Marcas();
+$Cor = new Cores();
 $util = new Util();
 
-$numMarcas = 0;
-$dataAtual = date("d/m/Y");
-$anoAtual = date("Y");
+$numCores = 0;
 
-$strCount = $Marca->SelecionarTotalMarcas();
+$strCount = $Cor->SelecionarTotalCores();
 
 if (count($strCount)) {
     foreach ($strCount as $row) {
-        $numMarcas = $row->NUMMARCA;
+        $numCores = $row->NUMCORES;
     }
 }
 
@@ -27,16 +25,16 @@ if (count($strCount)) {
 
 <div class="row bg-primary text-white">
     <div class="col-lg-10">
-        <h5>Cadastro de Marcas</h5>
+        <h5>Cadastro de Cores</h5>
     </div>
     <div class="col-lg-2 text-right">
-        <?php echo $numMarcas; ?> Registro(s)
+        <?php echo $numCores; ?> Registro(s)
     </div>
 </div>
 <div id="pnl_Pesq" class="display-show">
     <div class="row" style="margin-top:5px;">
         <div class="col-lg-12">
-            <div class="btn btn-success" onclick="CadastrarUsu()"><i class="icone-plus"></i> Cadastrar Marca</div>
+            <div class="btn btn-success" onclick="CadastrarUsu()"><i class="icone-plus"></i> Cadastrar Cor</div>
         </div>
     </div>
     <div class="row bg-light" style="margin-top:5px; padding:5px;">
@@ -45,8 +43,8 @@ if (count($strCount)) {
                 <thead class="bg-success text-white">
                     <tr>
                         <th>Id</th>
-                        <th>Marca</th>
-                        <th>Status</th>
+                        <th>Nome</th>
+                        <th>Cor</th>
                         <th>Dt. Cadastro</th>
                         <th>Editar</th>
                         <th>Excluir</th>
@@ -72,24 +70,21 @@ if (count($strCount)) {
     </div>
     <div class="row bg-dark text-white" style="margin-top:5px;">
         <div class="col-lg-12 text-center">
-            Dados da Marca
+            Dados da Cor
         </div>
     </div>
     <div class="row bg-white" style="margin-top:5px;">
         <div class="form-group col-lg-2">
-            <label for="_edCodMarca">Cod</label>
-            <input type="text" value="" class="form-control" id="_edCodMarca" name="_edCodMarca" readonly>
+            <label for="_edCodCor">Cod</label>
+            <input type="text" value="" class="form-control" id="_edCodCor" name="_edCodCor" readonly>
         </div>
         <div class="form-group col-lg-4">
-            <label for="_edMarca" class="text-danger">Marca</label>
-            <input type="text" value="" class="form-control" maxlength="255" id="_edMarca" name="_edMarca" >
+            <label for="_edNomeCor" class="text-danger">Nome</label>
+            <input type="text" value="" class="form-control" maxlength="255" id="_edNomeCor" name="_edNomeCor" >
         </div>
-        <div class="form-group col-lg-3">
-            <label for="_ddlAtivo" class="text-danger">Ativo</label>
-            <Select class="form-control" required id="_ddlAtivo" name="_ddlAtivo">
-                <option value="S">Sim</option>
-                <option value="N">Não</option>
-            </Select>
+        <div class="form-group col-lg-1">
+            <label for="_edCorHex" class="text-danger">Cor</label>
+            <input type="color" value="#000000" class="form-control" id="_edCorHex" name="_edCorHex" >
         </div>
     </div>
 </div>
@@ -105,9 +100,9 @@ if (count($strCount)) {
     });
 
     function LimparCampos(){
-        $('#_edCodMarca').val('');
-        $('#_edMarca').val('');
-        $('#_ddlAtivo').val('S');
+        $('#_edCodCor').val('');
+        $('#_edNomeCor').val('');
+        $('#_edCorHex').val('#000000');
     }
 
 
@@ -146,31 +141,28 @@ if (count($strCount)) {
         //TRANSCOD
         //0 - ERRO DE CODIGO
         //1 - OPERAÇÃO CONCLUIDA COM SUCESSO
-        //2 - ativo JÁ CADASTRADO
+        //2 - hexa JÁ CADASTRADO
         //3 - SENHA IGUAL A ANTERIOR
 
 
-        showLoad('Aguarde!<br>Validando Informações do ativo.');
-        var codMarca = $('#_edCodMarca').val();
-        var marca = $('#_edMarca').val();
-        var ativo = $('#_ddlAtivo').val();
+        showLoad('Aguarde!<br>Validando Informações da Cor.');
+        debugger;
+        var codCor = $('#_edCodCor').val();
+        var cor = $('#_edNomeCor').val();
+        var hexa = $('#_edCorHex').val();
+        hexa = hexa.replace('#','');
 
-        if(!marca){
-            $('#_edMarca').focus();
+        if(!cor){
+            $('#_edNomeCor').focus();
             hideLoad();
-            WarningBox('O campo marca é obrigatório');
-        }
-
-        if(!ativo){
-            $('#_ddlAtivo').focus();
-            hideLoad();
-            WarningBox('O campo ativo é obrigatório');
+            WarningBox('O campo Nome é obrigatório');
         }
 
 
-        if(!codMarca){ //INSERT
+
+        if(!codCor){ //INSERT
             $.ajax({
-                url: "../Service/InsereMarca.php?marca="+marca+"&ativo="+ativo,
+                url: "../Service/InsereCor.php?cor="+cor+"&hexa="+hexa,
                 type: 'GET',
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
@@ -183,16 +175,16 @@ if (count($strCount)) {
                     switch(dados[0].TransCod){
                         case 0:
                             hideLoad();
-                            ErrorBox('Não Foi Possivel Cadastrar esta Marca.'); 
+                            ErrorBox('Não Foi Possivel Cadastrar esta Cor.'); 
                         break;
                         case 1:
-                            $('#_edCodMarca').val(dados[0].UltCod);
+                            $('#_edCodCor').val(dados[0].UltCod);
                             hideLoad();
-                            SuccessBox('Marca cadastrada com Sucesso.'); 
+                            SuccessBox('Cor cadastrada com Sucesso.'); 
                         break;
                         case 2:
                             hideLoad();
-                            SuccessBox('Marca Atualizado com Sucesso.'); 
+                            SuccessBox('Cor Atualizada com Sucesso.'); 
                         break;
                     }
                 }
@@ -200,7 +192,7 @@ if (count($strCount)) {
         }
         else{ //UPDATE
             $.ajax({
-                url: "../Service/AtualizaMarca.php?cod="+codMarca+"&marca="+marca+"&ativo="+ativo,
+                url: "../Service/AtualizaCor.php?cod="+codCor+"&cor="+cor+"&hexa="+hexa,
                 type: 'GET',
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
@@ -213,16 +205,16 @@ if (count($strCount)) {
                     switch(dados[0].TransCod){
                         case 0:
                             hideLoad();
-                            ErrorBox('Não Foi Possivel Cadastrar esta Marca.'); 
+                            ErrorBox('Não Foi Possivel Cadastrar esta Cor.'); 
                         break;
                         case 1:
-                            $('#_edCodMarca').val(dados[0].UltCod);
+                            $('#_edCodCor').val(dados[0].UltCod);
                             hideLoad();
-                            SuccessBox('Marca cadastrada com Sucesso.'); 
+                            SuccessBox('Cor cadastrada com Sucesso.'); 
                         break;
                         case 2:
                             hideLoad();
-                            SuccessBox('Marca Atualizado com Sucesso.'); 
+                            SuccessBox('Cor Atualizada com Sucesso.'); 
                         break;
                     }
                 }
@@ -230,11 +222,11 @@ if (count($strCount)) {
         }
     }
 
-    function AtualizaMarca(codMarca){
-        showLoad('Aguarde!<br>Carregando as informações da Marca.');
+    function AtualizaCor(codCor){
+        showLoad('Aguarde!<br>Carregando as informações da Cor.');
         TrocaTela('#pnl_Pesq','#Pnl_CadAtu');
-        $('#_edCodMarca').val(codMarca);
-        BuscaDadosMarca(codMarca);
+        $('#_edCodCor').val(codCor);
+        BuscaDadosCor(codCor);
     }
 
     function CadastrarUsu(){
@@ -243,10 +235,10 @@ if (count($strCount)) {
         hideLoad();
     }
 
-    function DeletaMarca(codMarca){
-        showLoad('Aguarde <br> Excluindo Marca Selecionada.');
+    function DeletaCor(codCor){
+        showLoad('Aguarde <br> Excluindo Cor Selecionada.');
         $.ajax({
-            url: "../Service/DeletaMarca.php?cod="+codMarca,
+            url: "../Service/DeletaCor.php?cod="+codCor,
             type: 'POST',
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -269,9 +261,9 @@ if (count($strCount)) {
         });
     }
 
-    function BuscaDadosMarca(codMarca){
+    function BuscaDadosCor(codCor){
         $.ajax({
-            url: "../Service/BuscaDadosMarca.php?cod="+codMarca,
+            url: "../Service/BuscaDadosCor.php?cod="+codCor,
             type: 'POST',
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -286,8 +278,8 @@ if (count($strCount)) {
                     ErrorBox(dados[0].msg);
                 }
                 else{
-                    $('#_edMarca').val(dados[0].marca);
-                    $('#_ddlAtivo').val(dados[0].ativo);
+                    $('#_edNomeCor').val(dados[0].cor);
+                    $('#_edCorHex').val(dados[0].hexa);
                     hideLoad();
                 }
             }
@@ -299,7 +291,7 @@ if (count($strCount)) {
         showLoad('Carregando Informações!');
 
         $.ajax({
-            url: "../Service/BuscaMarcas.php",
+            url: "../Service/BuscaCores.php",
             type: 'POST',
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -353,7 +345,7 @@ if (count($strCount)) {
                             }
                         },
                         {
-                            "data": "marca",
+                            "data": "cores",
                             "render": function(data, type, row, meta) {
                                 if (type === 'display') {
                                     data = '<label>' + data + '</label>';
@@ -363,10 +355,10 @@ if (count($strCount)) {
                             }
                         },
                         {
-                            "data": "ativo",
+                            "data": "hexa",
                             "render": function(data, type, row, meta) {
                                 if (type === 'display') {
-                                    data = '<label>' + data + '</label>';
+                                    data = '<label style="background:' + data + ';border:1px rgba(0,0,0,0.3) solid; width:40px; height:40px;"></label>';
                                 }
 
                                 return data;
@@ -386,7 +378,7 @@ if (count($strCount)) {
                             "data": "editar",
                             "render": function(data, type, row, meta) {
                                 if (type === 'display') {
-                                    data = '<div style="cursor:pointer;" onClick="AtualizaMarca(' + data + ')" class="btn btn-success"><i class="icone-pencil"></i></div>';
+                                    data = '<div style="cursor:pointer;" onClick="AtualizaCor(' + data + ')" class="btn btn-success"><i class="icone-pencil"></i></div>';
                                 }
 
                                 return data;
@@ -396,7 +388,7 @@ if (count($strCount)) {
                             "data": "excluir",
                             "render": function(data, type, row, meta) {
                                 if (type === 'display') {
-                                    data = '<div style="cursor:pointer;" onClick="DeletaMarca(' + data + ')" class="btn btn-danger"><i class="icone-trash"></i></div>';
+                                    data = '<div style="cursor:pointer;" onClick="DeletaCor(' + data + ')" class="btn btn-danger"><i class="icone-trash"></i></div>';
                                 }
 
                                 return data;

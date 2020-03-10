@@ -268,7 +268,7 @@ class Usuarios
 
 
     /**
-    * Insere Usuario
+    * Atualiza Usuario
     *
     * Este Método Cadastra um novo usuario.
     *

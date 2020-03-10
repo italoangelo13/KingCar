@@ -26,7 +26,7 @@ include_once 'header.inc.php';
     </div>
 
     <div class="col-lg-3" style="padding:10px;">
-        <a href="CrudMarca.php" class="card">
+        <a href="CrudModelo.php" class="card">
             <img class="card-img-top" src="../assets/img/bg-modelo.jpg" style="width: 100%; height: 200px;" alt="Cadastro de Modelos" title="Cadastro de Modelos">
             <div class="card-footer bg-success text-center">
                 <p style="font-size: 25px; text-decoration: none;" class="card-text text-light">Modelos</p>
@@ -35,7 +35,7 @@ include_once 'header.inc.php';
     </div>
 
     <div class="col-lg-3" style="padding:10px;">
-        <a href="CrudMarca.php" class="card">
+        <a href="CrudCores.php" class="card">
             <img class="card-img-top" src="../assets/img/bg-pintura.png" style="width: 100%; height: 200px;" alt="Cadastro de Cores" title="Cadastro de Cores">
             <div class="card-footer bg-success text-center">
                 <p style="font-size: 25px; text-decoration: none;" class="card-text text-light">Cores</p>
@@ -44,7 +44,7 @@ include_once 'header.inc.php';
     </div>
 
     <div class="col-lg-3" style="padding:10px;">
-        <a href="CrudMarca.php" class="card">
+        <a href="CrudCambio.php" class="card">
             <img class="card-img-top" src="../assets/img/bg-cambio.jpg" style="width: 100%; height: 200px;" alt="Cadastro de Cambios" title="Cadastro de Cambios">
             <div class="card-footer bg-success text-center">
                 <p style="font-size: 25px; text-decoration: none;" class="card-text text-light">Cambios</p>
@@ -53,7 +53,7 @@ include_once 'header.inc.php';
     </div>
 
     <div class="col-lg-3" style="padding:10px;">
-        <a href="CrudMarca.php" class="card">
+        <a href="CrudCombustivel.php" class="card">
             <img class="card-img-top" src="../assets/img/bg-combustivel.jpg" style="width: 100%; height: 200px;" alt="Cadastro de Combustiveis" title="Cadastro de Combustiveis">
             <div class="card-footer bg-success text-center">
                 <p style="font-size: 25px; text-decoration: none;" class="card-text text-light">Combustiveis</p>

@@ -103,7 +103,7 @@ $r = $compra->SelecionarNumSolicitacaoCompra();
                         
                         </li>
                         <li class="nav-item ">
-                        <a class="nav-link" href="#" ><i class="icone-newspaper-2"></i> <label>Publicidades</label></a>
+                        <a class="nav-link" href="CrudPublicidade.php" ><i class="icone-newspaper-2"></i> <label>Publicidades</label></a>
                         
                         </li>
                         <li class="nav-item ">

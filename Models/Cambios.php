@@ -1,22 +1,138 @@
 <?php
 
 class Cambios{
-    public $id;
-    public $descricao;
-    public $dtCadastro;
-    public $user;
+    public $Id;
+    public $Descricao;
+    public $DtCadastro;
+    public $User;
 
+    public function Cambios()
+    {
+         $Id = null;
+         $Descricao = null;
+         $User = null;
+         $DtCadastro = null;
+    }
+
+
+    public function InsereCambio(){
+        $pdo = new PDO(server, user, senha);
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        $smtp = $pdo->prepare("INSERT INTO kgctblcam 
+        (CAMDESCRICAO, CAMUSER, CAMDATCADASTRO)
+        VALUES
+        ('$this->Descricao','$this->User',CURRENT_TIMESTAMP)");
+        $smtp->execute();
+        $res = $smtp->rowCount();
+        if ($res > 0) {
+            return true;
+        }
+        else{
+            return false;
+        }
+    } 
+
+    public function BuscaUltimoCodPorUser(){
+        try{
+            $pdo = new PDO(server, user, senha);
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+            $smtp = $pdo->prepare("SELECT MAX(CAMCOD) AS ULTIMO FROM KGCTBLCAM WHERE CAMUSER = '$this->User'");
+            $smtp->execute();
+            $result = $smtp->fetchAll(PDO::FETCH_CLASS);
+            return $result[0]->ULTIMO;
+        }
+        catch(Exception $e){
+            throw $e;
+        }
+    }
+
+    /**
+    * Atualiza Marca
+    *
+    * Este Método Atualiza uma Marca.
+    *
+    * @access   public
+    */
+    public function AtualizaCambio()
+    {
+        try{
+            $pdo = new PDO(server, user, senha);
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+            $smtp = $pdo->prepare("UPDATE kgctblcam SET
+            CAMDESCRICAO = '$this->Descricao'
+            WHERE CAMCOD = $this->Id");
+            $smtp->execute();
+            $res = $smtp->rowCount();
+
+            if($res > 0){
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+        catch(Exception $e){
+            throw $e;
+        }
+    }
     
     public function SelecionarListaCambio(){
         $pdo = new PDO(server, user, senha);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $smtp = $pdo->prepare("SELECT CAMCOD, CAMDESCRICAO FROM kgctblcam");
+        $smtp = $pdo->prepare("SELECT CAMCOD, CAMDESCRICAO, CAMDATCADASTRO FROM kgctblcam");
         $smtp->execute();
 
         if ($smtp->rowCount() > 0) {
             return $result = $smtp->fetchAll(PDO::FETCH_CLASS);
         }
     }  
+
+    public function SelecionarCambioPorCod($codCambio){
+        $pdo = new PDO(server, user, senha);
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        $smtp = $pdo->prepare("SELECT CAMCOD, CAMDESCRICAO, CAMDATCADASTRO FROM kgctblcam where CAMCOD = $codCambio");
+        $smtp->execute();
+
+        if ($smtp->rowCount() > 0) {
+            return $result = $smtp->fetchAll(PDO::FETCH_CLASS);
+        }
+    } 
+
+
+    public function DeletaCambioPorCod($codCambio){
+        $pdo = new PDO(server, user, senha);
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        $smtp = $pdo->prepare("DELETE FROM kgctblcam where CAMCOD = $codCambio");
+        $smtp->execute();
+
+        $res = $smtp->rowCount();
+
+        if($res > 0){
+            return true;
+        }
+        else{
+            return false;
+        }
+    } 
+
+
+    public function SelecionarTotalCambios()
+    {
+        $pdo = new PDO(server, user, senha);
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        $smtp = $pdo->prepare("SELECT COUNT(*) AS NUMCAMBIO FROM kgctblcam");
+        $smtp->execute();
+
+        if ($smtp->rowCount() > 0) {
+            return $result = $smtp->fetchAll(PDO::FETCH_CLASS);
+        }
+    }
 }
 ?>

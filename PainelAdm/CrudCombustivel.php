@@ -2,20 +2,20 @@
 include_once 'header.inc.php';
 //header("Content-type:text/html; charset=utf8");
 include_once '../Config/Util.php';
-require_once '../Models/Marcas.php';
+require_once '../Models/Combustiveis.php';
 
-$Marca = new Marcas();
+$Comb = new Combustiveis();
 $util = new Util();
 
-$numMarcas = 0;
+$numCombustiveis = 0;
 $dataAtual = date("d/m/Y");
 $anoAtual = date("Y");
 
-$strCount = $Marca->SelecionarTotalMarcas();
+$strCount = $Comb->SelecionarTotalCombustivel();
 
 if (count($strCount)) {
     foreach ($strCount as $row) {
-        $numMarcas = $row->NUMMARCA;
+        $numCombustiveis = $row->NUMCOMBUSTIVEL;
     }
 }
 
@@ -27,16 +27,16 @@ if (count($strCount)) {
 
 <div class="row bg-primary text-white">
     <div class="col-lg-10">
-        <h5>Cadastro de Marcas</h5>
+        <h5>Cadastro de Combustiveis</h5>
     </div>
     <div class="col-lg-2 text-right">
-        <?php echo $numMarcas; ?> Registro(s)
+        <?php echo $numCombustiveis; ?> Registro(s)
     </div>
 </div>
 <div id="pnl_Pesq" class="display-show">
     <div class="row" style="margin-top:5px;">
         <div class="col-lg-12">
-            <div class="btn btn-success" onclick="CadastrarUsu()"><i class="icone-plus"></i> Cadastrar Marca</div>
+            <div class="btn btn-success" onclick="CadastrarUsu()"><i class="icone-plus"></i> Cadastrar Combustivel</div>
         </div>
     </div>
     <div class="row bg-light" style="margin-top:5px; padding:5px;">
@@ -45,8 +45,7 @@ if (count($strCount)) {
                 <thead class="bg-success text-white">
                     <tr>
                         <th>Id</th>
-                        <th>Marca</th>
-                        <th>Status</th>
+                        <th>Combustivel</th>
                         <th>Dt. Cadastro</th>
                         <th>Editar</th>
                         <th>Excluir</th>
@@ -72,24 +71,17 @@ if (count($strCount)) {
     </div>
     <div class="row bg-dark text-white" style="margin-top:5px;">
         <div class="col-lg-12 text-center">
-            Dados da Marca
+            Dados do Combustivel
         </div>
     </div>
     <div class="row bg-white" style="margin-top:5px;">
         <div class="form-group col-lg-2">
-            <label for="_edCodMarca">Cod</label>
-            <input type="text" value="" class="form-control" id="_edCodMarca" name="_edCodMarca" readonly>
+            <label for="_edCodComb">Cod</label>
+            <input type="text" value="" class="form-control" id="_edCodComb" name="_edCodComb" readonly>
         </div>
-        <div class="form-group col-lg-4">
-            <label for="_edMarca" class="text-danger">Marca</label>
-            <input type="text" value="" class="form-control" maxlength="255" id="_edMarca" name="_edMarca" >
-        </div>
-        <div class="form-group col-lg-3">
-            <label for="_ddlAtivo" class="text-danger">Ativo</label>
-            <Select class="form-control" required id="_ddlAtivo" name="_ddlAtivo">
-                <option value="S">Sim</option>
-                <option value="N">Não</option>
-            </Select>
+        <div class="form-group col-lg-5">
+            <label for="_edComb" class="text-danger">Combustivel</label>
+            <input type="text" value="" class="form-control" maxlength="255" id="_edComb" name="_edComb" >
         </div>
     </div>
 </div>
@@ -105,9 +97,8 @@ if (count($strCount)) {
     });
 
     function LimparCampos(){
-        $('#_edCodMarca').val('');
-        $('#_edMarca').val('');
-        $('#_ddlAtivo').val('S');
+        $('#_edCodComb').val('');
+        $('#_edComb').val('');
     }
 
 
@@ -150,27 +141,20 @@ if (count($strCount)) {
         //3 - SENHA IGUAL A ANTERIOR
 
 
-        showLoad('Aguarde!<br>Validando Informações do ativo.');
-        var codMarca = $('#_edCodMarca').val();
-        var marca = $('#_edMarca').val();
-        var ativo = $('#_ddlAtivo').val();
+        showLoad('Aguarde!<br>Validando Informações do Combustivel.');
+        var codCombustivel = $('#_edCodComb').val();
+        var combustivel = $('#_edComb').val();
 
-        if(!marca){
-            $('#_edMarca').focus();
+        if(!combustivel){
+            $('#_edComb').focus();
             hideLoad();
-            WarningBox('O campo marca é obrigatório');
-        }
-
-        if(!ativo){
-            $('#_ddlAtivo').focus();
-            hideLoad();
-            WarningBox('O campo ativo é obrigatório');
+            WarningBox('O campo combustivel é obrigatório');
         }
 
 
-        if(!codMarca){ //INSERT
+        if(!codCombustivel){ //INSERT
             $.ajax({
-                url: "../Service/InsereMarca.php?marca="+marca+"&ativo="+ativo,
+                url: "../Service/InsereCombustivel.php?combustivel="+combustivel,
                 type: 'GET',
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
@@ -183,16 +167,16 @@ if (count($strCount)) {
                     switch(dados[0].TransCod){
                         case 0:
                             hideLoad();
-                            ErrorBox('Não Foi Possivel Cadastrar esta Marca.'); 
+                            ErrorBox('Não Foi Possivel Cadastrar este Combustivel.'); 
                         break;
                         case 1:
-                            $('#_edCodMarca').val(dados[0].UltCod);
+                            $('#_edCodComb').val(dados[0].UltCod);
                             hideLoad();
-                            SuccessBox('Marca cadastrada com Sucesso.'); 
+                            SuccessBox('Combustivel cadastrado com Sucesso.'); 
                         break;
                         case 2:
                             hideLoad();
-                            SuccessBox('Marca Atualizado com Sucesso.'); 
+                            SuccessBox('Combustivel Atualizado com Sucesso.'); 
                         break;
                     }
                 }
@@ -200,7 +184,7 @@ if (count($strCount)) {
         }
         else{ //UPDATE
             $.ajax({
-                url: "../Service/AtualizaMarca.php?cod="+codMarca+"&marca="+marca+"&ativo="+ativo,
+                url: "../Service/AtualizaCombustivel.php?cod="+codCombustivel+"&combustivel="+combustivel,
                 type: 'GET',
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
@@ -213,16 +197,16 @@ if (count($strCount)) {
                     switch(dados[0].TransCod){
                         case 0:
                             hideLoad();
-                            ErrorBox('Não Foi Possivel Cadastrar esta Marca.'); 
+                            ErrorBox('Não Foi Possivel Cadastrar este Combustivel.'); 
                         break;
                         case 1:
-                            $('#_edCodMarca').val(dados[0].UltCod);
+                            $('#_edCodComb').val(dados[0].UltCod);
                             hideLoad();
-                            SuccessBox('Marca cadastrada com Sucesso.'); 
+                            SuccessBox('Combustivel cadastrado com Sucesso.'); 
                         break;
                         case 2:
                             hideLoad();
-                            SuccessBox('Marca Atualizado com Sucesso.'); 
+                            SuccessBox('Combustivel Atualizado com Sucesso.'); 
                         break;
                     }
                 }
@@ -230,11 +214,11 @@ if (count($strCount)) {
         }
     }
 
-    function AtualizaMarca(codMarca){
+    function AtualizaCombustivel(codCombustivel){
         showLoad('Aguarde!<br>Carregando as informações da Marca.');
         TrocaTela('#pnl_Pesq','#Pnl_CadAtu');
-        $('#_edCodMarca').val(codMarca);
-        BuscaDadosMarca(codMarca);
+        $('#_edCodComb').val(codCombustivel);
+        BuscaDadosCombustivel(codCombustivel);
     }
 
     function CadastrarUsu(){
@@ -243,10 +227,10 @@ if (count($strCount)) {
         hideLoad();
     }
 
-    function DeletaMarca(codMarca){
-        showLoad('Aguarde <br> Excluindo Marca Selecionada.');
+    function DeletaCombustivel(codCombustivel){
+        showLoad('Aguarde <br> Excluindo Combustivel Selecionado.');
         $.ajax({
-            url: "../Service/DeletaMarca.php?cod="+codMarca,
+            url: "../Service/DeletaCombustivel.php?cod="+codCombustivel,
             type: 'POST',
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -262,16 +246,16 @@ if (count($strCount)) {
                 }
                 else{
                     hideLoad();
-                    SuccessBox('Marca Deletada com Sucesso.');
+                    SuccessBox('Combustivel Deletado com Sucesso.');
                     atualizaGridPrincipal();
                 }
             }
         });
     }
 
-    function BuscaDadosMarca(codMarca){
+    function BuscaDadosCombustivel(codCombustivel){
         $.ajax({
-            url: "../Service/BuscaDadosMarca.php?cod="+codMarca,
+            url: "../Service/BuscaDadosCombustivel.php?cod="+codCombustivel,
             type: 'POST',
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -286,8 +270,7 @@ if (count($strCount)) {
                     ErrorBox(dados[0].msg);
                 }
                 else{
-                    $('#_edMarca').val(dados[0].marca);
-                    $('#_ddlAtivo').val(dados[0].ativo);
+                    $('#_edComb').val(dados[0].combustivel);
                     hideLoad();
                 }
             }
@@ -299,7 +282,7 @@ if (count($strCount)) {
         showLoad('Carregando Informações!');
 
         $.ajax({
-            url: "../Service/BuscaMarcas.php",
+            url: "../Service/BuscaCombustivel.php",
             type: 'POST',
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -353,17 +336,7 @@ if (count($strCount)) {
                             }
                         },
                         {
-                            "data": "marca",
-                            "render": function(data, type, row, meta) {
-                                if (type === 'display') {
-                                    data = '<label>' + data + '</label>';
-                                }
-
-                                return data;
-                            }
-                        },
-                        {
-                            "data": "ativo",
+                            "data": "combustivel",
                             "render": function(data, type, row, meta) {
                                 if (type === 'display') {
                                     data = '<label>' + data + '</label>';
@@ -386,7 +359,7 @@ if (count($strCount)) {
                             "data": "editar",
                             "render": function(data, type, row, meta) {
                                 if (type === 'display') {
-                                    data = '<div style="cursor:pointer;" onClick="AtualizaMarca(' + data + ')" class="btn btn-success"><i class="icone-pencil"></i></div>';
+                                    data = '<div style="cursor:pointer;" onClick="AtualizaCombustivel(' + data + ')" class="btn btn-success"><i class="icone-pencil"></i></div>';
                                 }
 
                                 return data;
@@ -396,7 +369,7 @@ if (count($strCount)) {
                             "data": "excluir",
                             "render": function(data, type, row, meta) {
                                 if (type === 'display') {
-                                    data = '<div style="cursor:pointer;" onClick="DeletaMarca(' + data + ')" class="btn btn-danger"><i class="icone-trash"></i></div>';
+                                    data = '<div style="cursor:pointer;" onClick="DeletaCombustivel(' + data + ')" class="btn btn-danger"><i class="icone-trash"></i></div>';
                                 }
 
                                 return data;

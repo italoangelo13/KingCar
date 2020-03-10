@@ -1003,7 +1003,7 @@ try {
 
 <script>
     $(document).ready(function() {
-        lightGallery(document.getElementById('_galfotos'));
+        
 
         $("#_edInfoAd").jqte();
 
@@ -1028,6 +1028,7 @@ try {
         });
 
         $("#_btnCarregaImg").click(function() {
+            debugger;
             self.executar();
         });
 
@@ -1050,7 +1051,7 @@ try {
             };
         });
 
-
+        lightGallery(document.getElementById('_galfotos'));
 
     });
 

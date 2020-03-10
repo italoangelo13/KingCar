@@ -2,20 +2,20 @@
 include_once 'header.inc.php';
 //header("Content-type:text/html; charset=utf8");
 include_once '../Config/Util.php';
-require_once '../Models/Marcas.php';
+require_once '../Models/Cambios.php';
 
-$Marca = new Marcas();
+$Cambio = new Cambios();
 $util = new Util();
 
-$numMarcas = 0;
+$numCambios = 0;
 $dataAtual = date("d/m/Y");
 $anoAtual = date("Y");
 
-$strCount = $Marca->SelecionarTotalMarcas();
+$strCount = $Cambio->SelecionarTotalCambios();
 
 if (count($strCount)) {
     foreach ($strCount as $row) {
-        $numMarcas = $row->NUMMARCA;
+        $numCambios = $row->NUMCAMBIO;
     }
 }
 
@@ -27,16 +27,16 @@ if (count($strCount)) {
 
 <div class="row bg-primary text-white">
     <div class="col-lg-10">
-        <h5>Cadastro de Marcas</h5>
+        <h5>Cadastro de Cambios</h5>
     </div>
     <div class="col-lg-2 text-right">
-        <?php echo $numMarcas; ?> Registro(s)
+        <?php echo $numCambios; ?> Registro(s)
     </div>
 </div>
 <div id="pnl_Pesq" class="display-show">
     <div class="row" style="margin-top:5px;">
         <div class="col-lg-12">
-            <div class="btn btn-success" onclick="CadastrarUsu()"><i class="icone-plus"></i> Cadastrar Marca</div>
+            <div class="btn btn-success" onclick="CadastrarUsu()"><i class="icone-plus"></i> Cadastrar Cambio</div>
         </div>
     </div>
     <div class="row bg-light" style="margin-top:5px; padding:5px;">
@@ -45,8 +45,7 @@ if (count($strCount)) {
                 <thead class="bg-success text-white">
                     <tr>
                         <th>Id</th>
-                        <th>Marca</th>
-                        <th>Status</th>
+                        <th>Cambio</th>
                         <th>Dt. Cadastro</th>
                         <th>Editar</th>
                         <th>Excluir</th>
@@ -72,24 +71,17 @@ if (count($strCount)) {
     </div>
     <div class="row bg-dark text-white" style="margin-top:5px;">
         <div class="col-lg-12 text-center">
-            Dados da Marca
+            Dados do Cambio
         </div>
     </div>
     <div class="row bg-white" style="margin-top:5px;">
         <div class="form-group col-lg-2">
-            <label for="_edCodMarca">Cod</label>
-            <input type="text" value="" class="form-control" id="_edCodMarca" name="_edCodMarca" readonly>
+            <label for="_edCodCambio">Cod</label>
+            <input type="text" value="" class="form-control" id="_edCodCambio" name="_edCodCambio" readonly>
         </div>
-        <div class="form-group col-lg-4">
-            <label for="_edMarca" class="text-danger">Marca</label>
-            <input type="text" value="" class="form-control" maxlength="255" id="_edMarca" name="_edMarca" >
-        </div>
-        <div class="form-group col-lg-3">
-            <label for="_ddlAtivo" class="text-danger">Ativo</label>
-            <Select class="form-control" required id="_ddlAtivo" name="_ddlAtivo">
-                <option value="S">Sim</option>
-                <option value="N">Não</option>
-            </Select>
+        <div class="form-group col-lg-5">
+            <label for="_edCambio" class="text-danger">Cambio</label>
+            <input type="text" value="" class="form-control" maxlength="255" id="_edCambio" name="_edCambio" >
         </div>
     </div>
 </div>
@@ -105,9 +97,8 @@ if (count($strCount)) {
     });
 
     function LimparCampos(){
-        $('#_edCodMarca').val('');
-        $('#_edMarca').val('');
-        $('#_ddlAtivo').val('S');
+        $('#_edCodCambio').val('');
+        $('#_edCambio').val('');
     }
 
 
@@ -150,27 +141,20 @@ if (count($strCount)) {
         //3 - SENHA IGUAL A ANTERIOR
 
 
-        showLoad('Aguarde!<br>Validando Informações do ativo.');
-        var codMarca = $('#_edCodMarca').val();
-        var marca = $('#_edMarca').val();
-        var ativo = $('#_ddlAtivo').val();
+        showLoad('Aguarde!<br>Validando Informações do Cambio.');
+        var codCambio = $('#_edCodCambio').val();
+        var cambio = $('#_edCambio').val();
 
-        if(!marca){
-            $('#_edMarca').focus();
+        if(!cambio){
+            $('#_edCambio').focus();
             hideLoad();
-            WarningBox('O campo marca é obrigatório');
-        }
-
-        if(!ativo){
-            $('#_ddlAtivo').focus();
-            hideLoad();
-            WarningBox('O campo ativo é obrigatório');
+            WarningBox('O campo cambio é obrigatório');
         }
 
 
-        if(!codMarca){ //INSERT
+        if(!codCambio){ //INSERT
             $.ajax({
-                url: "../Service/InsereMarca.php?marca="+marca+"&ativo="+ativo,
+                url: "../Service/InsereCambio.php?cambio="+cambio,
                 type: 'GET',
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
@@ -183,16 +167,16 @@ if (count($strCount)) {
                     switch(dados[0].TransCod){
                         case 0:
                             hideLoad();
-                            ErrorBox('Não Foi Possivel Cadastrar esta Marca.'); 
+                            ErrorBox('Não Foi Possivel Cadastrar este Cambio.'); 
                         break;
                         case 1:
-                            $('#_edCodMarca').val(dados[0].UltCod);
+                            $('#_edCodCambio').val(dados[0].UltCod);
                             hideLoad();
-                            SuccessBox('Marca cadastrada com Sucesso.'); 
+                            SuccessBox('Cambio cadastrado com Sucesso.'); 
                         break;
                         case 2:
                             hideLoad();
-                            SuccessBox('Marca Atualizado com Sucesso.'); 
+                            SuccessBox('Cambio Atualizado com Sucesso.'); 
                         break;
                     }
                 }
@@ -200,7 +184,7 @@ if (count($strCount)) {
         }
         else{ //UPDATE
             $.ajax({
-                url: "../Service/AtualizaMarca.php?cod="+codMarca+"&marca="+marca+"&ativo="+ativo,
+                url: "../Service/AtualizaCambio.php?cod="+codCambio+"&cambio="+cambio,
                 type: 'GET',
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
@@ -213,16 +197,16 @@ if (count($strCount)) {
                     switch(dados[0].TransCod){
                         case 0:
                             hideLoad();
-                            ErrorBox('Não Foi Possivel Cadastrar esta Marca.'); 
+                            ErrorBox('Não Foi Possivel Cadastrar este Cambio.'); 
                         break;
                         case 1:
-                            $('#_edCodMarca').val(dados[0].UltCod);
+                            $('#_edCodCambio').val(dados[0].UltCod);
                             hideLoad();
-                            SuccessBox('Marca cadastrada com Sucesso.'); 
+                            SuccessBox('Cambio cadastrado com Sucesso.'); 
                         break;
                         case 2:
                             hideLoad();
-                            SuccessBox('Marca Atualizado com Sucesso.'); 
+                            SuccessBox('Cambio Atualizado com Sucesso.'); 
                         break;
                     }
                 }
@@ -230,11 +214,11 @@ if (count($strCount)) {
         }
     }
 
-    function AtualizaMarca(codMarca){
-        showLoad('Aguarde!<br>Carregando as informações da Marca.');
+    function AtualizaCambio(codCambio){
+        showLoad('Aguarde!<br>Carregando as informações da Cambio.');
         TrocaTela('#pnl_Pesq','#Pnl_CadAtu');
-        $('#_edCodMarca').val(codMarca);
-        BuscaDadosMarca(codMarca);
+        $('#_edCodCambio').val(codCambio);
+        BuscaDadosCambio(codCambio);
     }
 
     function CadastrarUsu(){
@@ -243,10 +227,10 @@ if (count($strCount)) {
         hideLoad();
     }
 
-    function DeletaMarca(codMarca){
-        showLoad('Aguarde <br> Excluindo Marca Selecionada.');
+    function DeletaCambio(codCambio){
+        showLoad('Aguarde <br> Excluindo Cambio Selecionado.');
         $.ajax({
-            url: "../Service/DeletaMarca.php?cod="+codMarca,
+            url: "../Service/DeletaCambio.php?cod="+codCambio,
             type: 'POST',
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -262,16 +246,16 @@ if (count($strCount)) {
                 }
                 else{
                     hideLoad();
-                    SuccessBox('Marca Deletada com Sucesso.');
+                    SuccessBox('Cambio Deletado com Sucesso.');
                     atualizaGridPrincipal();
                 }
             }
         });
     }
 
-    function BuscaDadosMarca(codMarca){
+    function BuscaDadosCambio(codCambio){
         $.ajax({
-            url: "../Service/BuscaDadosMarca.php?cod="+codMarca,
+            url: "../Service/BuscaDadosCambio.php?cod="+codCambio,
             type: 'POST',
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -286,7 +270,7 @@ if (count($strCount)) {
                     ErrorBox(dados[0].msg);
                 }
                 else{
-                    $('#_edMarca').val(dados[0].marca);
+                    $('#_edCambio').val(dados[0].cambio);
                     $('#_ddlAtivo').val(dados[0].ativo);
                     hideLoad();
                 }
@@ -299,7 +283,7 @@ if (count($strCount)) {
         showLoad('Carregando Informações!');
 
         $.ajax({
-            url: "../Service/BuscaMarcas.php",
+            url: "../Service/BuscaCambios.php",
             type: 'POST',
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -353,17 +337,7 @@ if (count($strCount)) {
                             }
                         },
                         {
-                            "data": "marca",
-                            "render": function(data, type, row, meta) {
-                                if (type === 'display') {
-                                    data = '<label>' + data + '</label>';
-                                }
-
-                                return data;
-                            }
-                        },
-                        {
-                            "data": "ativo",
+                            "data": "cambio",
                             "render": function(data, type, row, meta) {
                                 if (type === 'display') {
                                     data = '<label>' + data + '</label>';
@@ -386,7 +360,7 @@ if (count($strCount)) {
                             "data": "editar",
                             "render": function(data, type, row, meta) {
                                 if (type === 'display') {
-                                    data = '<div style="cursor:pointer;" onClick="AtualizaMarca(' + data + ')" class="btn btn-success"><i class="icone-pencil"></i></div>';
+                                    data = '<div style="cursor:pointer;" onClick="AtualizaCambio(' + data + ')" class="btn btn-success"><i class="icone-pencil"></i></div>';
                                 }
 
                                 return data;
@@ -396,7 +370,7 @@ if (count($strCount)) {
                             "data": "excluir",
                             "render": function(data, type, row, meta) {
                                 if (type === 'display') {
-                                    data = '<div style="cursor:pointer;" onClick="DeletaMarca(' + data + ')" class="btn btn-danger"><i class="icone-trash"></i></div>';
+                                    data = '<div style="cursor:pointer;" onClick="DeletaCambio(' + data + ')" class="btn btn-danger"><i class="icone-trash"></i></div>';
                                 }
 
                                 return data;
