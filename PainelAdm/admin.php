@@ -1,13 +1,16 @@
 <?php
 include_once 'header.inc.php';
 require_once('../Models/Carros.php');
+require_once('../Models/Publicidades.php');
+require_once('../Models/Anuncios.php');
 setlocale(LC_TIME, 'pt_BR', 'pt_BR.utf-8', 'pt_BR.utf-8', 'portuguese');
 date_default_timezone_set('America/Sao_Paulo');
 
 //INSTANCIANDO OBJETOS
 
 $CARRO = new Carros();
-
+$Pub = new Publicidades();
+$Anun = new Anuncios();
 
 $mes = strftime('%B de %Y', strtotime('today'));
 $numMes = date("m");
@@ -36,15 +39,13 @@ WHERE NOT EXISTS(SELECT 1 FROM KGCTBLDETCAR WHERE CARCOD = DETCODCARRO)';
 $QTDEDETCAR = $CARRO->SelecionarNumCarrosDetIncompletos($SQLCARDET);
 $CarrosIncomp = $QTDEDETCAR[0]->QTDE;
 
-// //Buscando Qtde publicidades
-// $sqlusu = "SELECT count(*) as NumUsuarios FROM usuario WHERE MONTH(usudatcadastro) = '".$numMes."'";
-// $QtdeUsu = Select($sqlusu);
-// $UsuariosMes = $QtdeUsu[0]->NumUsuarios;
+//Buscando Qtde publicidades
+$QtdePub = $Pub->SelecionarTotalPublicidade();
+$AnunciosMes = $QtdePub[0]->NUMPUB;
 
-// //Buscando Qtde Anuncios
-// $sqlusu = "SELECT count(*) as NumUsuarios FROM usuario WHERE MONTH(usudatcadastro) = '".$numMes."'";
-// $QtdeUsu = Select($sqlusu);
-// $UsuariosMes = $QtdeUsu[0]->NumUsuarios;
+//Buscando Qtde Anuncios
+$QtdeAnu = $Anun->SelecionarTotalAnuncio();
+$SolicitacoesMes = $QtdeAnu[0]->NUMANUNCIO;
 
 
 ?>
@@ -146,13 +147,201 @@ if($CarrosIncomp){
 </div>
 
 
+<div class="row">
+    <div class="col-lg-12">
+        <div style="background-color: white; border-radius: 5px; padding:10px;">
+            <h5 class="alert alert-primary" >Veículos Mais Visitados</h5>
+            <table id="_gridVeicVisit" class="table table-striped text-center ">
+                <thead class="bg-success text-white">
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th>Id</th>
+                        <th>Veiculo</th>
+                        <th>Preço</th>
+                        <th>Qtde. Visitas</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+            <div class="bg-dark text-warning" style="width: 100%; padding:5px;">
+                <label for="">Legenda</label>
+                <p >
+                <i class="icone-crown"></i> Veículo Destaque 
+                <br>
+                <label for="" class="text-danger">
+                    <i class="icone-arrows-cw"></i> Aceita Troca
+                </label>
+                </p>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+
 <script>
     $(document).ready(function() {
         CaregaGrafCarros();
         CaregaGrafPub();
         CaregaGrafAnun();
+        atualizaGridVeiculos();
     });
 
+    //Atualiza Grid Veivulos
+    function atualizaGridVeiculos() {
+        //debugger;
+        if ($.fn.DataTable.isDataTable('#_gridVeicVisit')) {
+            var table = $('#_gridVeicVisit').DataTable();
+            table.destroy();
+            CarregaGridVeiculos();
+        } else {
+            CarregaGridVeiculos();
+        }
+    }
+
+    //Carregando Grid Pincipal
+    function CarregaGridVeiculos() {
+        showLoad('Carregando Informações!');
+
+        $.ajax({
+            url: "../Service/BuscaVeiculosVisitados.php",
+            type: 'POST',
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            data: {},
+            success: function(data) {
+                debugger;
+                console.log(data);
+                var dados = JSON.parse(data);
+                console.log(dados);
+                hideLoad();
+                $('#_gridVeicVisit').DataTable({
+                    "language": {
+                        "sEmptyTable": "Nenhum registro encontrado",
+                        "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+                        "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
+                        "sInfoFiltered": "(Filtrados de _MAX_ registros)",
+                        "sInfoPostFix": "",
+                        "sInfoThousands": ".",
+                        "sLengthMenu": "_MENU_ resultados por página",
+                        "sLoadingRecords": "Carregando...",
+                        "sProcessing": "Processando...",
+                        "sZeroRecords": "Nenhum registro encontrado",
+                        "sSearch": "Pesquisar",
+                        "oPaginate": {
+                            "sNext": "Próximo",
+                            "sPrevious": "Anterior",
+                            "sFirst": "Primeiro",
+                            "sLast": "Último"
+                        },
+                        "oAria": {
+                            "sSortAscending": ": Ordenar colunas de forma ascendente",
+                            "sSortDescending": ": Ordenar colunas de forma descendente"
+                        },
+                        "select": {
+                            "rows": {
+                                "_": "Selecionado %d linhas",
+                                "0": "Nenhuma linha selecionada",
+                                "1": "Selecionado 1 linha"
+                            }
+                        }
+                    },
+                    "paging":   false,
+                    "ordering": false,
+                    "info":     false,
+                    "searching": false,
+                    "data": dados,
+                    "columns": [ {
+                            "data": "destaque",
+                            "render": function(data, type, row, meta) {
+                                if (type === 'display') {
+                                    if(data === 'S'){
+                                        data = '<label><i style="font-size:20px;" class="icone-crown text-warning"></i></label>';
+                                    }
+                                    else{
+                                        data = '';
+                                    }
+                                    
+                                }
+
+                                return data;
+                            }
+                        },
+                        {
+                            "data": "troca",
+                            "render": function(data, type, row, meta) {
+                                if (type === 'display') {
+                                    if(data === 'S'){
+                                        data = '<label><i style="font-size:20px;" class="icone-arrows-cw text-danger"></i></label>';
+                                    }
+                                    else{
+                                        data = '';
+                                    }
+                                    
+                                }
+
+                                return data;
+                            }
+                        },{
+                            "data": "id",
+                            "render": function(data, type, row, meta) {
+                                if (type === 'display') {
+                                    data = '<label>' + data + '</label>';
+                                }
+
+                                return data;
+                            }
+                        },
+                        {
+                            "data": "carro",
+                            "render": function(data, type, row, meta) {
+                                if (type === 'display') {
+                                    data = '<label>' + data + '</label>';
+                                }
+
+                                return data;
+                            }
+                        },
+                        {
+                            "data": "preco",
+                            "render": function(data, type, row, meta) {
+                                if (type === 'display') {
+                                    data = '<label>R$ ' + data + '</label>';
+                                }
+
+                                return data;
+                            }
+                        },
+                        {
+                            "data": "visitas",
+                            "render": function(data, type, row, meta) {
+                                if (type === 'display') {
+                                    data = '<label>' + data + '</label>';
+                                }
+
+                                return data;
+                            }
+                        },
+                        {
+                            "data": "editar",
+                            "render": function(data, type, row, meta) {
+                                if (type === 'display') {
+                                    data = '<a  href="InsereAtualizaCarro.php?acao=editar&cod=' + data + '" class="btn btn-success"><i class="icone-forward"></i></a>';
+                                }
+
+                                return data;
+                            }
+                        }
+                    ]
+                });
+            }
+        });
+
+    }
 
 
     function CaregaGrafCarros() {
@@ -216,30 +405,47 @@ if($CarrosIncomp){
                 });
             }
         });
-
-
-
     }
 
 
 
 
     function CaregaGrafPub() {
-        var ctx = $('#_grafPub');
-        var myChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ['Dez/19', 'Jan/20', 'Fev/20', 'Mar/20', 'Abr/20', 'Mai/20'],
-                datasets: [{
-                    label: 'Publicidades',
-                    data: [2, 5, 17, 20, 45, 15],
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(255, 159, 64, 0.2)'
+        $.ajax({
+            url: "../service/PublicidadesPorMes.php",
+            type: 'POST',
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function(data) {
+                console.log(data);
+                var jsonfile = JSON.parse(data);
+                console.log(jsonfile);
+
+                var labels = jsonfile.map(function(e) {
+                    return e.Mes;
+                });
+                var dados = jsonfile.map(function(e) {
+                    return e.Qtde;
+                });
+
+                console.log(labels);
+                console.log(dados);
+
+                var ctx = $('#_grafPub');
+                var myChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Publicidades',
+                            data: dados,
+                            backgroundColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
                     ],
                     borderColor: [
                         'rgba(255, 99, 132, 1)',
@@ -250,37 +456,59 @@ if($CarrosIncomp){
                         'rgba(255, 159, 64, 1)'
                     ],
                     borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }]
                         }
-                    }]
-                }
+                    }
+                });
             }
         });
     }
 
 
     function CaregaGrafAnun() {
-        var ctx = $('#_grafAnun');
-        var myChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ['Dez/19', 'Jan/20', 'Fev/20', 'Mar/20', 'Abr/20', 'Mai/20'],
-                datasets: [{
-                    label: 'Sol. Anuncios',
-                    data: [2, 5, 17, 20, 45, 15],
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(255, 159, 64, 0.2)'
+        $.ajax({
+            url: "../service/AnunciosPorMes.php",
+            type: 'POST',
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function(data) {
+                console.log(data);
+                var jsonfile = JSON.parse(data);
+                console.log(jsonfile);
+
+                var labels = jsonfile.map(function(e) {
+                    return e.Mes;
+                });
+                var dados = jsonfile.map(function(e) {
+                    return e.Qtde;
+                });
+
+                console.log(labels);
+                console.log(dados);
+
+                var ctx = $('#_grafAnun');
+                var myChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Solicitações de Anuncio',
+                            data: dados,
+                            backgroundColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
                     ],
                     borderColor: [
                         'rgba(255, 99, 132, 1)',
@@ -291,16 +519,18 @@ if($CarrosIncomp){
                         'rgba(255, 159, 64, 1)'
                     ],
                     borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }]
                         }
-                    }]
-                }
+                    }
+                });
             }
         });
     }

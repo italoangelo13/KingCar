@@ -47,6 +47,8 @@ $r = $compra->SelecionarNumSolicitacaoCompra();
     <script src="../assets/jQueryte.1.4.0/jquery-te-1.4.0.min.js"></script>
     <script src="../assets/DataTables/datatables.min.js"></script>
     <script src="../assets/lightgallery/js/lightgallery.min.js"></script>
+    <script src="../assets/limittext/jquery.limittext.min.js"></script>
+    <script src="../assets/jQuery-spHtmlEditor/jQuery.spHtmlEditor.js"></script>
     <script src="../assets/kingcar.js"></script>
     
     <script>
@@ -107,14 +109,14 @@ $r = $compra->SelecionarNumSolicitacaoCompra();
                         
                         </li>
                         <li class="nav-item ">
-                        <a class="nav-link" href="#" ><i class="icone-exclamation"></i> <label>Anuncios</label></a>
+                        <a class="nav-link" href="SolAnuncios.php" ><i class="icone-exclamation"></i> <label>Anuncios</label></a>
                         
                         </li>
                         <li class="nav-item ">
                         <a class="nav-link" href="CadastrosBasicos.php" ><i class="icone-plus"></i> <label>Cadastros Basicos</label></a>
                         </li>
                         <li class="nav-item">
-                        <a class="nav-link" href="#" ><i class="icone-question"></i> <label>Sobre </label></a>
+                        <a class="nav-link" href="institucional.php" ><i class="icone-building"></i> <label>Institucional </label></a>
                         </li>
                     </ul>
 

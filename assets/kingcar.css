@@ -141,3 +141,7 @@
 .icone-botao-cad{
   font-size: 50px;
 }
+
+#_gridPesq td{
+    vertical-align: middle;
+}

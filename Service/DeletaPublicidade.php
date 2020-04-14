@@ -27,9 +27,14 @@ try {
         $Json = $util->convert_from_latin1_to_utf8_recursively('[{"TransCod":0, "msg":"Codigo da Publicidade não informado."}]');
     }
     else{
-        if($publicidades->DeletaPublicidadePorCod($codPub)){
-            $Json = $util->convert_from_latin1_to_utf8_recursively('[{"TransCod":1, "msg":"Publicidade Deletada com Sucesso."}]');
-        }
+        $imgPub = $publicidades->SelecionarImagemPublicidadePorCod($codPub);
+        $imagem = $imgPub[0]->PUBIMG;
+        $caminhoImg = '../assets/img/Pub/'.$imagem;
+            if($publicidades->DeletaPublicidadePorCod($codPub)){
+                unlink($caminhoImg);
+                $Json = $util->convert_from_latin1_to_utf8_recursively('[{"TransCod":1, "msg":"Publicidade Deletada com Sucesso."}]');
+            }
+        
     }
 
     

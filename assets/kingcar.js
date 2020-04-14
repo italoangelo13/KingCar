@@ -117,3 +117,13 @@ function showLoadModal(msg,e) {
 function hideLoadModal(e) {
     $(e).loading('stop');
 }
+
+
+function formatReal( int )
+{
+        var tmp = int+'';
+        tmp = tmp.replace(/([0-9]{2})$/g, "0,$1");
+        if( tmp.length > 6 )
+                tmp = tmp.replace(/([0-9]{10}).([0-9]{2}$)/g, ".$1,$2");
+        return tmp;
+}

@@ -53,6 +53,7 @@ class Util{
     }
 
 
+
     public function SelecionarInformaçõesComplementares()
     {
         $pdo = new PDO(server, user, senha);

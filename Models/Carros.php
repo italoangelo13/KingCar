@@ -455,4 +455,26 @@ class Carros
         $smtp->execute();
         return $result = $smtp->fetchAll(PDO::FETCH_CLASS);
     }
+
+    public function SelecionarVeiculosPorQtdeVisitas(){
+        $pdo = new PDO(server, user, senha);
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        $smtp = $pdo->prepare("SELECT
+        CARCOD,
+        CONCAT(MARDESCRICAO,' ',MODDESCRICAO,' ',CORDESCRICAO,' ',CARANO,' - ',COMDESCRICAO) AS VEICULO,
+        CARPRECO,
+        CARDESTAQUE,
+        CARTROCA,
+        CARQTDEVISITAS
+        FROM kgctblcar
+        inner join KGCTBLMAR   ON MARCOD = CARCODMARCA
+        INNER JOIN KGCTBLMOD   ON MODCOD = CARCODMODELO
+        inner join KGCTBLCOR   ON CORCOD = CARCODCOR
+        inner join KGCTBLCOM   ON COMCOD = CARCODCOMBUSTIVEL
+        order by carqtdevisitas desc
+        limit 10");
+        $smtp->execute();
+        return $result = $smtp->fetchAll(PDO::FETCH_CLASS);
+    }
 }

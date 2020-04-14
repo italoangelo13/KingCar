@@ -82,6 +82,79 @@ class Anuncios{
             return false;
         }
     }
+
+
+    public function SelecionarTotalAnuncio()
+    {
+        $pdo = new PDO(server, user, senha);
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        $smtp = $pdo->prepare("SELECT COUNT(*) AS NUMANUNCIO FROM kgctblsolanu");
+        $smtp->execute();
+
+        if ($smtp->rowCount() > 0) {
+            return $result = $smtp->fetchAll(PDO::FETCH_CLASS);
+        }
+    }
+
+    public function SelecionarAnuncioPorCod($codAnun)
+    {
+        $pdo = new PDO(server, user, senha);
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        $smtp = $pdo->prepare("SELECT
+        SOLCOD,
+        SOLANOME,
+        SOLEMAIL,
+        CONCAT(MARDESCRICAO,' ',MODDESCRICAO,' ',SOLANO) AS VEICULO,
+        SOLDTCADASTRO,
+        SOLANO,
+        SOLFOTOCAPA,
+        MARDESCRICAO,
+        MODDESCRICAO,
+        CORDESCRICAO,
+        CAMDESCRICAO,
+        COMDESCRICAO,
+        SOLKM,
+        SOLPRECO,
+        SOLTROCA
+        FROM kgctblsolanu
+        inner join KGCTBLMAR   ON MARCOD = SOLCODMARCA
+        INNER JOIN KGCTBLMOD   ON MODCOD = SOLCODMODELO
+        inner join KGCTBLCOR   ON CORCOD = SOLCOR
+        inner join KGCTBLCAM   ON CAMCOD = SOLCAMBIO
+        inner join KGCTBLCOM   ON COMCOD = SOLCOMBUSTIVEL where SOLCOD = $codAnun");
+        $smtp->execute();
+
+        if ($smtp->rowCount() > 0) {
+            return $result = $smtp->fetchAll(PDO::FETCH_CLASS);
+        }
+        
+    }
+
+    public function SelecionarListaAnuncio()
+    {
+        $pdo = new PDO(server, user, senha);
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        $smtp = $pdo->prepare("SELECT
+                                SOLCOD,
+                                SOLANOME,
+                                SOLEMAIL,
+                                CONCAT(MARDESCRICAO,' ',MODDESCRICAO,' ',SOLANO) AS VEICULO,
+                                SOLDTCADASTRO,
+                                SOLFOTOCAPA
+                                FROM kgctblsolanu
+                                inner join KGCTBLMAR
+                                ON MARCOD = SOLCODMARCA
+                                INNER JOIN KGCTBLMOD
+                                ON MODCOD = SOLCODMODELO");
+        $smtp->execute();
+
+        if ($smtp->rowCount() > 0) {
+            return $result = $smtp->fetchAll(PDO::FETCH_CLASS);
+        }
+    }
 }
 
 ?>

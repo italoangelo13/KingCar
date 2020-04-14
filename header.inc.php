@@ -1,10 +1,20 @@
 <?php
+require_once 'config/Util.php';
+$util = new Util();
 $telefone = null;
-$facebook = '#';
-$whatsapp = '#';
-$instagram = '#';
+$facebook = null;
+$whatsapp = null;
+$instagram = null;
 
-$telefone = '(031) 3671 - 0000';
+$parTel= $util->SelecionarParametroPorCod(7); //7 - Telefone
+$parWhat= $util->SelecionarParametroPorCod(8); //8 - whatsapp
+$parFace= $util->SelecionarParametroPorCod(9); //9 - facebook
+$parInsta= $util->SelecionarParametroPorCod(10); //10 - instagram
+
+$telefone = $parTel[0]->PRMVAL;
+$whatsapp = $parWhat[0]->PRMVAL;
+$facebook = $parFace[0]->PRMVAL;
+$instagram = $parInsta[0]->PRMVAL;
 
 ?>
 <!DOCTYPE html>
@@ -16,6 +26,7 @@ $telefone = '(031) 3671 - 0000';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>KingCar - Troca e Venda</title>
+    <link rel="stylesheet" href="assets/jquery-ui/jquery-ui.min.css">
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/fontello/css/fontello.css">
     <link rel="stylesheet" href="assets/fontawesome/css/all.min.css">
@@ -26,6 +37,7 @@ $telefone = '(031) 3671 - 0000';
     <link rel="stylesheet" href="assets/DataTables/datatables.min.css">
     <link rel="stylesheet" href="assets/lightgallery/css/lightgallery.min.css">
     <script src="assets/jquery-3.3.1.min.js"></script>
+    <script src="assets/jquery-ui/jquery-ui.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/fontawesome/js/all.min.js"></script>
     <script src="assets/jquery-confirm/jquery-confirm.min.js"></script>
@@ -107,26 +119,37 @@ function hideLoad() {
             </div>
             <div class="col-lg-4 text-right">
                 <div class="container-fluid" >
+                    <?php if($facebook){?>
                     <div class="row">
                         <div class="col-lg-12">
-                            <a href="<?php echo $facebook; ?>" class="text-dark" style="text-decoration: none;"><i class="icone-facebook-rect-1"></i> Facebook </a>
+                            <a target="_blank" href="<?php echo $facebook; ?>" class="text-dark" style="text-decoration: none;"><i class="icone-facebook-rect-1"></i> Facebook </a>
                         </div>
                     </div>
+                    <?php } ?>
+
+                    <?php if($instagram){?>
                     <div class="row">
                         <div class="col-lg-12">
-                            <a href="<?php echo $instagram; ?>" class="text-dark" style="text-decoration: none;"><i class="icone-instagram-filled"></i> Instagram </a>
+                            <a target="_blank" href="<?php echo $instagram; ?>" class="text-dark" style="text-decoration: none;"><i class="icone-instagram-filled"></i> Instagram </a>
                         </div>
                     </div>
+                    <?php } ?>
+
+                    <?php if($whatsapp){?>
                     <div class="row">
                         <div class="col-lg-12">
-                            <a href="<?php echo $whatsapp; ?>" class="text-dark" style="text-decoration: none;"><i class="icone-whatsapp"></i> Whatsapp </a>
+                            <a target="_blank" href="https://api.whatsapp.com/send?phone=<?php echo $whatsapp; ?>&text=Olá!" class="text-dark" style="text-decoration: none;"><i class="icone-whatsapp"></i> Whatsapp </a>
                         </div>
                     </div>
+                    <?php } ?>
+
+                    <?php if($telefone){?>
                     <div class="row">
                         <div class="col-lg-12 text-dark">
                             <i class="icone-phone"></i> <?php echo $telefone; ?>
                         </div>
                     </div>
+                    <?php } ?>
                 </div>
             </div>
         </header>
