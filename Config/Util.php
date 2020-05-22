@@ -52,6 +52,18 @@ class Util{
         return $result = $smtp->fetchAll(PDO::FETCH_CLASS);
     }
 
+    public function SelecionarItensVeiculo()
+    {
+        $pdo = new PDO(server, user, senha);
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        $smtp = $pdo->prepare("SELECT COMPCOD, COMPDESC, COMPNOMCAMPO FROM kgctblinfocomp");
+        $smtp->execute();
+
+
+        return $result = $smtp->fetchAll(PDO::FETCH_CLASS);
+    }
+
 
 
     public function SelecionarInformaçõesComplementares()

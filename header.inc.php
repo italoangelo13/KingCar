@@ -6,10 +6,10 @@ $facebook = null;
 $whatsapp = null;
 $instagram = null;
 
-$parTel= $util->SelecionarParametroPorCod(7); //7 - Telefone
-$parWhat= $util->SelecionarParametroPorCod(8); //8 - whatsapp
-$parFace= $util->SelecionarParametroPorCod(9); //9 - facebook
-$parInsta= $util->SelecionarParametroPorCod(10); //10 - instagram
+$parTel = $util->SelecionarParametroPorCod(7); //7 - Telefone
+$parWhat = $util->SelecionarParametroPorCod(8); //8 - whatsapp
+$parFace = $util->SelecionarParametroPorCod(9); //9 - facebook
+$parInsta = $util->SelecionarParametroPorCod(10); //10 - instagram
 
 $telefone = $parTel[0]->PRMVAL;
 $whatsapp = $parWhat[0]->PRMVAL;
@@ -48,107 +48,107 @@ $instagram = $parInsta[0]->PRMVAL;
     <script src="assets/DataTables/datatables.min.js"></script>
     <script src="assets/lightgallery/js/lightgallery.min.js"></script>
     <script src="assets/kingcar.js"></script>
-<script>
-$(document).ready(function () {
-    $("#_ddlMarca").change(function(){ 
-        CarregaDdlModelo();
-    });
+    <script>
+        $(document).ready(function() {
+            $("#_ddlMarca").change(function() {
+                CarregaDdlModelo();
+            });
 
-    function SuccessBox(msg) {
-    $.alert({
-        title: 'KingCar Alerta',
-        content: msg,
-        type: 'green',
-        typeAnimated: true,
-    });
-}
+            function SuccessBox(msg) {
+                $.alert({
+                    title: 'KingCar Alerta',
+                    content: msg,
+                    type: 'green',
+                    typeAnimated: true,
+                });
+            }
 
-function WarningBox(msg) {
-    $.alert({
-        title: 'KingCar Alerta',
-        content: msg,
-        type: 'orange',
-        typeAnimated: true,
-    });
-}
+            function WarningBox(msg) {
+                $.alert({
+                    title: 'KingCar Alerta',
+                    content: msg,
+                    type: 'orange',
+                    typeAnimated: true,
+                });
+            }
 
-function ErrorBox(msg) {
-    $.alert({
-        title: 'KingCar Alerta',
-        content: msg,
-        type: 'red',
-        typeAnimated: true,
-    });
-}
-
-
-function DefaultBox(msg) {
-    $.alert({
-        title: 'KingCar Alerta',
-        content: msg,
-        type: 'dark',
-        typeAnimated: true,
-    });
-}
+            function ErrorBox(msg) {
+                $.alert({
+                    title: 'KingCar Alerta',
+                    content: msg,
+                    type: 'red',
+                    typeAnimated: true,
+                });
+            }
 
 
-function showLoad(msg) {
-    if (msg == null || msg == '') {
-        msg = 'Carregando...'
-    }
-
-    $('body').loading({
-        theme: 'dark',
-        message: msg
-    });
-}
+            function DefaultBox(msg) {
+                $.alert({
+                    title: 'KingCar Alerta',
+                    content: msg,
+                    type: 'dark',
+                    typeAnimated: true,
+                });
+            }
 
 
-function hideLoad() {
-    $('body').loading('stop');
-}
-});
-</script>
+            function showLoad(msg) {
+                if (msg == null || msg == '') {
+                    msg = 'Carregando...'
+                }
+
+                $('body').loading({
+                    theme: 'dark',
+                    message: msg
+                });
+            }
+
+
+            function hideLoad() {
+                $('body').loading('stop');
+            }
+        });
+    </script>
 </head>
 
-<body  style="background: black;">
+<body style="background: black;">
     <div class="container-fluid">
         <header class="row bg-white" style="padding: 5px;">
-            <div class="col-lg-8">
-                <img src="assets/img/logo-preto.png" alt="logo" style="width:15vw;">
+            <div class="col-lg-3 text-center text-lg-left">
+                <img src="assets/img/logo-preto.png" alt="logo" style="width:100%;">
             </div>
-            <div class="col-lg-4 text-right">
-                <div class="container-fluid" >
-                    <?php if($facebook){?>
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <a target="_blank" href="<?php echo $facebook; ?>" class="text-dark" style="text-decoration: none;"><i class="icone-facebook-rect-1"></i> Facebook </a>
+            <div class="col-lg-9 text-center text-lg-right">
+                <div class="container-fluid">
+                    <?php if ($facebook) { ?>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <a target="_blank" href="<?php echo $facebook; ?>" class="text-dark" style="text-decoration: none;"><i class="icone-facebook-rect-1"></i> Facebook </a>
+                            </div>
                         </div>
-                    </div>
                     <?php } ?>
 
-                    <?php if($instagram){?>
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <a target="_blank" href="<?php echo $instagram; ?>" class="text-dark" style="text-decoration: none;"><i class="icone-instagram-filled"></i> Instagram </a>
+                    <?php if ($instagram) { ?>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <a target="_blank" href="<?php echo $instagram; ?>" class="text-dark" style="text-decoration: none;"><i class="icone-instagram-filled"></i> Instagram </a>
+                            </div>
                         </div>
-                    </div>
                     <?php } ?>
 
-                    <?php if($whatsapp){?>
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <a target="_blank" href="https://api.whatsapp.com/send?phone=<?php echo $whatsapp; ?>&text=Olá!" class="text-dark" style="text-decoration: none;"><i class="icone-whatsapp"></i> Whatsapp </a>
+                    <?php if ($whatsapp) { ?>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <a target="_blank" href="https://api.whatsapp.com/send?phone=<?php echo $whatsapp; ?>&text=Olá!" class="text-dark" style="text-decoration: none;"><i class="icone-whatsapp"></i> Whatsapp </a>
+                            </div>
                         </div>
-                    </div>
                     <?php } ?>
 
-                    <?php if($telefone){?>
-                    <div class="row">
-                        <div class="col-lg-12 text-dark">
-                            <i class="icone-phone"></i> <?php echo $telefone; ?>
+                    <?php if ($telefone) { ?>
+                        <div class="row">
+                            <div class="col-lg-12 text-dark">
+                                <i class="icone-phone"></i> <?php echo $telefone; ?>
+                            </div>
                         </div>
-                    </div>
                     <?php } ?>
                 </div>
             </div>
@@ -156,9 +156,9 @@ function hideLoad() {
         <div class="row">
             <div class="col-lg-12" style="padding: 0px;">
                 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-                    <a class="navbar-brand" href="index.php">
-                        
-                    </a>
+                    <label class="d-block d-sm-none navbar-brand">
+                        Menu
+                    </label>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
@@ -167,9 +167,19 @@ function hideLoad() {
                         <ul class="navbar-nav mr-auto" style="font-weight: 700; font-size: 14pt;">
                             <li class="nav-item"><a class="nav-link" href="index.php">Inicio</a></li>
                             <li class="nav-item"><a class="nav-link" href="sobre.php">Institucional</a></li>
-                            <li class="nav-item"><a class="nav-link" href="carros.php">Carros</a></li>
-                            <li class="nav-item"><a class="nav-link" href="anuncio.php">Anuncie</a></li>
+                            <li class="nav-item" style="display: none"><a class="nav-link" href="carros.php">Carros</a></li>
+                            <li class="nav-item" style="display: none"><a class="nav-link" href="anuncio.php">Anuncie</a></li>
                             <li class="nav-item"><a class="nav-link" href="faleConosco.php">Contato</a></li>
+                            <li class="nav-item dropdown">
+                                <label class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Veículos
+                                </label>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item btn-drop" href="carros.php">Semi-novos</a>
+                                    <a class="dropdown-item btn-drop" href="pesqRepasse.php">Repasse</a>
+                                    <a class="dropdown-item btn-drop" href="pesqSinistrados.php">Sinistrados/Recuperados</a>
+                                </div>
+                            </li>
                         </ul>
                         <form class="form-inline my-2 my-lg-0">
                             <label class="text-white"></label>
@@ -177,4 +187,4 @@ function hideLoad() {
                     </div>
                 </nav>
             </div>
-</div>
+        </div>

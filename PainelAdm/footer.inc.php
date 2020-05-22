@@ -1,4 +1,4 @@
-<footer class="row bg-success" style="margin-top:10px;">
+<footer class="footer row bg-success" style="margin-top:10px;">
 <div class="col-lg-6">
     <address class="text-white">
         Versão 01.00.00

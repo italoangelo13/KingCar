@@ -64,7 +64,7 @@ if($CarrosIncomp){
         <div class="container box-dash bg-secondary">
             <div class="row">
                 <div class="col-6 text-white">
-                    <h6>Carros</h6>
+                    <h6>Veículos</h6>
                     <i class="fas fa-car" style="font-size:50pt;"></i>
                 </div>
                 <div class="col-6 text-center">

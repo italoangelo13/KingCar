@@ -37,6 +37,7 @@ $r = $compra->SelecionarNumSolicitacaoCompra();
     <link rel="stylesheet" href="../assets/jQueryte.1.4.0/jquery-te-1.4.0.css">
     <link rel="stylesheet" href="../assets/DataTables/datatables.min.css">
     <link rel="stylesheet" href="../assets/lightgallery/css/lightgallery.min.css">
+    <link rel="stylesheet" href="../assets/Jquery-Ui/jquery-ui.min.css">
     <script src="../assets/jquery-3.3.1.min.js"></script>
     <script src="../assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="../assets/fontawesome/js/all.min.js"></script>
@@ -49,6 +50,9 @@ $r = $compra->SelecionarNumSolicitacaoCompra();
     <script src="../assets/lightgallery/js/lightgallery.min.js"></script>
     <script src="../assets/limittext/jquery.limittext.min.js"></script>
     <script src="../assets/jQuery-spHtmlEditor/jQuery.spHtmlEditor.js"></script>
+    <script src="../assets/Jquery-Ui/jquery-ui.min.js"></script>
+    <!-- <script src="../assets/inputmask/jquery.inputmask.min.js"></script> -->
+    <script src="../assets/jquery.mask.min.js"></script> 
     <script src="../assets/kingcar.js"></script>
     
     <script>
@@ -101,7 +105,7 @@ $r = $compra->SelecionarNumSolicitacaoCompra();
                         
                         </li>
                         <li class="nav-item">
-                        <a class="nav-link" href="CrudCarros.php" ><i class="fas fa-car"></i> <label>Carros </label></a>
+                        <a class="nav-link" href="CrudVeiculos.php" ><i class="fas fa-car"></i> <label>Veículos </label></a>
                         
                         </li>
                         <li class="nav-item ">
