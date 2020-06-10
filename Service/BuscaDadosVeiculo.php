@@ -17,7 +17,7 @@ $car = new Carros();
 $util = new Util();
 $Json = null;
 $codVeiculo = null;
-
+$fmt = new NumberFormatter( 'pt_BR', NumberFormatter::CURRENCY );
 try {
     if(isset($_GET)){
         $codVeiculo = $_GET['cod'];
@@ -47,24 +47,16 @@ try {
     $objVeiculo->Combustivel = $Veiculo[0]->CARCODCOMBUSTIVEL; 
     $objVeiculo->Cambio = $Veiculo[0]->CARCODCAMBIO; 
     $objVeiculo->Placa = $Veiculo[0]->CARPLACA;
-
-    if($Veiculo[0]->CARREPASSE == 'S'){
-        $objVeiculo->TipoAnuncio = 'R';
-    }
-    elseif($Veiculo[0]->CARSINISTRADO == 'S'){
-        $objVeiculo->TipoAnuncio = 'S';
-    }
-    else{
-        $objVeiculo->TipoAnuncio = 'N';
-    }
-    
+    $objVeiculo->TipoAnuncio = $Veiculo[0]->CARTIPOANUNCIO;
+    $objVeiculo->InfoAdicional = $Veiculo[0]->CARINFOAD;
     $objVeiculo->Carroceria = $Veiculo[0]->CARCARROCERIA;
     $objVeiculo->Destaque = $Veiculo[0]->CARDESTAQUE;
     $objVeiculo->Status = $Veiculo[0]->CARCODSTATUS;
     $objVeiculo->Versao = $Veiculo[0]->CARVERSAO;
     $objVeiculo->Motor = $Veiculo[0]->CARMOTOR;
     $objVeiculo->Valvulas = $Veiculo[0]->CARVALVULAS;
-    $objVeiculo->Km = $Veiculo[0]->CARKM;
+    $km = $fmt->formatCurrency($Veiculo[0]->CARKM,'BRL');
+    $objVeiculo->Km = $km;
     $objVeiculo->Portas = $Veiculo[0]->CARPORTAS;
     $objVeiculo->Uf = $Veiculo[0]->CARUF;
     $objVeiculo->Municipio = $Veiculo[0]->CARCODMUNICIPIO;
@@ -73,7 +65,9 @@ try {
     $objVeiculo->NomeAnunciante = $Veiculo[0]->CARNOMEANUNCIANTE;
     $objVeiculo->EmailAnunciante = $Veiculo[0]->CAREMAILANUNCIANTE;
     $objVeiculo->TelAnunciante = $Veiculo[0]->CARTELANUNCIANTE;
-    $objVeiculo->Preco = $Veiculo[0]->CARPRECO;
+    
+    $preco = $fmt->formatCurrency($Veiculo[0]->CARPRECO,'BRL');
+    $objVeiculo->Preco = $preco;
     $stringVeiculo =  json_encode($objVeiculo);
     if (count($Veiculo)) {
         $Json = '[';

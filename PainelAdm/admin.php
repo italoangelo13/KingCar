@@ -50,17 +50,17 @@ $SolicitacoesMes = $QtdeAnu[0]->NUMANUNCIO;
 
 ?>
 <?php
-if($CarrosIncomp){
+if ($CarrosIncomp) {
 ?>
-<div class="row alert-warning" style="margin-top:10px;">
-    <div class="col-lg-12">
-        <h5><i class="icone-warning"></i> Existe <?php echo $CarrosIncomp; ?> Veiculo(s) com pendencias de cadastros, <a href="relatorioCarrosIncompletos.php">Clique Aqui</a> para Visualizar os Veiculos Inconsistentes.</h5>
+    <div class="row alert-warning" style="margin-top:10px;">
+        <div class="col-lg-12">
+            <h5><i class="icone-warning"></i> Existe <?php echo $CarrosIncomp; ?> Veiculo(s) com pendencias de cadastros, <a href="relatorioCarrosIncompletos.php">Clique Aqui</a> para Visualizar os Veiculos Inconsistentes.</h5>
+        </div>
     </div>
-</div>
 <?php } ?>
 <div class="row" style="margin-top:10px;">
     <!-- Box Carros -->
-    <div class="col-lg-3 " style="margin-bottom: 3px;">
+    <div class="col-lg-4 " style="margin-bottom: 3px;">
         <div class="container box-dash bg-secondary">
             <div class="row">
                 <div class="col-6 text-white">
@@ -75,7 +75,7 @@ if($CarrosIncomp){
     </div>
 
     <!-- Box Anuncios -->
-    <div class="col-lg-3 " style="margin-bottom: 3px;">
+    <div class="col-lg-4 " style="margin-bottom: 3px;">
         <div class="container box-dash bg-danger">
             <div class="row">
                 <div class="col-6 text-white">
@@ -90,7 +90,7 @@ if($CarrosIncomp){
 
     </div>
 
-    <!-- Box Sol. Anuncio -->
+    <!-- Box Sol. Anuncio
     <div class="col-lg-3" style="margin-bottom: 3px;">
         <div class="container box-dash bg-info">
             <div class="row">
@@ -104,10 +104,10 @@ if($CarrosIncomp){
             </div>
         </div>
 
-    </div>
+    </div> -->
 
     <!-- Box Usuarios -->
-    <div class="col-lg-3" style="margin-bottom: 3px;">
+    <div class="col-lg-4" style="margin-bottom: 3px;">
         <div class="container box-dash bg-success">
             <div class="row">
                 <div class="col-6 text-white">
@@ -124,38 +124,46 @@ if($CarrosIncomp){
 </div>
 
 <div class="row" style="padding:10px;">
-    <div class="col-lg-4" style="padding: 5px;">
+    <div class="col-lg-6" style="padding: 5px;">
         <div style="background-color: white; border-radius: 5px; padding:2px;">
             <h5 class="alert alert-primary">Carros por Mês</h5>
             <canvas id="_grafCarros" width="100%"></canvas>
+            <div class="text-center" style="display: none;" id="msg-empty-vei">
+
+            </div>
         </div>
     </div>
 
-    <div class="col-lg-4" style="padding: 5px;">
+    <div class="col-lg-6" style="padding: 5px;">
         <div style="background-color: white; border-radius: 5px; padding:2px;">
             <h5 class="alert alert-primary">Publicidades por Mês</h5>
             <canvas id="_grafPub" width="100%"></canvas>
+            <div class="text-center" style="display: none;" id="msg-empty-pub">
+
+            </div>
         </div>
     </div>
 
-    <div class="col-lg-4" style="padding: 5px;">
+    <!-- <div class="col-lg-4" style="padding: 5px;">
         <div style="background-color: white; border-radius: 5px; padding:2px;">
             <h5 class="alert alert-primary">Sol. Anuncios por Mês</h5>
             <canvas id="_grafAnun" width="100%"></canvas>
+            
         </div>
-    </div>
+    </div> -->
 </div>
 
 
 <div class="row">
     <div class="col-lg-12">
         <div style="background-color: white; border-radius: 5px; padding:10px;">
-            <h5 class="alert alert-primary" >Veículos Mais Visitados</h5>
-            <table id="_gridVeicVisit" class="table table-striped text-center ">
+            <h5 class="alert alert-primary">Veículos Mais Visitados</h5>
+            <table id="_gridVeicVisit" style="width: 100%" class="table table-striped text-center table-responsive-md">
                 <thead class="bg-success text-white">
                     <tr>
                         <th></th>
                         <th></th>
+                        <th>Tipo</th>
                         <th>Id</th>
                         <th>Veiculo</th>
                         <th>Preço</th>
@@ -169,15 +177,28 @@ if($CarrosIncomp){
             </table>
             <div class="bg-dark text-warning" style="width: 100%; padding:5px;">
                 <label for="">Legenda</label>
-                <p >
-                <i class="icone-crown"></i> Veículo Destaque 
-                <br>
-                <label for="" class="text-danger">
-                    <i class="icone-arrows-cw"></i> Aceita Troca
-                </label>
+                <p>
+                    <i class="icone-crown"></i> Veículo Destaque
+                    <br>
+                    <label for="" class="text-danger">
+                        <i class="icone-arrows-cw"></i> Aceita Troca
+                    </label>
+                    <br>
+                    <label for="" class="text-info">
+                        <i class="icone-diamond"></i> Novo/Semi-novo
+                    </label>
+                    <br>
+                    <label for="" class="text-success">
+                        <i class="icone-forward-1"></i> Repasse
+                    </label>
+                    <br>
+                    <label for="" class="text-primary">
+                        <i class="icone-hammer"></i> Sinistrado/Recuperado
+                    </label>
+
                 </p>
             </div>
-            
+
         </div>
     </div>
 </div>
@@ -185,6 +206,7 @@ if($CarrosIncomp){
 
 <script>
     $(document).ready(function() {
+
         CaregaGrafCarros();
         CaregaGrafPub();
         CaregaGrafAnun();
@@ -250,22 +272,21 @@ if($CarrosIncomp){
                             }
                         }
                     },
-                    "paging":   false,
+                    "paging": false,
                     "ordering": false,
-                    "info":     false,
+                    "info": false,
                     "searching": false,
                     "data": dados,
-                    "columns": [ {
+                    "columns": [{
                             "data": "destaque",
                             "render": function(data, type, row, meta) {
                                 if (type === 'display') {
-                                    if(data === 'S'){
+                                    if (data === 'S') {
                                         data = '<label><i style="font-size:20px;" class="icone-crown text-warning"></i></label>';
-                                    }
-                                    else{
+                                    } else {
                                         data = '';
                                     }
-                                    
+
                                 }
 
                                 return data;
@@ -275,18 +296,35 @@ if($CarrosIncomp){
                             "data": "troca",
                             "render": function(data, type, row, meta) {
                                 if (type === 'display') {
-                                    if(data === 'S'){
+                                    if (data === 'S') {
                                         data = '<label><i style="font-size:20px;" class="icone-arrows-cw text-danger"></i></label>';
-                                    }
-                                    else{
+                                    } else {
                                         data = '';
                                     }
-                                    
+
                                 }
 
                                 return data;
                             }
-                        },{
+                        },
+                        {
+                            "data": "tipo",
+                            "render": function(data, type, row, meta) {
+                                if (type === 'display') {
+                                    if (data === 'S') {
+                                        data = '<label><i style="font-size:20px;" class="icone-hammer text-primary"></i></label>';
+                                    } else if(data === 'R') {
+                                        data = '<label><i style="font-size:20px;" class="icone-forward-1 text-success"></i></label>';
+                                    }
+                                    else if(data === 'N'){
+                                        data = '<label><i style="font-size:20px;" class="icone-diamond text-info"></i></label>';
+                                    }
+
+                                }
+
+                                return data;
+                            }
+                        }, {
                             "data": "id",
                             "render": function(data, type, row, meta) {
                                 if (type === 'display') {
@@ -353,6 +391,15 @@ if($CarrosIncomp){
             dataType: "json",
             success: function(data) {
                 console.log(data);
+
+                if(data[0].TransCod == 0){
+                    let element = '<h4 class="display-4">Sem Registros de Veiculos no momento!</h4>';
+                    $('#_grafCarros').css('display','none');
+                    $('#msg-empty-vei').css('display','block');
+                    $('#msg-empty-vei').append(element);
+                    return;
+                }
+
                 var jsonfile = JSON.parse(data);
                 console.log(jsonfile);
 
@@ -375,22 +422,22 @@ if($CarrosIncomp){
                             label: 'Carros',
                             data: dados,
                             backgroundColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)'
-                    ],
-                    borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)'
-                    ],
-                    borderWidth: 1
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 206, 86, 1)',
+                                'rgba(75, 192, 192, 1)',
+                                'rgba(153, 102, 255, 1)',
+                                'rgba(255, 159, 64, 1)'
+                            ],
+                            borderColor: [
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 206, 86, 1)',
+                                'rgba(75, 192, 192, 1)',
+                                'rgba(153, 102, 255, 1)',
+                                'rgba(255, 159, 64, 1)'
+                            ],
+                            borderWidth: 1
                         }]
                     },
                     options: {
@@ -418,6 +465,14 @@ if($CarrosIncomp){
             dataType: "json",
             success: function(data) {
                 console.log(data);
+                if(data[0].TransCod == 0){
+                    let element = '<h4 class="display-4">Sem Registros de Publicidade no momento!</h4>';
+                    $('#_grafPub').css('display','none');
+                    $('#msg-empty-pub').css('display','block');
+                    $('#msg-empty-pub').append(element);
+                    return;
+                }
+
                 var jsonfile = JSON.parse(data);
                 console.log(jsonfile);
 
@@ -431,6 +486,8 @@ if($CarrosIncomp){
                 console.log(labels);
                 console.log(dados);
 
+                
+
                 var ctx = $('#_grafPub');
                 var myChart = new Chart(ctx, {
                     type: 'bar',
@@ -440,22 +497,22 @@ if($CarrosIncomp){
                             label: 'Publicidades',
                             data: dados,
                             backgroundColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)'
-                    ],
-                    borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)'
-                    ],
-                    borderWidth: 1
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 206, 86, 1)',
+                                'rgba(75, 192, 192, 1)',
+                                'rgba(153, 102, 255, 1)',
+                                'rgba(255, 159, 64, 1)'
+                            ],
+                            borderColor: [
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 206, 86, 1)',
+                                'rgba(75, 192, 192, 1)',
+                                'rgba(153, 102, 255, 1)',
+                                'rgba(255, 159, 64, 1)'
+                            ],
+                            borderWidth: 1
                         }]
                     },
                     options: {
@@ -491,9 +548,10 @@ if($CarrosIncomp){
                     return e.Qtde;
                 });
 
+
                 console.log(labels);
                 console.log(dados);
-
+                
                 var ctx = $('#_grafAnun');
                 var myChart = new Chart(ctx, {
                     type: 'bar',
@@ -503,22 +561,22 @@ if($CarrosIncomp){
                             label: 'Solicitações de Anuncio',
                             data: dados,
                             backgroundColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)'
-                    ],
-                    borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)'
-                    ],
-                    borderWidth: 1
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 206, 86, 1)',
+                                'rgba(75, 192, 192, 1)',
+                                'rgba(153, 102, 255, 1)',
+                                'rgba(255, 159, 64, 1)'
+                            ],
+                            borderColor: [
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 206, 86, 1)',
+                                'rgba(75, 192, 192, 1)',
+                                'rgba(153, 102, 255, 1)',
+                                'rgba(255, 159, 64, 1)'
+                            ],
+                            borderWidth: 1
                         }]
                     },
                     options: {

@@ -30,8 +30,10 @@ class Carros
     public $EmailAnunciante;
     public $TelAnunciante;
     public $Preco;
+    public $InfoAdicional;
 
-    public function Carros() {
+    public function Carros()
+    {
         $Id = null;
         $DtCadastro = null;
         $User = null;
@@ -60,9 +62,25 @@ class Carros
         $EmailAnunciante = null;
         $TelAnunciante = null;
         $Preco = null;
+        $InfoAdicional = null;
     }
 
-    
+    public function SelecionarItensMarcadosVeiculo($codVeiculo)
+    {
+        $pdo = new PDO(server, user, senha);
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        $smtp = $pdo->prepare("SELECT COMPDESC, COMPNOMCAMPO FROM kgctblive
+        inner join kgctblinfocomp
+        on COMPCOD = IVECODITEM
+        where ivecodcarro = $codVeiculo");
+
+        $smtp->execute();
+
+        if ($smtp->rowCount() > 0) {
+            return $result = $smtp->fetchAll(PDO::FETCH_CLASS);
+        }
+    }
 
 
     public function SelecionarVeiculosGrid()
@@ -98,7 +116,7 @@ class Carros
         MARDESCRICAO,
         MODDESCRICAO,
         CARPRECO,
-        CARANO,
+        CONCAT(CARANOFAB,'/',CARANOMOD) AS CARANO,
         CARFOTO,
         CARPORTAS,
         COMDESCRICAO,
@@ -109,7 +127,7 @@ class Carros
         mundescricao,
         munuf,
         CONCAT(mundescricao,' - ',munuf) AS LOCALIZACAO,
-        CONCAT('#',CARCOD,' - ',MODDESCRICAO,' ',CARANO) AS CARNOME
+        CONCAT('#',CARCOD,' - ',MODDESCRICAO,' ',CARANOFAB,'/',CARANOMOD) AS CARNOME
         FROM kgctblcar
         INNER JOIN kgctblmar
         ON CARCODMARCA = MARCOD
@@ -122,6 +140,7 @@ class Carros
         inner join kgctblmun
         on carcodmunicipio = muncodigoibge
         WHERE CARDESTAQUE = 'N'
+        and CARTIPOANUNCIO = 'N'
         ORDER BY CARQTDEVISITAS DESC limit 12");
         $smtp->execute();
 
@@ -139,7 +158,7 @@ class Carros
         MARDESCRICAO,
         MODDESCRICAO,
         CARPRECO,
-        CARANO,
+        CONCAT(CARANOFAB,'/',CARANOMOD) AS CARANO,
         CARFOTO,
         CARPORTAS,
         COMDESCRICAO,
@@ -150,7 +169,7 @@ class Carros
         mundescricao,
         munuf,
         CONCAT(mundescricao,' - ',munuf) AS LOCALIZACAO,
-        CONCAT('#',CARCOD,' - ',MODDESCRICAO,' ',CARANO) AS CARNOME
+        CONCAT('#',CARCOD,' - ',MODDESCRICAO,' ',CARANOFAB,'/',CARANOMOD) AS CARNOME
         FROM kgctblcar
         INNER JOIN kgctblmar
         ON CARCODMARCA = MARCOD
@@ -162,6 +181,7 @@ class Carros
         ON CARCODCOMBUSTIVEL = comCOD
         inner join kgctblmun
         on carcodmunicipio = muncodigoibge
+        WHERE CARTIPOANUNCIO = 'N' OR CARTIPOANUNCIO IS NULL
         ORDER BY CARQTDEVISITAS DESC");
         $smtp->execute();
 
@@ -179,7 +199,7 @@ class Carros
         MARDESCRICAO,
         MODDESCRICAO,
         CARPRECO,
-        CARANO,
+        CONCAT(CARANOFAB,'/',CARANOMOD) AS CARANO,
         CARFOTO,
         CARPORTAS,
         COMDESCRICAO,
@@ -190,7 +210,7 @@ class Carros
         mundescricao,
         munuf,
         CONCAT(mundescricao,' - ',munuf) AS LOCALIZACAO,
-        CONCAT('#',CARCOD,' - ',MODDESCRICAO,' ',CARANO) AS CARNOME
+        CONCAT('#',CARCOD,' - ',MODDESCRICAO,' ',CARANOFAB,'/',CARANOMOD) AS CARNOME
         FROM kgctblcar
         INNER JOIN kgctblmar
         ON CARCODMARCA = MARCOD
@@ -201,7 +221,7 @@ class Carros
         INNER JOIN kgctblcom
         ON CARCODCOMBUSTIVEL = comCOD
         inner join kgctblmun
-        on carcodmunicipio = muncodigoibge where CARREPASSE = 'S'
+        on carcodmunicipio = muncodigoibge where CARTIPOANUNCIO = 'R'
         ORDER BY CARQTDEVISITAS DESC");
         $smtp->execute();
 
@@ -219,7 +239,7 @@ class Carros
         MARDESCRICAO,
         MODDESCRICAO,
         CARPRECO,
-        CARANO,
+        CONCAT(CARANOFAB,'/',CARANOMOD) AS CARANO,
         CARFOTO,
         CARPORTAS,
         COMDESCRICAO,
@@ -230,7 +250,7 @@ class Carros
         mundescricao,
         munuf,
         CONCAT(mundescricao,' - ',munuf) AS LOCALIZACAO,
-        CONCAT('#',CARCOD,' - ',MODDESCRICAO,' ',CARANO) AS CARNOME
+        CONCAT('#',CARCOD,' - ',MODDESCRICAO,' ',CARANOFAB,'/',CARANOMOD) AS CARNOME
         FROM kgctblcar
         INNER JOIN kgctblmar
         ON CARCODMARCA = MARCOD
@@ -241,7 +261,7 @@ class Carros
         INNER JOIN kgctblcom
         ON CARCODCOMBUSTIVEL = comCOD
         inner join kgctblmun
-        on carcodmunicipio = muncodigoibge where CARSINISTRADO = 'S'
+        on carcodmunicipio = muncodigoibge where CARTIPOANUNCIO = 'S'
         ORDER BY CARQTDEVISITAS DESC");
         $smtp->execute();
 
@@ -277,7 +297,7 @@ class Carros
         MARDESCRICAO,
         MODDESCRICAO,
         CARPRECO,
-        CARANO,
+        CONCAT(CARANOFAB,'/',CARANOMOD) AS CARANO,
         CARFOTO,
         CARPORTAS,
         COMDESCRICAO,
@@ -288,7 +308,7 @@ class Carros
         mundescricao,
         munuf,
         CONCAT(mundescricao,'/',munuf) AS LOCALIZACAO,
-        CONCAT('#',CARCOD,' - ',MODDESCRICAO,' ',CARANO) AS CARNOME
+        CONCAT('#',CARCOD,' - ',MODDESCRICAO,' ',CARANOFAB,'/',CARANOMOD) AS CARNOME
         FROM kgctblcar
         INNER JOIN kgctblmar
         ON CARCODMARCA = MARCOD
@@ -369,7 +389,7 @@ class Carros
                                         MARDESCRICAO,
                                         MODDESCRICAO,
                                         CARPRECO,
-                                        CARANO,
+                                        CONCAT(CARANOFAB,'/',CARANOMOD) AS CARANO,
                                         CARFOTO,
                                         CARPORTAS,
                                         CONCAT(mundescricao,' - ',munuf) AS Localizacao
@@ -404,14 +424,17 @@ class Carros
         $pdo = new PDO(server, user, senha);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $smtp = $pdo->prepare("SELECT CARCOD,MARDESCRICAO,MODDESCRICAO,CARPRECO,CARANO,CARFOTO,CARKM,CARPORTAS,CARTROCA,CARDESTAQUE,CAMDESCRICAO, COMDESCRICAO,CORDESCRICAO,CORCODHEXADECIMAL,CONCAT(mundescricao,' - ',munuf) AS LOCALIZACAO
-                                FROM kgctblCAR
-                                INNER JOIN kgctblmar ON CARCODMARCA = MARCOD
-                                INNER JOIN kgctblMOD ON CARCODMODELO = MODCOD
-                                inner join kgctblmun on carcodmunicipio = muncodigoibge
-                                INNER JOIN kgctblCOR ON CARCODCOR = CORCOD
-                                INNER JOIN kgctblcom ON CARCODCOMBUSTIVEL = comCOD
-                                INNER JOIN kgctblCAM ON CARCODCAMBIO = CAMCOD
+        $smtp = $pdo->prepare("SELECT CARCOD,CARINFOAD,CARNOMEANUNCIANTE,CARTIPOANUNCIO,MOTPOTENCIA,VERNOME,CRCDESCRICAO,CARVALVULAS,MARDESCRICAO,MODDESCRICAO,CARPRECO,CONCAT(CARANOFAB,'/',CARANOMOD) AS CARANO,CARFOTO,CARKM,CARPORTAS,CARTROCA,CARDESTAQUE,CAMDESCRICAO, COMDESCRICAO,CORDESCRICAO,CORCODHEXADECIMAL,CONCAT(mundescricao,' - ',munuf) AS LOCALIZACAO,CARDATCADASTRO
+        FROM kgctblCAR
+        INNER JOIN kgctblmar ON CARCODMARCA = MARCOD
+        INNER JOIN kgctblMOD ON CARCODMODELO = MODCOD
+        inner join kgctblmun on carcodmunicipio = muncodigoibge
+        INNER JOIN kgctblCOR ON CARCODCOR = CORCOD
+        INNER JOIN kgctblcom ON CARCODCOMBUSTIVEL = comCOD
+        INNER JOIN kgctblCAM ON CARCODCAMBIO = CAMCOD
+        INNER JOIN kgctblMOT ON CARMOTOR = MOTCOD
+        INNER JOIN kgctblVER ON CARVERSAO = VERCOD
+        INNER JOIN kgctblCRC ON CARCARROCERIA = CRCCOD
                                 where carcod =" . $codCarro);
         $smtp->execute();
 
@@ -424,8 +447,10 @@ class Carros
         $pdo = new PDO(server, user, senha);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $smtp = $pdo->prepare("SELECT DETVIDELETRICA, DETTRAELETRICA, DETDIRHIDRAULICA, DETALARME, DETFARMILHA, DETFARXENON, DETARQUENTE, DETARCONDICIONADO, DETBANCOURO, DETSOMVOLANTE, DETDESEMBTRASEIRO, DETDIRELETRICA, DETFARNEBLINA, DETFREIOABS, DETGPS, DETMULTIMIDIA, DETPORTACOPOS, DETRETROELETRICO, DETRODLIGA, DETTETOSOLAR, DETAIRBAGLAT, DETAIRBAGMOT, DETAIRBAGPAS, DETBANAJUSTAVEL, DETCAMRE, DETCD, DETDVD, DETBLUERAY, DETCOMPBORDO, DETENCTRASEIRO, DETUSB, DETPILOTOAUTO, DETSENSOREST, DETVOLAJUSTAVEL, DETUNICODONO, DETINFOCOMP
-                                FROM kgctbldetcar where DETCODCARRO =" . $codCarro);
+        $smtp = $pdo->prepare("SELECT COMPDESC from kgctblive
+                                    inner join kgctblinfocomp
+                                    on ivecoditem = compcod
+                                    where ivecodcarro = $codCarro");
         $smtp->execute();
 
 
@@ -441,7 +466,7 @@ class Carros
                                         MARDESCRICAO,
                                         MODDESCRICAO,
                                         CARPRECO,
-                                        CARANO,
+                                        CONCAT(CARANOFAB,'/',CARANOMOD) AS CARANO,
                                         CARFOTO,
                                         CARPORTAS,
                                         CONCAT(mundescricao,' - ',munuf) AS Localizacao
@@ -460,7 +485,7 @@ class Carros
         return $result = $smtp->fetchAll(PDO::FETCH_CLASS);
     }
 
-    function DeletaCarroPorCod($cod)
+    function DeletaVeiculoPorCod($cod)
     {
         try {
             $pdo = new PDO(server, user, senha);
@@ -537,7 +562,7 @@ class Carros
         return $result = $smtp->rowCount();
     }
 
-    function InsereItensCarro($item,$codCarro,$usuario)
+    function InsereItensCarro($item, $codCarro, $usuario)
     {
         $pdo = new PDO(server, user, senha);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -547,10 +572,9 @@ class Carros
                                 ($codCarro, $item, '$usuario', CURRENT_TIMESTAMP)");
         $smtp->execute();
         $result = $smtp->rowCount();
-        if($result > 0){
+        if ($result > 0) {
             return true;
-        }
-        else{
+        } else {
             return false;
         }
     }
@@ -560,7 +584,7 @@ class Carros
         $pdo = new PDO(server, user, senha);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $smtp = $pdo->prepare("SELECT CARCOD,CARCODSTATUS,CARDATCADASTRO,CARUF,CARCODMUNICIPIO,CARCODCAMBIO,CARCODCOMBUSTIVEL,CARCODMARCA,CARCODMODELO,CARCODCOR,MARDESCRICAO,MODDESCRICAO,CARPRECO,CARANO,CARFOTO,CARKM,CARPORTAS,CARTROCA,CARDESTAQUE,CAMDESCRICAO, COMDESCRICAO,CORDESCRICAO,CORCODHEXADECIMAL,CONCAT('#',CARCOD,' - ',MODDESCRICAO,' ',CARANO) AS CARNOME,CONCAT(mundescricao,' - ',munuf) AS LOCALIZACAO
+        $smtp = $pdo->prepare("SELECT CARCOD,CARCODSTATUS,CARDATCADASTRO,CARUF,CARCODMUNICIPIO,CARCODCAMBIO,CARCODCOMBUSTIVEL,CARCODMARCA,CARCODMODELO,CARCODCOR,MARDESCRICAO,MODDESCRICAO,CARPRECO,CONCAT(CARANOFAB,'/',CARANOMOD) AS CARANO,CARFOTO,CARKM,CARPORTAS,CARTROCA,CARDESTAQUE,CAMDESCRICAO, COMDESCRICAO,CORDESCRICAO,CORCODHEXADECIMAL,CONCAT('#',CARCOD,' - ',MODDESCRICAO,' ',CARANOFAB,'/',CARANOMOD) AS CARNOME,CONCAT(mundescricao,' - ',munuf) AS LOCALIZACAO
         FROM kgctblCAR
         INNER JOIN kgctblmar ON CARCODMARCA = MARCOD
         INNER JOIN kgctblMOD ON CARCODMODELO = MODCOD
@@ -580,7 +604,7 @@ class Carros
         $pdo = new PDO(server, user, senha);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $smtp = $pdo->prepare("SELECT CARCOD, CARCODMARCA, CARCODMODELO, CARPRECO, CARANOFAB, CARFOTO, CARCODSTATUS, CARKM, CARCODCAMBIO, CARPORTAS, CARCODCOMBUSTIVEL, CARCODCOR, CARPLACA, CARTROCA, CARDESTAQUE, CARCODMUNICIPIO, CARUF, CARANOMOD, CARVERSAO, CARREPASSE, CARSINISTRADO, CARMOTOR, CARVALVULAS, CARCARROCERIA, CARNOMEANUNCIANTE, CAREMAILANUNCIANTE, CARTELANUNCIANTE
+        $smtp = $pdo->prepare("SELECT CARCOD, CARCODMARCA, CARCODMODELO, CARPRECO, CARANOFAB, CARFOTO, CARCODSTATUS, CARKM, CARCODCAMBIO, CARPORTAS, CARCODCOMBUSTIVEL, CARCODCOR, CARPLACA, CARTROCA, CARDESTAQUE, CARCODMUNICIPIO, CARUF, CARANOMOD, CARVERSAO, CARTIPOANUNCIO, CARINFOAD, CARMOTOR, CARVALVULAS, CARCARROCERIA, CARNOMEANUNCIANTE, CAREMAILANUNCIANTE, CARTELANUNCIANTE
         FROM kgctblcar WHERE CARCOD = $cod");
         $smtp->execute();
 
@@ -593,7 +617,7 @@ class Carros
         $pdo = new PDO(server, user, senha);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $smtp = $pdo->prepare("SELECT CARCOD,CARCODSTATUS,CARDATCADASTRO,CARUF,CARCODMUNICIPIO,CARCODCAMBIO,CARCODCOMBUSTIVEL,CARCODMARCA,CARCODMODELO,CARCODCOR,MARDESCRICAO,MODDESCRICAO,CARPRECO,CARANO,CARFOTO,CARKM,CARPORTAS,CARTROCA,CARDESTAQUE,CAMDESCRICAO, COMDESCRICAO,CORDESCRICAO,CORCODHEXADECIMAL,CONCAT('#',CARCOD,' - ',MODDESCRICAO,' ',CARANO) AS CARNOME,CONCAT(mundescricao,' - ',munuf) AS LOCALIZACAO
+        $smtp = $pdo->prepare("SELECT CARCOD,CARCODSTATUS,CARDATCADASTRO,CARUF,CARCODMUNICIPIO,CARCODCAMBIO,CARCODCOMBUSTIVEL,CARCODMARCA,CARCODMODELO,CARCODCOR,MARDESCRICAO,MODDESCRICAO,CARPRECO,CONCAT(CARANOFAB,'/',CARANOMOD) AS CARANO,CARFOTO,CARKM,CARPORTAS,CARTROCA,CARDESTAQUE,CAMDESCRICAO, COMDESCRICAO,CORDESCRICAO,CORCODHEXADECIMAL,CONCAT('#',CARCOD,' - ',MODDESCRICAO,' ',CARANOFAB,'/',CARANOMOD) AS CARNOME,CONCAT(mundescricao,' - ',munuf) AS LOCALIZACAO
         FROM kgctblCAR
         INNER JOIN kgctblmar ON CARCODMARCA = MARCOD
         INNER JOIN kgctblMOD ON CARCODMODELO = MODCOD
@@ -601,7 +625,7 @@ class Carros
         INNER JOIN kgctblCOR ON CARCODCOR = CORCOD
         INNER JOIN kgctblcom ON CARCODCOMBUSTIVEL = comCOD
         INNER JOIN kgctblCAM ON CARCODCAMBIO = CAMCOD
-                                WHERE CARCOD = $cod and CARREPASSE = 'S'");
+                                WHERE CARCOD = $cod and CARTIPOANUNCIO = 'R'");
         $smtp->execute();
 
 
@@ -613,7 +637,7 @@ class Carros
         $pdo = new PDO(server, user, senha);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $smtp = $pdo->prepare("SELECT CARCOD,CARCODSTATUS,CARDATCADASTRO,CARUF,CARCODMUNICIPIO,CARCODCAMBIO,CARCODCOMBUSTIVEL,CARCODMARCA,CARCODMODELO,CARCODCOR,MARDESCRICAO,MODDESCRICAO,CARPRECO,CARANO,CARFOTO,CARKM,CARPORTAS,CARTROCA,CARDESTAQUE,CAMDESCRICAO, COMDESCRICAO,CORDESCRICAO,CORCODHEXADECIMAL,CONCAT('#',CARCOD,' - ',MODDESCRICAO,' ',CARANO) AS CARNOME,CONCAT(mundescricao,' - ',munuf) AS LOCALIZACAO
+        $smtp = $pdo->prepare("SELECT CARCOD,CARCODSTATUS,CARDATCADASTRO,CARUF,CARCODMUNICIPIO,CARCODCAMBIO,CARCODCOMBUSTIVEL,CARCODMARCA,CARCODMODELO,CARCODCOR,MARDESCRICAO,MODDESCRICAO,CARPRECO,CONCAT(CARANOFAB,'/',CARANOMOD) AS CARANO,CARFOTO,CARKM,CARPORTAS,CARTROCA,CARDESTAQUE,CAMDESCRICAO, COMDESCRICAO,CORDESCRICAO,CORCODHEXADECIMAL,CONCAT('#',CARCOD,' - ',MODDESCRICAO,' ',CARANO) AS CARNOME,CONCAT(mundescricao,' - ',munuf) AS LOCALIZACAO
         FROM kgctblCAR
         INNER JOIN kgctblmar ON CARCODMARCA = MARCOD
         INNER JOIN kgctblMOD ON CARCODMODELO = MODCOD
@@ -621,7 +645,20 @@ class Carros
         INNER JOIN kgctblCOR ON CARCODCOR = CORCOD
         INNER JOIN kgctblcom ON CARCODCOMBUSTIVEL = comCOD
         INNER JOIN kgctblCAM ON CARCODCAMBIO = CAMCOD
-                                WHERE CARCOD = $cod and CARSINISTRADO = 'S'");
+                                WHERE CARCOD = $cod and CARTIPOANUNCIO = 'S'");
+        $smtp->execute();
+
+
+        return $result = $smtp->fetchAll(PDO::FETCH_CLASS);
+    }
+
+    public function SelecionarImagemVeiculoPorCod($codVeiculo)
+    {
+        $pdo = new PDO(server, user, senha);
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        $smtp = $pdo->prepare("SELECT CARFOTO FROM kgctblCAR
+                                    WHERE CARCOD = $codVeiculo");
         $smtp->execute();
 
 
@@ -640,70 +677,83 @@ class Carros
         return $result = $smtp->rowCount();
     }
 
-    function InsereCarroSemiNovo()
+    function InsereVeiculo()
     {
         $pdo = new PDO(server, user, senha);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $smtp = $pdo->prepare("INSERT INTO KGCTBLCAR
-        (CARCODMARCA, CARCODMODELO, CARPRECO, CARANOFAB, CARFOTO, CARCODSTATUS, CARKM, CARCODCAMBIO, CARPORTAS, CARCODCOMBUSTIVEL, CARCODCOR, CARPLACA, CARTROCA, CARDESTAQUE, CARDATCADASTRO, CARUSER, CARCODMUNICIPIO, CARUF, CARQTDEVISITAS, CARANOMOD, CARVERSAO, CARREPASSE, CARSINISTRADO, CARMOTOR, CARVALVULAS, CARCARROCERIA, CARCATEGORIA, CARNOMEANUNCIANTE, CAREMAILANUNCIANTE, CARTELANUNCIANTE)
+        (CARCODMARCA, CARCODMODELO, CARPRECO, CARANOFAB, CARFOTO, CARCODSTATUS, CARKM, CARCODCAMBIO, CARPORTAS, CARCODCOMBUSTIVEL, CARCODCOR, CARPLACA, CARTROCA, CARDESTAQUE, CARDATCADASTRO, CARUSER, CARCODMUNICIPIO, CARUF, CARQTDEVISITAS, CARANOMOD, CARVERSAO, CARINFOAD, CARTIPOANUNCIO, CARMOTOR, CARVALVULAS, CARCARROCERIA, CARCATEGORIA, CARNOMEANUNCIANTE, CAREMAILANUNCIANTE, CARTELANUNCIANTE)
         VALUES
-        ($this->Marca, $this->Modelo, $this->Preco, '$this->AnoFab', '$this->ImgCapa', '$this->Status', $this->Km, $this->Cambio, $this->Portas, $this->Combustivel, $this->Cor, '$this->Placa', '$this->Troca', '$this->Destaque', CURRENT_TIMESTAMP, '$this->User', $this->Municipio, '$this->Uf', 0, '$this->AnoMod', $this->Versao, 'N', 'N', $this->Motor, $this->Valvulas, $this->Carroceria, 1, '$this->NomeAnunciante', '$this->EmailAnunciante', '$this->TelAnunciante')");
+        ($this->Marca, $this->Modelo, $this->Preco, '$this->AnoFab', '$this->ImgCapa', '$this->Status', $this->Km, $this->Cambio, $this->Portas, $this->Combustivel, $this->Cor, '$this->Placa', '$this->Troca', '$this->Destaque', CURRENT_TIMESTAMP, '$this->User', $this->Municipio, '$this->Uf', 0, '$this->AnoMod', $this->Versao, '$this->InfoAdicional', '$this->TipoAnuncio', $this->Motor, $this->Valvulas, $this->Carroceria, 1, '$this->NomeAnunciante', '$this->EmailAnunciante', '$this->TelAnunciante')");
         $smtp->execute();
         $result = $smtp->rowCount();
-        if($result > 0){
+        if ($result > 0) {
             return true;
-        }
-        else{
-            return false;
-        }
-    }
-
-    function InsereCarroRepasse()
-    {
-        $pdo = new PDO(server, user, senha);
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $smtp = $pdo->prepare("INSERT INTO KGCTBLCAR
-        (CARCODMARCA, CARCODMODELO, CARPRECO, CARANOFAB, CARFOTO, CARCODSTATUS, CARKM, CARCODCAMBIO, CARPORTAS, CARCODCOMBUSTIVEL, CARCODCOR, CARPLACA, CARTROCA, CARDESTAQUE, CARDATCADASTRO, CARUSER, CARCODMUNICIPIO, CARUF, CARQTDEVISITAS, CARANOMOD, CARVERSAO, CARREPASSE, CARSINISTRADO, CARMOTOR, CARVALVULAS, CARCARROCERIA, CARCATEGORIA, CARNOMEANUNCIANTE, CAREMAILANUNCIANTE, CARTELANUNCIANTE)
-        VALUES
-        ($this->Marca, $this->Modelo, $this->Preco, '$this->AnoFab', '$this->ImgCapa', '$this->Status', $this->Km, $this->Cambio, $this->Portas, $this->Combustivel, $this->Cor, '$this->Placa', '$this->Troca', '$this->Destaque', CURRENT_TIMESTAMP, '$this->User', $this->Municipio, '$this->Uf', 0, '$this->AnoMod', $this->Versao, 'S', 'N', $this->Motor, $this->Valvulas, $this->Carroceria, 1, '$this->NomeAnunciante', '$this->EmailAnunciante', '$this->TelAnunciante')");
-        $smtp->execute();
-        $result = $smtp->rowCount();
-        if($result > 0){
-            return true;
-        }
-        else{
-            return false;
-        }
-    }
-
-    function InsereCarroSinistrado()
-    {
-        $pdo = new PDO(server, user, senha);
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $smtp = $pdo->prepare("INSERT INTO KGCTBLCAR
-        (CARCODMARCA, CARCODMODELO, CARPRECO, CARANOFAB, CARFOTO, CARCODSTATUS, CARKM, CARCODCAMBIO, CARPORTAS, CARCODCOMBUSTIVEL, CARCODCOR, CARPLACA, CARTROCA, CARDESTAQUE, CARDATCADASTRO, CARUSER, CARCODMUNICIPIO, CARUF, CARQTDEVISITAS, CARANOMOD, CARVERSAO, CARREPASSE, CARSINISTRADO, CARMOTOR, CARVALVULAS, CARCARROCERIA, CARCATEGORIA, CARNOMEANUNCIANTE, CAREMAILANUNCIANTE, CARTELANUNCIANTE)
-        VALUES
-        ($this->Marca, $this->Modelo, $this->Preco, '$this->AnoFab', '$this->ImgCapa', '$this->Status', $this->Km, $this->Cambio, $this->Portas, $this->Combustivel, $this->Cor, '$this->Placa', '$this->Troca', '$this->Destaque', CURRENT_TIMESTAMP, '$this->User', $this->Municipio, '$this->Uf', 0, '$this->AnoMod', $this->Versao, 'N', 'S', $this->Motor, $this->Valvulas, $this->Carroceria, 1, '$this->NomeAnunciante', '$this->EmailAnunciante', '$this->TelAnunciante')");
-        $smtp->execute();
-        $result = $smtp->rowCount();
-        if($result > 0){
-            return true;
-        }
-        else{
+        } else {
             return false;
         }
     }
 
 
-    function AtualizaCarro($sqlUpdate)
+
+
+    function AtualizaVeiculo()
     {
         $pdo = new PDO(server, user, senha);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $smtp = $pdo->prepare($sqlUpdate);
+        $smtp = $pdo->prepare("update KGCTBLCAR
+        set
+        CARCODMARCA = $this->Marca,
+        CARCODMODELO = $this->Modelo,
+        CARPRECO = $this->Preco,
+        CARANOFAB = '$this->AnoFab',
+        CARFOTO = '$this->ImgCapa',
+        CARCODSTATUS = '$this->Status',
+        CARKM = $this->Km,
+        CARCODCAMBIO = $this->Cambio,
+        CARPORTAS = $this->Portas,
+        CARCODCOMBUSTIVEL = $this->Combustivel,
+        CARCODCOR = $this->Cor,
+        CARPLACA = '$this->Placa',
+        CARTROCA = '$this->Troca',
+        CARDESTAQUE = '$this->Destaque',
+        CARCODMUNICIPIO = $this->Municipio,
+        CARUF = '$this->Uf',
+        CARANOMOD = '$this->AnoMod',
+        CARVERSAO = $this->Versao,
+        CARINFOAD = '$this->InfoAdicional',
+        CARTIPOANUNCIO = '$this->TipoAnuncio',
+        CARMOTOR = $this->Motor,
+        CARVALVULAS = $this->Valvulas,
+        CARCARROCERIA = $this->Carroceria,
+        CARNOMEANUNCIANTE = '$this->NomeAnunciante',
+        CAREMAILANUNCIANTE = '$this->EmailAnunciante',
+        CARTELANUNCIANTE = '$this->TelAnunciante'
+        where CARCOD = $this->Id");
         $smtp->execute();
+        $result = $smtp->rowCount();
+        if ($result > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function DeletaItensCarroPorCodCarro($cod)
+    {
+        try {
+            $pdo = new PDO(server, user, senha);
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+            $smtp = $pdo->prepare("delete from kgctblive where IVECODCARRO = $cod");
 
 
-        return $result = $smtp->rowCount();
+            $smtp->execute();
+
+            return true;
+        } catch (Exception $e) {
+            return false;
+        }
     }
 
     public function BuscaItemPorCod($d)
@@ -733,10 +783,11 @@ class Carros
 
         $smtp = $pdo->prepare("SELECT
         CARCOD,
-        CONCAT(MARDESCRICAO,' ',MODDESCRICAO,' ',CORDESCRICAO,' ',CARANO,' - ',COMDESCRICAO) AS VEICULO,
+        CONCAT(MARDESCRICAO,' ',MODDESCRICAO,' ',CORDESCRICAO,' ',CARANOFAB,'/',CARANOMOD,' - ',COMDESCRICAO) AS VEICULO,
         CARPRECO,
         CARDESTAQUE,
         CARTROCA,
+        CARTIPOANUNCIO,
         CARQTDEVISITAS
         FROM kgctblcar
         inner join KGCTBLMAR   ON MARCOD = CARCODMARCA

@@ -2,6 +2,7 @@
 
 class Util{
 
+   
     public static function convert_from_latin1_to_utf8_recursively($dat)
     {
         if (is_string($dat)) {
@@ -90,6 +91,19 @@ class Util{
 
 
         return $result = $smtp->fetchAll(PDO::FETCH_CLASS);
+    }
+
+    public function InserirEmailNewsletter($email)
+    {
+        $pdo = new PDO(server, user, senha);
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        $smtp = $pdo->prepare("INSERT INTO KGCTBLRECANU(RECEMAIL) VALUES ('$email')");
+        $smtp->execute();
+
+
+        return $result = $smtp->fetchAll(PDO::FETCH_CLASS);
+        
     }
 
 

@@ -12,7 +12,7 @@ $pub = new Publicidades();
 $compra = new Compra();
 $codCarro = null;
 
-if(isset($_POST['compra'])){
+if (isset($_POST['compra'])) {
     echo "<script>showLoad('Aguarde <br> Estamos Enviando a sua solicitação.');</script> ";
     $codCarro = $_POST['codCarro'];
     $nome = $_POST['nome'];
@@ -21,22 +21,20 @@ if(isset($_POST['compra'])){
     $telefone = $util->FormatarTelefone($telefone);
     $mensagem = $_POST['mensagem'];
 
-    if($compra->CadastraSolicitacaoCompra($codCarro,$nome,$email,$telefone,$mensagem)){
+    if ($compra->CadastraSolicitacaoCompra($codCarro, $nome, $email, $telefone, $mensagem)) {
         echo "<script>SuccessBox('Solicitação Enviada com Sucesso.');</script>";
         echo "<script>hideLoad();</script>";
-    }
-    else{
+    } else {
         echo "<script>hideLoad();</script>";
         echo "<script>ErrorBox('Ocorreu um erro ao Enviar a Sua Solicitação.');</script>";
     }
 }
 
-if(!isset($_GET['id'])){
+if (!isset($_GET['id'])) {
     header("Location:index.php");
-}
-else{
+} else {
     $codCarro = $_GET['id'];
-    if(!$carro->UtualizaNumVisitas($codCarro)){
+    if (!$carro->UtualizaNumVisitas($codCarro)) {
         $msg = "Quantidade não Atualizada.";
     }
 }
@@ -55,152 +53,203 @@ $listaPub = $pub->SelecionarListaPublicidades();
 
 <div class="row bg-dark" style="margin-top: 5px; padding:5px;">
     <div class="col-lg-4">
-            <img class="img-thumbnail"  src="assets/img/Carros/<?php echo $Carro[0]->CARFOTO; ?>" alt="Capa do Anuncio">
-        </div>
+        <img class="img-thumbnail" src="assets/img/Carros/<?php echo $Carro[0]->CARFOTO; ?>" alt="Capa do Anuncio">
+    </div>
     <div class="col-lg-8 ">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-lg-12 text-right">
-                <h3 class="display-4 text-warning" style="font-weight: 600"><?php echo strtoupper(utf8_encode($Carro[0]->MARDESCRICAO)) . " " . strtoupper(utf8_encode($Carro[0]->MODDESCRICAO)). " " . strtoupper(utf8_encode($Carro[0]->CARANO)); ?></h3>
-            <?php if($Carro[0]->CARDESTAQUE == "S"){ ?>
-            <h6 class="text-warning" style="font-weight: 700"><i class="icone-crown"></i> Este Veículo é um Destaque King Car!</h6>
-            <?php } ?>
+                <div class="col-lg-12 text-center text-lg-right" style="margin-top: 25px;">
+                    <div>
+                        <?php if ($Carro[0]->CARDESTAQUE == "S") { ?>
+                            <label title="Veículo Destaque" class="text-warning" style="font-weight: 700"><i class="icone-crown"></i></label>
+                        <?php } ?>
+
+                        <?php if ($Carro[0]->CARTROCA == "S") { ?>
+                            <label title="Aceita Troca" class="text-danger" style="font-weight: 700"><i class="icone-arrows-cw"></i></label>
+                        <?php } ?>
+
+                        <?php if ($Carro[0]->CARTIPOANUNCIO == "N") { ?>
+                            <label title="Novo/Semi-Novo" class="text-info" style="font-weight: 700"><i class="icone-diamond"></i></label>
+                        <?php } else if ($Carro[0]->CARTIPOANUNCIO == "R") { ?>
+                            <label title="Veículo para Repasse" class="text-success" style="font-weight: 700"><i class="icone-forward-1"></i></label>
+                        <?php } else if ($Carro[0]->CARTIPOANUNCIO == "S") { ?>
+                            <label title="Veículo Sinistrado/Recuperado" class="text-primary" style="font-weight: 700"><i class="icone-hammer"></i></label>
+                        <?php } ?>
+                    </div>
+                    <h3 class=" text-white" style="font-weight: 600; font-size: 42pt;"><label for="" class="text-warning"><?php echo strtoupper(utf8_encode($Carro[0]->MARDESCRICAO)); ?></label> <?php echo " " . strtoupper(utf8_encode($Carro[0]->MODDESCRICAO)) ?></h3>
+                    <h4 class="display-6 text-warning"><?php echo $Carro[0]->VERNOME; ?></h4>
+
                 </div>
             </div>
 
-            <div class="row bg-warning" style="margin-top: 10px;">
-                <div class="col-lg-3 text-dark">
-                    <h6>Marca</h6>
-                </div>
-                <div class="col-lg-3 text-dark">
-                    <h6>Modelo</h6>
-                </div>
-                <div class="col-lg-3 text-dark">
-                    <h6>Ano</h6>
-                </div>
-                <div class="col-lg-3 text-dark">
-                    <h6>Câmbio</h6>
-                </div>
-            </div>
-            <div class="row" style="margin-top: 5px;">
-                <div class="col-lg-3 text-warning">
-                    <label ><?php echo strtoupper(utf8_encode($Carro[0]->MARDESCRICAO)); ?></label>
-                </div>
-                <div class="col-lg-3 text-warning">
-                    <label ><?php echo strtoupper(utf8_encode($Carro[0]->MODDESCRICAO)); ?></label>
-                </div>
-                <div class="col-lg-3 text-warning">
-                    <label ><?php echo strtoupper(utf8_encode($Carro[0]->CARANO)); ?></label>
-                </div>
-                <div class="col-lg-3 text-warning">
-                    <label ><?php echo strtoupper(utf8_encode($Carro[0]->CAMDESCRICAO)); ?></label>
-                </div>
-            </div>
-
-            <div class="row bg-warning" style="margin-top: 10px;">
-                <div class="col-lg-3 text-dark">
-                    <h6>Portas</h6>
-                </div>
-                <div class="col-lg-3 text-dark">
-                    <h6>Combustivel</h6>
-                </div>
-                <div class="col-lg-3 text-dark">
-                    <h6>Cor</h6>
-                </div>
-                <div class="col-lg-3 text-dark">
-                    <h6>Quilometragem</h6>
-                </div>
-            </div>
-            <div class="row" style="margin-top: 5px;">
-                <div class="col-lg-3 text-warning">
-                    <label ><?php echo strtoupper(utf8_encode($Carro[0]->CARPORTAS)); ?> Portas</label>
-                </div>
-                <div class="col-lg-3 text-warning">
-                    <label ><?php echo strtoupper(utf8_encode($Carro[0]->COMDESCRICAO)); ?></label>
-                </div>
-                <div class="col-lg-3 text-warning">
-                    <label ><?php echo strtoupper(utf8_encode($Carro[0]->CORDESCRICAO)); ?></label>
-                </div>
-                <div class="col-lg-3 text-warning">
-                    <label ><?php echo FormatarValorDecimal(strtoupper(utf8_encode($Carro[0]->CARKM))); ?> km</label>
-                </div>
-            </div>
-
-            <div class="row bg-warning" style="margin-top: 10px;">
-                <div class="col-lg-3 text-dark">
-                    <h6>Aceita Troca</h6>
-                </div>
-                <div class="col-lg-3 text-dark">
-                    <h6>Localização</h6>
-                </div>
-            </div>
-
-            <div class="row" style="margin-top: 5px;">
-                <div class="col-lg-3 text-warning">
-                    <label ><?php if($Carro[0]->CARTROCA == 'S'){ echo "Sim"; } else{ echo "Não";} ?></label>
-                </div>
-                <div class="col-lg-3 text-warning">
-                    <label><?php echo strtoupper(utf8_encode($Carro[0]->LOCALIZACAO)); ?></label>
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="text-warning text-center display-5 text-lg-right" style="font-weight: 600"><?php echo "R$ " . FormatarMoeda(strtoupper(utf8_encode($Carro[0]->CARPRECO))); ?></h1>
                 </div>
             </div>
         </div>
-            
-        </div>
+
+    </div>
 </div>
 
-<div class="row bg-dark" style="margin-top: 5px; padding:5px;">
-    <section class="col-lg-8">
-       <h6 class="display-4 text-warning">
-            Itens do Veículo
-       </h6>
-       <hr>
 
-       <div class="container-fluid">
-           <div class="row">
-               <?php
-                    if($Detcarro){
-                        foreach($Detcarro as $det){
-                            foreach($InfoComp as $info){
-                                $valor = $det[$info->COMPNOMCAMPO];
-                                $DescCampo = $info->COMPDESC;
+<div class="row" style="margin-top: 5px; padding:5px;">
+    <section class="col-lg-8" style="padding: 5px;">
+        <!-- Dados do Veiculo -->
+        <div class="container-fluid bg-dark" style="padding: 20px; border-radius: 5px; ">
+            <div class="row" style="margin-top: 5px;">
+                <div class="text-warning col-lg-12 display-6">
+                    Dados do Veículo
+                </div>
+            </div>
+            <hr>
+            <div class="row" style="margin-top: 5px;">
+                <div class="col-lg-3 col-xs-6 text-warning text-center text-lg-left" style="font-weight: 600;">
+                    <label for="" style="font-size: 10pt; margin:0px; padding:0px;">Ano</label>
+                    <br />
+                    <label for="" style="font-size: 15pt;"><?php echo strtoupper(utf8_encode($Carro[0]->CARANO)); ?></label>
+                </div>
 
-                                if($valor == 'S'){ ?>
-                                <div class="col-lg-6" style="margin-top: 10px;">
-                                <i class="icone-check-3 text-success"></i> <label class="text-warning" style="font-weight: 700"> <?php echo utf8_encode($DescCampo); ?></label>
-                                </div>
-                                <?php
-                                }
-                            }
-                        }
-                    }
-                    else{
-                        ?>
-                                <div class="col-lg-12 text-warning" style="margin-top: 10px;">
-                                    Nenhum item vinculado a este Veículo!
-                                </div>
-                                <?php
-                    }
-                ?>
-           </div>
+                <div class="col-lg-3 col-xs-6 text-warning text-center text-lg-left" style="font-weight: 600;">
+                    <label for="" style="font-size: 10pt; margin:0px; padding:0px;">KM</label>
+                    <br />
+                    <label for="" style="font-size: 15pt;"><?php echo FormatarValorDecimal(strtoupper(utf8_encode($Carro[0]->CARKM))); ?></label>
+                </div>
 
-           <div class="row" style="margin-top: 15px;">
-               <div class="col-lg-12 bg-light">
-                    <?php if($Detcarro){
-                    if($Detcarro[0]['DETINFOCOMP']){ ?>
-                        <h5 class="text-justify"><?php echo $util->convert_from_latin1_to_utf8_recursively($Detcarro[0]['DETINFOCOMP']); ?> </h5>
-                    <?php }} ?>
-               </div>
-           </div>
-       </div>
-     
+                <div class="col-lg-3 col-xs-6 text-warning text-center text-lg-left" style="font-weight: 600;">
+                    <label for="" style="font-size: 10pt; margin:0px; padding:0px;">Câmbio</label>
+                    <br />
+                    <label for="" style="font-size: 15pt;"><?php echo strtoupper(utf8_encode($Carro[0]->CAMDESCRICAO)); ?></label>
+                </div>
+
+                <div class="col-lg-3 col-xs-6 text-warning text-center text-lg-left" style="font-weight: 600;">
+                    <label for="" style="font-size: 10pt; margin:0px; padding:0px;">Carroceria</label>
+                    <br />
+                    <label for="" style="font-size: 15pt;"><?php echo strtoupper(utf8_encode($Carro[0]->CRCDESCRICAO)); ?></label>
+                </div>
+            </div>
+
+            <div class="row" style="margin-top: 5px;">
+                <div class="col-lg-3 col-xs-6 text-warning text-center text-lg-left" style="font-weight: 600;">
+                    <label for="" style="font-size: 10pt; margin:0px; padding:0px;">Portas</label>
+                    <br />
+                    <label for="" style="font-size: 15pt;"><?php echo strtoupper(utf8_encode($Carro[0]->CARPORTAS)); ?></label>
+                </div>
+
+                <div class="col-lg-3 col-xs-6 text-warning text-center text-lg-left" style="font-weight: 600;">
+                    <label for="" style="font-size: 10pt; margin:0px; padding:0px;">Combustivel</label>
+                    <br />
+                    <label for="" style="font-size: 15pt;"><?php echo strtoupper(utf8_encode($Carro[0]->COMDESCRICAO)); ?></label>
+                </div>
+
+                <div class="col-lg-3 col-xs-6 text-warning text-center text-lg-left" style="font-weight: 600;">
+                    <label for="" style="font-size: 10pt; margin:0px; padding:0px;">Cor</label>
+                    <br />
+                    <label for="" style="font-size: 15pt;"><?php echo strtoupper(utf8_encode($Carro[0]->CORDESCRICAO)); ?></label>
+                </div>
+
+                <div class="col-lg-3 col-xs-6 text-warning text-center text-lg-left" style="font-weight: 600;">
+                    <label for="" style="font-size: 10pt; margin:0px; padding:0px;">Motor</label>
+                    <br />
+                    <label for="" style="font-size: 15pt;"><?php echo strtoupper(utf8_encode($Carro[0]->MOTPOTENCIA)); ?></label>
+                </div>
+            </div>
+
+            <div class="row" style="margin-top: 5px;">
+                <div class="col-lg-3 col-xs-6 text-warning text-center text-lg-left" style="font-weight: 600;">
+                    <label for="" style="font-size: 10pt; margin:0px; padding:0px;">Valvulas</label>
+                    <br />
+                    <label for="" style="font-size: 15pt;"><?php echo strtoupper(utf8_encode($Carro[0]->CARVALVULAS)); ?></label>
+                </div>
+
+                <div class="col-lg-3 col-xs-6 text-warning text-center text-lg-left" style="font-weight: 600;">
+                    <label for="" style="font-size: 10pt; margin:0px; padding:0px;">Localização</label>
+                    <br />
+                    <label for="" style="font-size: 15pt;"><?php echo strtoupper(utf8_encode($Carro[0]->LOCALIZACAO)); ?></label>
+                </div>
+            </div>
+        </div>
+
+
+
+        <!-- Itens do Veiculo -->
+        <?php if ($Detcarro) { ?>
+            <div class="container-fluid bg-dark" style="padding: 20px; border-radius: 5px; margin-top: 10px;">
+                <div class="row" style="margin-top: 5px;">
+                    <div class="text-warning col-lg-12 display-6">
+                        Itens do Veículo
+                    </div>
+                </div>
+                <hr>
+                <div class="row" style="margin-top: 15px;">
+                    <?php foreach ($Detcarro as $d) { ?>
+                        <div class="col-lg-3 col-xs-6 text-warning text-center text-lg-left" style="font-weight: 600;margin-top: 15px;">
+                            <label for="" style="font-size: 12pt;"><?php echo strtoupper(utf8_encode($d['COMPDESC'])); ?></label>
+                        </div>
+                    <?php } ?>
+                </div>
+            </div>
+        <?php } else { ?>
+            <div class="container-fluid bg-dark" style="padding: 20px; border-radius: 5px; ">
+                <div class="row" style="margin-top: 5px;">
+                    <div class="col-lg-12 text-warning text-center text-lg-left" style="font-weight: 600;">
+                        <label for="" class="text-warning display-5 text-center">
+                            Este veículo não possui itens cadastrados!
+                        </label>
+                    </div>
+                </div>
+            </div>
+        <?php } ?>
+
+
+        <?php if ($Carro) {
+            if ($Carro[0]->CARINFOAD) { ?>
+                <div class="container-fluid bg-dark" style="padding: 20px; border-radius: 5px; margin-top: 15px;;">
+                    <div class="row" style="margin-top: 5px;">
+                        <div class="text-warning col-lg-12 display-6">
+                            Informações Adicionais
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row" style="margin-top: 5px;">
+                        <div class="col-lg-12 text-warning text-center text-lg-left" style="font-weight: 600;">
+                            <label for="" class="text-warning text-left">
+                               <?php echo $util->convert_from_latin1_to_utf8_recursively($Carro[0]->CARINFOAD); ?>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+        <?php
+            }
+        } ?>
+
+
+
+
+        <!-- Anunciante do Veiculo -->
+        <div class="container-fluid bg-dark" style="padding: 20px; border-radius: 5px; margin-top: 10px;">
+            <div class="row" style="margin-top: 5px;">
+                <div class="text-warning col-lg-12 ">
+                    <h6 style="font-size: 10pt;">Este Veiculo foi anunciado por</h6>
+                    <h6 class="display-5"><?php echo $Carro[0]->CARNOMEANUNCIANTE; ?></h6>
+                    <h6 style="font-size: 10pt;">no dia <?php
+                                                        $date = new DateTime($Carro[0]->CARDATCADASTRO);
+                                                        $data = date_format($date, 'd/m/Y');
+                                                        $hora = date_format($date, 'H:i');
+                                                        $dataEnvio = $data . ' ás ' . $hora;
+                                                        echo $dataEnvio; ?>
+                    </h6>
+                </div>
+            </div>
+        </div>
+
     </section>
-    <aside class="col-lg-4" style="border-left: 2px solid yellow; border-right: 2px solid yellow;">
-        <h1 class="text-warning text-center" style="font-weight: 600"><?php echo "R$ ". FormatarMoeda(strtoupper(utf8_encode($Carro[0]->CARPRECO))); ?></h1>
-        <div class="container-fluid" style="padding: 5px;">
+    <aside class="col-lg-4" style="padding: 5px;">
+        <div class="container-fluid bg-dark" style="padding: 10px; border-radius: 5px; ">
             <form action="" method="post">
                 <div class="row">
                     <div class="col-lg-12">
-                        <label class="text-warning text-center">Ficou Interessado? Preencha o Formulário abaixo e entraremos em contato.</label>
+                        <label class="text-warning text-center display-6">Entre em contato com o Anunciante!</label>
                     </div>
                 </div>
                 <div class="row" style="margin-top: 5px;">
@@ -231,13 +280,13 @@ $listaPub = $pub->SelecionarListaPublicidades();
                     </div>
                 </div>
             </form>
-            
+
         </div>
     </aside>
 </div>
 
 
-<div class="row bg-dark"  style="margin-top: 5px; padding: 5px;">
+<div class="row bg-dark" style="margin-top: 5px; padding: 5px;">
     <div class="col-lg-12">
         <div class="container-fluid">
             <div class="row">
@@ -245,50 +294,80 @@ $listaPub = $pub->SelecionarListaPublicidades();
                     <h3 class="text-dark">Fotos</h3>
                 </div>
             </div>
-            <?php if($codCarro){ ?>
-            <div id="gallery" class="row">
-            <?php
-                    $dir = 'assets/img/Carros/'.$codCarro;
-                    if(!is_dir($dir)){
+            <?php if ($codCarro) { ?>
+                <div id="gallery" class="row">
+                    <?php
+                    $dir = 'assets/img/Carros/' . $codCarro;
+                    if (!is_dir($dir)) {
                         mkdir($dir);
                     }
 
-                    $files = scandir($dir,1);
-                    if(count($files) > 2){
-                        foreach($files as $f){
-                            if($f != '.' && $f != '..'){ ?>
-                                <a class="col-lg-2" href="<?php echo $dir.'/'.$f; ?>" style="margin-top: 5px;">
-                                    <img class="card-img-top" style="width: 100%; border-radius: 2px;" src="<?php echo $dir.'/'.$f; ?>" title="<?php echo $dir.'/'.$f; ?>" alt="<?php echo utf8_encode($f); ?>">
+                    $files = scandir($dir, 1);
+                    if (count($files) > 2) {
+                        foreach ($files as $f) {
+                            if ($f != '.' && $f != '..') { ?>
+                                <a class="col-lg-2" href="<?php echo $dir . '/' . $f; ?>" style="margin-top: 25px;">
+                                    <img class="card-img-top" style="width: 100%; border-radius: 2px;" src="<?php echo $dir . '/' . $f; ?>" title="<?php echo  $f; ?>" alt="<?php echo utf8_encode($f); ?>">
                                 </a>
-                    <?php
+                        <?php
                             }
                         }
-                    }
-                    else{ ?>
+                    } else { ?>
                         <div class="col-lg-12">
                             <h4 class="alert alert-warning">Nenhuma Foto Encontrada.</h4>
                         </div>
                     <?php
                     }
-            ?>
-            </div>
-            <?php } else{ ?>
-            <div class="row">
-                <div class="col-lg-12">
-                    <h4 class="alert alert-warning">Nenhuma Foto Encontrada.</h4>
+                    ?>
                 </div>
-            </div>
+            <?php } else { ?>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h4 class="alert alert-warning">Nenhuma Foto Encontrada.</h4>
+                    </div>
+                </div>
             <?php } ?>
         </div>
     </div>
-    
-    
+
+
+</div>
+
+<div class="row bg-dark" style="margin-top: 15px; padding:5px;">
+    <div class="col-lg-12 display-6 text-warning" style="margin-bottom: 5px; padding:5px;">
+        Legendas
+    </div>
+    <div class="col-lg-2">
+        <label for="" class="text-warning">
+            <i class="icone-crown"></i> Destaque
+        </label>
+    </div>
+    <div class="col-lg-2">
+        <label for="" class="text-danger">
+            <i class="icone-arrows-cw"></i> Aceita Troca
+        </label>
+    </div>
+    <div class="col-lg-2">
+        <label for="" class="text-info">
+            <i class="icone-diamond"></i> Novo/Semi-novo
+        </label>
+    </div>
+    <div class="col-lg-2">
+        <label for="" class="text-success">
+            <i class="icone-forward-1"></i> Repasse
+        </label>
+    </div>
+    <div class="col-lg-2">
+        <label for="" class="text-primary">
+            <i class="icone-hammer"></i> Sinistrado/Recuperado
+        </label>
+    </div>
 </div>
 
 
 <script>
-$(document).ready(function () {
-    $("#gallery").lightGallery();
-});
+    $(document).ready(function() {
+        $("#gallery").lightGallery();
+    });
 </script>
 <?php include 'footer.inc.php'; ?>

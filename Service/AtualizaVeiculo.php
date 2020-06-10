@@ -6,7 +6,6 @@ header("Content-Type: application/json; charset=utf-8");
 clearstatcache(); // limpa o cache
 
 
-//xdebug_break();
 include_once('../Config/ConexaoBD.php');
 include_once('../Config/Util.php');
 require_once('../Models/Carros.php');
@@ -15,11 +14,21 @@ $vxobCar = new Carros();
 $vxobVer = new Versoes();
 $util = new Util();
 $imagem = null;
+$imgNova = false;
 $Json = null;
 try {
     session_start();
     $user = $_SESSION['Usuario'];
+
+    if ($_FILES['_edImagemCapa']['name'] == "") {
+        $imgNova = false;
+    }
+    else{
+        $imgNova = true;
+    }
+
     if (isset($_POST)) {
+        $cod = $_POST['_edCodVeiculo'];
         $date = date('dmYHis');
         $placa = strtoupper(str_replace('-', '', $_POST['placa']));
         $tpAnun = $_POST['tipoVeiculo'];
@@ -57,13 +66,20 @@ try {
 
         $det = $_POST['det'];
 
-        $dir                = $path_parts = pathinfo($_FILES['_edImagemCapa']['name']);
-        $dirNovo            = "../assets/img/Carros/"; //diretorio de destino
-        $ext                = $path_parts['extension'];
-        $nomeNovo            = trim(date('YmdGis') . '-' . $marca . $modelo . trim($nomeAnum) . trim($uf) . $municipio . '.' . $ext);
-        $destino            = $dirNovo . $nomeNovo;
-        $arquivo_tmp        = $_FILES['_edImagemCapa']['tmp_name'];
-        $vxvaImg            = $nomeNovo;
+        if($imgNova == true){
+            $dir                = $path_parts = pathinfo($_FILES['_edImagemCapa']['name']);
+            $dirNovo            = "../assets/img/Carros/"; //diretorio de destino
+            $ext                = $path_parts['extension'];
+            $nomeNovo            = trim(date('YmdGis') . '-' . $marca . $modelo . trim($nomeAnum) . trim($uf) . $municipio . '.' . $ext);
+            $destino            = $dirNovo . $nomeNovo;
+            $arquivo_tmp        = $_FILES['_edImagemCapa']['tmp_name'];
+            $vxvaImg            = $nomeNovo;
+        }
+        else{
+            $vxvaImg = $_POST['_edImagemCapaAntiga'];
+        }
+
+        
 
         //Inserindo nova versão
         if ($versao == "0") {
@@ -81,15 +97,19 @@ try {
     //TRATANDO VALORES
     $km = str_replace('.','',$km);
     $km = str_replace(',','.',$km);
+    $km = str_replace("\xc2\xa0", ' ', $km);
+    $km = trim($km);
     $km = doubleval($km);
 
     $preco = str_replace('.','',$preco);
     $preco = str_replace(',','.',$preco);
+    $preco = str_replace("\xc2\xa0", ' ', $preco);
+    $preco = trim($preco);
     $preco = doubleval($preco);
 
     
 
-    $vxobCar->User = $user;
+    $vxobCar->Id = $cod;
     $vxobCar->Placa  = $placa;
     $vxobCar->TipoAnuncio = $tpAnun;
     $vxobCar->Carroceria = $carroceria;
@@ -115,34 +135,48 @@ try {
     $vxobCar->NomeAnunciante = $nomeAnum;
     $vxobCar->EmailAnunciante = $emailAnum;
     $vxobCar->TelAnunciante = $telAnum;
+    $vxobCar->InfoAdicional = $infoAd;
 
-    if (is_dir('../assets/img/Carros/')) {
-        if (move_uploaded_file($arquivo_tmp, $destino)) {
-            if ($vxobCar->InsereVeiculo()) {
-                $Ultcod = $vxobCar->BuscaUltimoCodCarroUser($user);
-                foreach($det as $d){
-                    $CodItem = $vxobCar->BuscaItemPorCod($d);
-                    $vxobCar->InsereItensCarro($CodItem[0]->COMPCOD,$Ultcod[0]->CARCOD,$user);
+    if ($imgNova == true) {
+        if (is_dir('../assets/img/Carros/')) {
+            if (move_uploaded_file($arquivo_tmp, $destino)) {
+                if ($vxobCar->AtualizaVeiculo()) {
+                    $vxobCar->DeletaItensCarroPorCodCarro($cod);
+                    foreach($det as $d){
+                        $CodItem = $vxobCar->BuscaItemPorCod($d);
+                        $vxobCar->InsereItensCarro($CodItem[0]->COMPCOD,$cod,$user);
+                    }
+                    $Json = '[{"TransCod":1, "msg":"Veiculo Atualizado com Sucesso."}]';
+                } else {
+                    $Json = '[{"TransCod":0, "msg":"Não foi Possivel Atualiza este Veiculo."}]';
                 }
-                $arr = array('TransCod' => 1, 'Ultcod' => $Ultcod[0]->CARCOD);
-                $Json = '[{"TransCod":1, "msg":"Veiculo Cadastrado com Sucesso.","UltCod":' . $Ultcod[0]->CARCOD . '}]';
-            } else {
-                $Json = '[{"TransCod":0, "msg":"Não foi Possivel Cadastrar este Veiculo."}]';
+            }
+        } else {
+            mkdir('../assets/img/Carros/');
+            if (move_uploaded_file($arquivo_tmp, $destino)) {
+                if ($vxobCar->AtualizaVeiculo()) {
+                    $vxobCar->DeletaItensCarroPorCodCarro($cod);
+                    foreach($det as $d){
+                        $CodItem = $vxobCar->BuscaItemPorCod($d);
+                        $vxobCar->InsereItensCarro($CodItem[0]->COMPCOD,$cod,$user);
+                    }
+                    $Json = '[{"TransCod":1, "msg":"Veiculo Atualizado com Sucesso."}]';
+                } else {
+                    $Json = '[{"TransCod":0, "msg":"Não foi Possivel Atualiza este Veiculo."}]';
+                }
             }
         }
-    } else {
-        mkdir('../assets/img/Carros/');
-        if (move_uploaded_file($arquivo_tmp, $destino)) {
-            if ($vxobCar->InsereVeiculo()) {
-                $Ultcod = $vxobCar->BuscaUltimoCodCarroUser($user);
-                foreach($det as $d){
-                    $CodItem = $vxobCar->BuscaItemPorCod($d);
-                    $vxobCar->InsereItensCarro($CodItem[0]->COMPCOD,$Ultcod[0]->CARCOD,$user);
-                }
-                $Json = '[{"TransCod":1, "msg":"Veiculo Cadastrado com Sucesso.","UltCod":' . $Ultcod[0]->CARCOD . '}]';
-            } else {
-                $Json = '[{"TransCod":0, "msg":"Não foi Possivel Cadastrar este Veiculo."}]';
+    }
+    else{
+        if ($vxobCar->AtualizaVeiculo()) {
+            $vxobCar->DeletaItensCarroPorCodCarro($cod);
+            foreach($det as $d){
+                $CodItem = $vxobCar->BuscaItemPorCod($d);
+                $vxobCar->InsereItensCarro($CodItem[0]->COMPCOD,$cod,$user);
             }
+            $Json = '[{"TransCod":1, "msg":"Veiculo Atualizado com Sucesso."}]';
+        } else {
+            $Json = '[{"TransCod":0, "msg":"Não foi Possivel Atualiza este Veiculo."}]';
         }
     }
 

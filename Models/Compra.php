@@ -52,7 +52,7 @@ class Compra
         CARCOD,
         MARDESCRICAO,
         MODDESCRICAO,
-        CARANO,
+        CONCAT(CARANOFAB,'/',CARANOMOD) AS CARANO,
         CARFOTO,
         CARPRECO
         FROM kgctblsolcom
@@ -93,7 +93,7 @@ class Compra
         COMDATCADASTRO,
         COMLIDO,
         CARCOD,
-        CONCAT(CARCOD,' - ',MARDESCRICAO,' ',MODDESCRICAO,' ', CARANO) AS VEICULO
+        CONCAT(CARCOD,' - ',MARDESCRICAO,' ',MODDESCRICAO,' ', CARANOFAB,'/',CARANOMOD) AS VEICULO
         FROM kgctblsolcom
         inner join KGCTBLCAR
         ON COMCODCARRO = CARCOD

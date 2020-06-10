@@ -16,6 +16,9 @@ $whatsapp = $parWhat[0]->PRMVAL;
 $facebook = $parFace[0]->PRMVAL;
 $instagram = $parInsta[0]->PRMVAL;
 
+
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -169,7 +172,7 @@ $instagram = $parInsta[0]->PRMVAL;
                             <li class="nav-item"><a class="nav-link" href="sobre.php">Institucional</a></li>
                             <li class="nav-item" style="display: none"><a class="nav-link" href="carros.php">Carros</a></li>
                             <li class="nav-item" style="display: none"><a class="nav-link" href="anuncio.php">Anuncie</a></li>
-                            <li class="nav-item"><a class="nav-link" href="faleConosco.php">Contato</a></li>
+
                             <li class="nav-item dropdown">
                                 <label class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     Veículos
@@ -181,9 +184,9 @@ $instagram = $parInsta[0]->PRMVAL;
                                 </div>
                             </li>
                         </ul>
-                        <form class="form-inline my-2 my-lg-0">
-                            <label class="text-white"></label>
-                        </form>
+                        <ul class="navbar-nav my-2 my-lg-0" style="font-weight: 700; font-size: 14pt;">
+                            <li class="nav-item"><a class="nav-link" href="faleConosco.php">Contato</a></li>
+                        </ul>
                     </div>
                 </nav>
             </div>

@@ -327,12 +327,12 @@ if (count($strCount)) {
 
                     <div class="form-group col-sm-12 col-lg-4">
                         <label for="_edEmailAnunciante" class="text-danger">Email</label>
-                        <input type="text" title="Email do Anunciante" value="contato@kingcar.com.br" class="form-control" id="_edEmailAnunciante" name="emailAnun">
+                        <input type="text" title="Email do Anunciante" value="contato@kingcarseminovos.com" class="form-control" id="_edEmailAnunciante" name="emailAnun">
                     </div>
 
                     <div class="form-group col-sm-12 col-lg-3">
                         <label for="_edTelAnunciante" class="text-danger">Telefone</label>
-                        <input type="tel" title="Telefone do Anunciante" value="31999999999" class="form-control telefone" id="_edTelAnunciante" name="telAnun">
+                        <input type="tel" title="Telefone do Anunciante" value="31992140209" class="form-control telefone" id="_edTelAnunciante" name="telAnun">
                     </div>
 
 
@@ -354,23 +354,33 @@ if (count($strCount)) {
                 <div class="row" id="_boxItens">
 
                 </div>
-                <hr>
+
+            </section>
+            <div id="_pnlFotos" class="row bg-dark text-white" style="margin-top:5px;">
+                <div class="col-lg-12 text-center">
+                    <i class="icone-picture-1"></i> Fotos do Veículo
+                </div>
+            </div>
+
+            <section id="_pnlFotos">
                 <div class="row" style="margin-top:5px;margin-bottom:5px;">
-                    <div class="col-lg-3 ">
-                        <a class="btn btn-success text-white" style="width: 100%;" id="_btnCarregaFotos">
-                            <i class="icone-picture-1"></i> Carregar Fotos do Veículo
-                        </a>
-                        <input hidden type="file" name="_edFotosVeiculo[]" id="_edFotos" multiple="multiple">
-                    </div>
-                    <div class="col-lg-3">
-                        <div class="btn btn-success" id="_btnGravarFotos" style="display: none;">
-                            <i class="icone-upload-1"></i> Gravar Fotos
+                    <div class="col-lg-2">
+                        <div class="btn btn-success" onclick="CadastrarFotosVeiculo()">
+                            <i class="icone-upload"></i> Salvar Fotos
                         </div>
                     </div>
+                    <div class="col-lg-10">
+                        <input type="file" name="_edFotosVeiculo[]" id="_edFotos" multiple="multiple">
+                    </div>
+                </div>
+                <hr>
+                <div id="box-fotos" class="row" style="margin-top:5px;margin-bottom:5px;">
+
                 </div>
             </section>
         </div>
     </form>
+    <form id="_formFotos" action=""></form>
 </div>
 
 
@@ -395,9 +405,6 @@ if (count($strCount)) {
             self.executar();
         });
 
-        $("#_btnCarregaFotos").click(function() {
-            self.CarregarFotos();
-        });
 
         $(".accordion").accordion({
             heightStyle: "content"
@@ -435,7 +442,7 @@ if (count($strCount)) {
         });
 
         $('#_formVeiculo').submit(function() {
-
+debugger;
             var codVeiculo = $('#_edCodVeiculo').val();
 
             // Captura os dados do formulário
@@ -455,7 +462,6 @@ if (count($strCount)) {
                     processData: false,
                     contentType: false,
                     success: function(data) {
-                        debugger;
                         console.log(data);
                         var dados = JSON.parse(data);
                         console.log(dados[0]);
@@ -466,6 +472,8 @@ if (count($strCount)) {
                         } else {
                             hideLoad();
                             $('#_edCodVeiculo').val(dados[0].UltCod)
+                            ExibePainelfotos();
+                            CarregarFotos();
                             SuccessBox(dados[0].msg);
                         }
 
@@ -487,10 +495,10 @@ if (count($strCount)) {
                     }
                 });
             } else {
-                showLoad('Aguarde! <br> Atualizando Publicidade.');
+                showLoad('Aguarde! <br> Atualizando Veiculo.');
                 // Envia O FormData através da requisição AJAX
                 $.ajax({
-                    url: "../Service/AtualizaPublicidade.php",
+                    url: "../Service/AtualizaVeiculo.php",
                     type: "POST",
                     data: formData,
                     dataType: 'json',
@@ -524,20 +532,141 @@ if (count($strCount)) {
 
 
 
+
+        $('#_formFotos').submit(function() {
+
+            var codVeiculo = $('#_edCodVeiculo').val();
+
+            // Captura os dados do formulário
+            var formulario = document.getElementById('_formVeiculo');
+
+            // Instância o FormData passando como parâmetro o formulário
+            var formData = new FormData(formulario);
+            formData.append('image', $('#_edFotos').prop('files')[0]);
+            showLoad('Aguarde! <br> Registrando Fotos do Veículo.');
+            // Envia O FormData através da requisição AJAX
+            $.ajax({
+                url: "../Service/InsereFotosVeiculo.php",
+                type: "POST",
+                data: formData,
+                dataType: 'json',
+                processData: false,
+                contentType: false,
+                success: function(data) {
+                    console.log(data);
+                    var dados = JSON.parse(data);
+                    console.log(dados[0]);
+                    var transcod = dados[0].TransCod;
+                    if (transcod == 0) {
+                        hideLoad();
+                        ErrorBox(dados[0].msg);
+                    } else {
+                        hideLoad();
+                        ExibePainelfotos();
+                        CarregarFotos();
+                        $("#_edFotos").val(null);
+                        SuccessBox(dados[0].msg);
+                    }
+
+                },
+                error: function(x, e) {
+                    if (x.status == 0) {
+                        alert('You are offline!!\n Please Check Your Network.');
+                    } else if (x.status == 404) {
+                        alert('Requested URL not found.');
+                    } else if (x.status == 500) {
+                        alert('Internel Server Error.');
+                    } else if (e == 'parsererror') {
+                        alert('Error.\nParsing JSON Request failed.');
+                    } else if (e == 'timeout') {
+                        alert('Request Time out.');
+                    } else {
+                        alert('Unknow Error.\n' + x.responseText);
+                    }
+                }
+            });
+            return false;
+        });
+
+
+
     });
+
+    function CadastrarFotosVeiculo() {
+        if ($('#_edFotos').prop('files')[0] == undefined || $('#_edFotos').prop('files')[0] == null) {
+            WarningBox("Selecione as imagens a serem cadastradas.");
+            return;
+        }
+        $('#_formFotos').submit();
+    }
+
+    function ExibePainelfotos() {
+        $("#_pnlFotos").css('display', 'block');
+    }
+
+    function OcultaPainelfotos() {
+        $("#_pnlFotos").css('display', 'none');
+    }
 
     function CarregarFotos() {
         var cod = $('#_edCodVeiculo').val();
+        $('#box-fotos').empty();
 
-        if (!cod) {
-            $("#_btnGravarFotos").css('display', 'none');
-            WarningBox('Finalize o cadastro do veículo antes de carregar as fotos.');
-            return;
-        }
+        $.ajax({
+            url: "../service/BuscaFotosVeiculo.php?cod=" + cod,
+            type: 'GET',
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function(data) {
+                debugger;
+                console.log(data);
+                var dados = JSON.parse(data);
+                console.log(dados);
+                hideLoad();
+                var selectbox = $('#box-fotos');
+                if (dados[0].TransCod == 0) {
+                    ErrorBox(data.erro);
+                    return;
+                } else if (data[0].TransCod == 2) {
+                    let element = '<div class="col-lg-12"><h5 class="alert alert-warning">Não há fotos cadastradas para este Veículo!</h5></div>'
+                    $('#box-fotos').append(element);
+                } else {
+                    var cont = 1;
+                    dados[1].Imagens.forEach(function(o, index) {
+                        let element = '<div id="_cardFotoVeiculo' + cont + '" class="col-lg-2" style="padding: 2px;"><div class="card" style="padding: 0px;"><div class="card-body" style="padding: 1px;"><a href="../assets/img/Carros/' + cod + '/' + o.NOMEIMG + '" target="_blank"><img width="100%" src="../assets/img/Carros/' + cod + '/' + o.NOMEIMG + '" title="' + o.NOMEIMG + '" alt="' + o.NOMEIMG + '"></a></div><div class="card-footer" style="padding: 1px;"><div onclick="ExluirFoto(' + cod + ',\'' + o.NOMEIMG + '\',\'_cardFotoVeiculo' + cont + '\')" style="width: 100%" class="btn btn-danger"><i class="icone-trash"></i> Excluir Foto</div></div></div></div>';
+                        //let element = '<div class="form-group col-lg-3"><input type="checkbox" name="det[]" id="_ck' + o.COMPNOMCAMPO + '" value="' + o.COMPNOMCAMPO + '"><label for="_ck' + o.COMPNOMCAMPO + '">' + o.COMPDESC.toUpperCase() + '</label></div>';
+                        $('#box-fotos').append(element);
+                        cont++;
+                    });
+                }
 
-        $("#_btnGravarFotos").css('display', 'block');
-        // $('#_edFotos').trigger('click');
-        $('#_edFotos').click();
+            }
+        });
+
+    }
+
+    function ExluirFoto(cod, img, card) {
+        showLoad('Aguarde <br> Excluindo Foto do Veiculo!');
+        var imagem = img.split('.');
+        var nome = img;
+        $.ajax({
+            url: "../service/DeletaFotoVeiculo.php?cod=" + cod + "&nome=" + nome,
+            type: 'GET',
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function(data) {
+                hideLoad();
+                console.log(data);
+                var selectbox = $('#box-fotos');
+                if (data.TransCod == 0) {
+                    ErrorBox(data.erro);
+                    return;
+                } else if (data.TransCod == 1) {
+                    $('#' + card).remove();
+                    SuccessBox('Foto Excluida com Sucesso!');
+                }
+            }
+        });
     }
 
     function CarregarMunicipios() {
@@ -553,7 +682,6 @@ if (count($strCount)) {
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function(data) {
-                debugger;
                 console.log(data);
                 var dados = JSON.parse(data);
                 console.log(dados);
@@ -582,7 +710,6 @@ if (count($strCount)) {
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function(data) {
-                debugger;
                 console.log(data);
                 var dados = JSON.parse(data);
                 console.log(dados);
@@ -592,7 +719,7 @@ if (count($strCount)) {
                     $('<option>').val(o.MUNCODIGOIBGE).text(o.MUNDESCRICAO.toUpperCase()).appendTo(selectbox);
                 });
                 $('<option>').val('0').text('Selecionar').appendTo(selectbox);
-                $('#_ddlMunicipio option[value='+mun+']').attr('selected', 'selected');
+                $('#_ddlMunicipio option[value=' + mun + ']').attr('selected', 'selected');
 
             }
         });
@@ -606,7 +733,6 @@ if (count($strCount)) {
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function(data) {
-                debugger;
                 console.log(data);
                 var dados = JSON.parse(data);
                 console.log(dados);
@@ -631,7 +757,6 @@ if (count($strCount)) {
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function(data) {
-                debugger;
                 console.log(data);
                 var dados = JSON.parse(data);
                 console.log(dados);
@@ -658,7 +783,6 @@ if (count($strCount)) {
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function(data) {
-                debugger;
                 console.log(data);
                 var dados = JSON.parse(data);
                 console.log(dados);
@@ -681,7 +805,6 @@ if (count($strCount)) {
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function(data) {
-                debugger;
                 console.log(data);
                 var dados = JSON.parse(data);
                 console.log(dados);
@@ -704,7 +827,6 @@ if (count($strCount)) {
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function(data) {
-                debugger;
                 console.log(data);
                 var dados = JSON.parse(data);
                 console.log(dados);
@@ -727,7 +849,6 @@ if (count($strCount)) {
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function(data) {
-                debugger;
                 console.log(data);
                 var dados = JSON.parse(data);
                 console.log(dados);
@@ -750,7 +871,6 @@ if (count($strCount)) {
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function(data) {
-                debugger;
                 console.log(data);
                 var dados = JSON.parse(data);
                 console.log(dados);
@@ -767,7 +887,6 @@ if (count($strCount)) {
     }
 
     function CarregaMarcas() {
-        debugger;
         $.ajax({
             url: "../Service/BuscaMarcas.php",
             type: 'POST',
@@ -775,7 +894,6 @@ if (count($strCount)) {
             dataType: "json",
             data: {},
             success: function(data) {
-                debugger;
                 console.log(data);
                 var dados = JSON.parse(data);
                 console.log(dados);
@@ -792,7 +910,6 @@ if (count($strCount)) {
 
 
     function CarregarModelo() {
-        debugger;
         let CodMarca = $("#_ddlMarca option:selected").val(); //$("#_ddlMarca").val(); 
         $.ajax({
             url: "../service/BuscaModelos.php?codMarca=" + CodMarca,
@@ -800,7 +917,6 @@ if (count($strCount)) {
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function(data) {
-                debugger;
                 var selectbox = $('#_ddlModelo');
                 selectbox.find('option').remove();
                 data.forEach(function(o, index) {
@@ -814,7 +930,6 @@ if (count($strCount)) {
     }
 
     function CarregarModelo(mod) {
-        debugger;
         let CodMarca = $("#_ddlMarca option:selected").val(); //$("#_ddlMarca").val(); 
         $.ajax({
             url: "../service/BuscaModelos.php?codMarca=" + CodMarca,
@@ -822,21 +937,19 @@ if (count($strCount)) {
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function(data) {
-                debugger;
                 var selectbox = $('#_ddlModelo');
                 selectbox.find('option').remove();
                 data.forEach(function(o, index) {
                     $('<option>').val(o.MODCOD).text(o.MODDESCRICAO.toUpperCase()).appendTo(selectbox);
                 });
                 $('<option>').val('0').text('Selecionar').appendTo(selectbox);
-                $('#_ddlModelo option[value='+mod+']').attr('selected', 'selected');
+                $('#_ddlModelo option[value=' + mod + ']').attr('selected', 'selected');
 
             }
         });
     }
 
     function CarregarVersoes() {
-        debugger;
         let CodMarca = $("#_ddlMarca option:selected").val();
         let CodModelo = $("#_ddlModelo option:selected").val(); //$("#_ddlMarca").val(); 
         console.log(CodMarca);
@@ -847,7 +960,6 @@ if (count($strCount)) {
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function(data) {
-                debugger;
                 console.log(data);
                 var dados = JSON.parse(data);
                 console.log(dados);
@@ -864,8 +976,7 @@ if (count($strCount)) {
     }
 
 
-    function CarregarVersoes(mar,mod,ver) {
-        debugger;
+    function CarregarVersoesSel(mar, mod, ver) {
         let CodMarca = $("#_ddlMarca option:selected").val();
         let CodModelo = $("#_ddlModelo option:selected").val(); //$("#_ddlMarca").val(); 
         console.log(CodMarca);
@@ -876,7 +987,6 @@ if (count($strCount)) {
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function(data) {
-                debugger;
                 console.log(data);
                 var dados = JSON.parse(data);
                 console.log(dados);
@@ -886,7 +996,7 @@ if (count($strCount)) {
                     $('<option>').val(o.id).text(o.versao.toUpperCase()).appendTo(selectbox);
                 });
                 $('<option>').val('0').text('Outra Versão').appendTo(selectbox);
-                $('#_ddlVersao option[value='+ver+']').attr('selected', 'selected');
+                $('#_ddlVersao option[value=' + ver + ']').attr('selected', 'selected');
 
             }
         });
@@ -917,17 +1027,61 @@ if (count($strCount)) {
     });
 
     function LimparCampos() {
+        CarregaMarcas();
+        CarregarMotor();
+        CarregarCores();
+        CarregarCambios();
+        CarregarCombustiveis();
+        CarregarItens();
+        //CarregarCategorias();
+        CarregarCarrocerias();
         $('#_edCodVeiculo').val('');
-        $('#_edEmpresa').val('');
+        OcultaPainelfotos();
+        $('#box-fotos').empty();
+        $('#_edPlaca').val('');
+        $('#_ddlTipoVeiculo').val('N');
+        $('#_ddlCarroceria').val('0');
+        $("#_ddlDestaque").val('N');
+        $("#_ddlStatus").val('A');
+        $("#_ddlMarca").val('');
+        $("#_ddlModelo").val('0');
+        $("#_ddlVersao").val('0');
+        $('#_edVersao').val('');
+        $('#_edAnoFab').val('');
+        $('#_edAnoMod').val('');
+        $("#_ddlUf").val('MG');
+        $("#_ddlMunicipio").val('0');
+        $("#_ddlMotor").val('0');
+        $("#_ddlValvula").val('');
+        $("#_ddlPortas").val('');
+        $('#_edKm').val('');
+        $('#_edPreco').val('');
+        $("#_ddlCor").val('0');
+        $("#_ddlCambio").val('0');
+        $("#_ddlCombustivel").val('0');
+        $('#_edinfoAd').val('');
+        $("#_ddlTroca").val('N');
+
+        $('#_edNomeAnunciante').val('King Car Semi-novos');
+        $('#_edEmailAnunciante').val('contato@kingcarseminovos.com');
+        $('#_edTelAnunciante').val('31992140209');
+
         var img = $('#_ImgCapaPreview');
         img.attr('src', '../assets/img/sem-foto.gif');
-        $('#_edImagemCapa').val('');
+        $('#_edImagemCapa').val(null);
+        $('#_edImagemCapaAntiga').val('');
+
+
+        var itens = document.getElementsByName('det[]');
+        var i = 0;
+        for (i = 0; i < itens.length; i++) {
+            itens[i].checked = false;
+        }
     }
 
 
     //Atualiza Grid Principal
     function atualizaGridPrincipal() {
-        //debugger;
         if ($.fn.DataTable.isDataTable('#_gridPesq')) {
             var table = $('#_gridPesq').DataTable();
             table.destroy();
@@ -949,7 +1103,7 @@ if (count($strCount)) {
     }
 
     function VoltarTelaPesq() {
-        showLoad('Aguarde!');
+        showLoad('Aguarde! ');
         LimparCampos();
         TrocaTela('#Pnl_CadAtu', '#pnl_Pesq');
         atualizaGridPrincipal();
@@ -962,7 +1116,6 @@ if (count($strCount)) {
         //1 - OPERAÇÃO CONCLUIDA COM SUCESSO
         //2 - ativo JÁ CADASTRADO
         //3 - SENHA IGUAL A ANTERIOR
-        debugger;
 
 
         showLoad('Aguarde!<br>Validando Informações do Veículo.');
@@ -984,7 +1137,9 @@ if (count($strCount)) {
         var valvula = $("#_ddlValvula :selected").val();
         var portas = $("#_ddlPortas :selected").val();
         var km = $('#_edKm').val();
+        km = km.trim();
         var preco = $('#_edPreco').val();
+        preco = preco.trim();
         var cor = $("#_ddlCor :selected").val();
         var cambio = $("#_ddlCambio :selected").val();
         var combustivel = $("#_ddlCombustivel :selected").val();
@@ -1003,7 +1158,7 @@ if (count($strCount)) {
             WarningBox('O campo placa é obrigatório');
             return;
         } else {
-            if (placa.length < 8) {
+            if (placa.length < 7) {
                 $('#_edPlaca').focus();
                 hideLoad();
                 WarningBox('Favor Informar Uma Placa Valida!');
@@ -1191,10 +1346,13 @@ if (count($strCount)) {
 
         /*VALIDAÇÃO DA CAPA DO ANUNCIO*/
         if ($('#_edImagemCapa').prop('files')[0] == undefined) {
-            $('#_edImagemCapa').focus();
-            hideLoad();
-            WarningBox('Informe a capa do anuncio.');
-            return;
+            if ($('#_edImagemCapaAntiga').val() == '' || $('#_edImagemCapaAntiga').val() == null) {
+                $('#_edImagemCapa').focus();
+                hideLoad();
+                WarningBox('Informe a capa do anuncio.');
+                return;
+            }
+
         }
 
 
@@ -1206,29 +1364,29 @@ if (count($strCount)) {
         }
     }
 
-    function AtualizaPublicidade(codVeiculo) {
-        showLoad('Aguarde!<br>Carregando as informações da Publicidade.');
+    function AtualizaVeiculo(codVeiculo) {
+        showLoad('Aguarde!<br>Carregando as informações do Veiculo.');
         TrocaTela('#pnl_Pesq', '#Pnl_CadAtu');
-        $('#_edCodPublicidade').val(codVeiculo);
+        $('#_edCodVeiculo').val(codVeiculo);
         BuscaDadosVeiculo(codVeiculo);
     }
 
     function CadastrarUsu() {
         showLoad('Aguarde!');
         TrocaTela('#pnl_Pesq', '#Pnl_CadAtu');
+        OcultaPainelfotos();
         hideLoad();
     }
 
-    function DeletaPublicidade(codVeiculo) {
-        showLoad('Aguarde <br> Excluindo Publicidade Selecionada.');
+    function DeletaVeiculo(codVeiculo) {
+        showLoad('Aguarde <br> Excluindo Veiculo Selecionado.');
         $.ajax({
-            url: "../Service/DeletaPublicidade.php?cod=" + codVeiculo,
+            url: "../Service/DeletaVeiculo.php?cod=" + codVeiculo,
             type: 'POST',
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             data: {},
             success: function(data) {
-                debugger;
                 console.log(data);
                 var dados = JSON.parse(data);
                 console.log(dados[0]);
@@ -1237,7 +1395,7 @@ if (count($strCount)) {
                     ErrorBox(dados[0].msg);
                 } else {
                     hideLoad();
-                    SuccessBox('Publicidade Deletada com Sucesso.');
+                    SuccessBox('Veiculo Deletado com Sucesso.');
                     atualizaGridPrincipal();
                 }
             }
@@ -1245,6 +1403,7 @@ if (count($strCount)) {
     }
 
     function BuscaDadosVeiculo(codVeiculo) {
+       
         $.ajax({
             url: "../Service/BuscaDadosVeiculo.php?cod=" + codVeiculo,
             type: 'POST',
@@ -1260,33 +1419,64 @@ if (count($strCount)) {
                     hideLoad();
                     ErrorBox(dados[0].msg);
                 } else {
+                    hideLoad();
                     $('#_edCodVeiculo').val(dados[0].Veiculo.Id);
                     $('#_edPlaca').val(dados[0].Veiculo.Placa);
-                    $('#_ddlTipoVeiculo option[value='+dados[0].Veiculo.TipoAnuncio+']').attr('selected', 'selected');
-                    $('#_ddlCarroceria option[value='+dados[0].Veiculo.Carroceria+']').attr('selected', 'selected');
-                    $('#_ddlDestaque option[value='+dados[0].Veiculo.Destaque+']').attr('selected', 'selected');
-                    $('#_ddlStatus option[value='+dados[0].Veiculo.Status+']').attr('selected', 'selected');
-                    $('#_ddlMarca option[value='+dados[0].Veiculo.Marca+']').attr('selected', 'selected');
+                    $('#_edinfoAd').val(dados[0].Veiculo.InfoAdicional);
+                    $('#_ddlTipoVeiculo option[value=' + dados[0].Veiculo.TipoAnuncio + ']').attr('selected', 'selected');
+                    $('#_ddlCarroceria option[value=' + dados[0].Veiculo.Carroceria + ']').attr('selected', 'selected');
+                    $('#_ddlDestaque option[value=' + dados[0].Veiculo.Destaque + ']').attr('selected', 'selected');
+                    $('#_ddlStatus option[value=' + dados[0].Veiculo.Status + ']').attr('selected', 'selected');
+                    $('#_ddlMarca option[value=' + dados[0].Veiculo.Marca + ']').attr('selected', 'selected');
                     CarregarModelo(dados[0].Veiculo.Modelo);
-                    CarregarVersoes(dados[0].Veiculo.Marca,dados[0].Veiculo.Modelo,dados[0].Veiculo.Versao);
+                    CarregarVersoesSel(dados[0].Veiculo.Marca, dados[0].Veiculo.Modelo, dados[0].Veiculo.Versao);
                     $("#txt-versao").css('display', 'none');
-                    $('#_ddlUf option[value='+dados[0].Veiculo.Uf+']').attr('selected', 'selected');
+                    $('#_ddlUf option[value=' + dados[0].Veiculo.Uf + ']').attr('selected', 'selected');
                     CarregarMunicipios(dados[0].Veiculo.Municipio);
                     $('#_edAnoFab').val(dados[0].Veiculo.AnoFab);
                     $('#_edAnoMod').val(dados[0].Veiculo.AnoMod);
-                    $('#_ddlMotor option[value='+dados[0].Veiculo.Motor+']').attr('selected', 'selected');
-                    $('#_ddlValvula option[value='+dados[0].Veiculo.Valvulas+']').attr('selected', 'selected');
-                    $('#_ddlPortas option[value='+dados[0].Veiculo.Portas+']').attr('selected', 'selected');
-                    $('#_edKm').val(dados[0].Veiculo.Km);
-                    $('#_edPreco').val(dados[0].Veiculo.Preco);
-                    $('#_ddlCor option[value='+dados[0].Veiculo.Cor+']').attr('selected', 'selected');
-                    $('#_ddlCambio option[value='+dados[0].Veiculo.Cambio+']').attr('selected', 'selected');
-                    $('#_ddlCombustivel option[value='+dados[0].Veiculo.Combustivel+']').attr('selected', 'selected');
-                    $('#_ddlTroca option[value='+dados[0].Veiculo.Troca+']').attr('selected', 'selected');
-                    MarcarItens();
+                    $('#_ddlMotor option[value=' + dados[0].Veiculo.Motor + ']').attr('selected', 'selected');
+                    $('#_ddlValvula option[value=' + dados[0].Veiculo.Valvulas + ']').attr('selected', 'selected');
+                    $('#_ddlPortas option[value=' + dados[0].Veiculo.Portas + ']').attr('selected', 'selected');
+                    var km = dados[0].Veiculo.Km.replace('R$','');
+                    $('#_edKm').val(km);
+                    var preco = dados[0].Veiculo.Preco.replace('R$','');
+                    $('#_edPreco').val(preco);
+                    $('#_ddlCor option[value=' + dados[0].Veiculo.Cor + ']').attr('selected', 'selected');
+                    $('#_ddlCambio option[value=' + dados[0].Veiculo.Cambio + ']').attr('selected', 'selected');
+                    $('#_ddlCombustivel option[value=' + dados[0].Veiculo.Combustivel + ']').attr('selected', 'selected');
+                    $('#_ddlTroca option[value=' + dados[0].Veiculo.Troca + ']').attr('selected', 'selected');
+                    MarcarItens(dados[0].Veiculo.Id);
                     $("#_ImgCapaPreview").attr('src', '../assets/img/Carros/' + dados[0].Veiculo.ImgCapa);
                     $('#_edImagemCapaAntiga').val(dados[0].Veiculo.ImgCapa);
+                    ExibePainelfotos();
+                    CarregarFotos();
+
+                }
+            }
+        });
+    }
+
+    function MarcarItens(codVeiculo) {
+        $.ajax({
+            url: "../Service/BuscaItensMarcadosVeiculo.php?cod=" + codVeiculo,
+            type: 'GET',
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            data: {},
+            success: function(data) {
+                console.log(data);
+                var dados = JSON.parse(data);
+                console.log(dados);
+                if (dados.TransCod == 0) {
                     hideLoad();
+                    ErrorBox(dados.msg);
+                } else {
+                    hideLoad();
+                    dados.forEach(function(o, index) {
+                        $("#_ck" + o.campo).prop('checked', true);
+                        //$('<option>').val(o.id).text(o.versao.toUpperCase()).appendTo(selectbox);
+                    });
                 }
             }
         });
@@ -1303,7 +1493,6 @@ if (count($strCount)) {
             dataType: "json",
             data: {},
             success: function(data) {
-                debugger;
                 console.log(data);
                 var dados = JSON.parse(data);
                 console.log(dados);
@@ -1408,7 +1597,7 @@ if (count($strCount)) {
                             "data": "editar",
                             "render": function(data, type, row, meta) {
                                 if (type === 'display') {
-                                    data = '<div style="cursor:pointer;" onClick="AtualizaPublicidade(' + data + ')" class="btn btn-success"><i class="icone-pencil"></i></div>';
+                                    data = '<div style="cursor:pointer;" onClick="AtualizaVeiculo(' + data + ')" class="btn btn-success"><i class="icone-pencil"></i></div>';
                                 }
 
                                 return data;
@@ -1418,7 +1607,7 @@ if (count($strCount)) {
                             "data": "excluir",
                             "render": function(data, type, row, meta) {
                                 if (type === 'display') {
-                                    data = '<div style="cursor:pointer;" onClick="DeletaPublicidade(' + data + ')" class="btn btn-danger"><i class="icone-trash"></i></div>';
+                                    data = '<div style="cursor:pointer;" onClick="DeletaVeiculo(' + data + ')" class="btn btn-danger"><i class="icone-trash"></i></div>';
                                 }
 
                                 return data;

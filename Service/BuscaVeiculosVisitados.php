@@ -39,9 +39,9 @@ try {
         $total = count($listaCarro);
         foreach ($listaCarro as $car) {
             if ($cont == $total) {
-                $Json = $Json .  '{"id":"' . $car->CARCOD . '","destaque":"'.$car->CARDESTAQUE.'","troca":"'.$car->CARTROCA.'","carro":"' . $car->VEICULO . '","visitas":"' . $car->CARQTDEVISITAS . '","editar":"'. $car->CARCOD . '","preco":'. $car->CARPRECO . '}]';
+                $Json = $Json .  '{"id":"' . $car->CARCOD . '","destaque":"'.$car->CARDESTAQUE.'","tipo":"'.$car->CARTIPOANUNCIO.'","troca":"'.$car->CARTROCA.'","carro":"' . $car->VEICULO . '","visitas":"' . $car->CARQTDEVISITAS . '","editar":"'. $car->CARCOD . '","preco":'. $car->CARPRECO . '}]';
             } else {
-                $Json = $Json .  '{"id":"' . $car->CARCOD . '","destaque":"'.$car->CARDESTAQUE.'","troca":"'.$car->CARTROCA.'","carro":"' . $car->VEICULO . '","visitas":"' . $car->CARQTDEVISITAS . '","editar":"'. $car->CARCOD . '","preco":'. $car->CARPRECO . '},';
+                $Json = $Json .  '{"id":"' . $car->CARCOD . '","destaque":"'.$car->CARDESTAQUE.'","tipo":"'.$car->CARTIPOANUNCIO.'","troca":"'.$car->CARTROCA.'","carro":"' . $car->VEICULO . '","visitas":"' . $car->CARQTDEVISITAS . '","editar":"'. $car->CARCOD . '","preco":'. $car->CARPRECO . '},';
             }
             $cont++;
         }

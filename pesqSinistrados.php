@@ -46,7 +46,7 @@ if (isset($_GET['pesquisa'])) {
         INNER JOIN kgctblCOR ON CARCODCOR = CORCOD
         INNER JOIN kgctblcom ON CARCODCOMBUSTIVEL = comCOD
         INNER JOIN kgctblCAM ON CARCODCAMBIO = CAMCOD
-        WHERE 1 = 1  and CARSINISTRADO = 'S'  ";
+        WHERE 1 = 1  and CARTIPOANUNCIO = 'S'  ";
         $vxvfMarcas = null;
         $vxvfModelos = null;
         $vxvfAno = null;
