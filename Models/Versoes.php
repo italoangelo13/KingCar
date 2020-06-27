@@ -8,7 +8,7 @@ class Versoes{
     public $DtCadastro;
     public $User;
 
-    public function Versoes()
+    public function __construct()
     {
         $Id          = null;
         $Versao      = null;
@@ -58,7 +58,7 @@ class Versoes{
         $pdo = new PDO(server, user, senha);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $smtp = $pdo->prepare("SELECT VERCOD, VERNOME FROM kgctblver
+        $smtp = $pdo->prepare("SELECT VERCOD, VERNOME FROM KGCTBLVER
         WHERE MARCOD = $codMarca
         AND MODCOD = $codModelo");
         $smtp->execute();
@@ -72,7 +72,7 @@ class Versoes{
         $pdo = new PDO(server, user, senha);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $smtp = $pdo->prepare("SELECT MODCOD, MODDESCRICAO, MODCODMARCA, MODDATCADASTRO FROM kgctblMOD where MODDESCRICAO like '%$Modelo%'");
+        $smtp = $pdo->prepare("SELECT MODCOD, MODDESCRICAO, MODCODMARCA, MODDATCADASTRO FROM KGCTBLMOD where MODDESCRICAO like '%$Modelo%'");
         $smtp->execute();
 
         if ($smtp->rowCount() > 0) {
@@ -84,7 +84,7 @@ class Versoes{
         $pdo = new PDO(server, user, senha);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $smtp = $pdo->prepare("DELETE FROM kgctblmod where MODCOD = $codModelo");
+        $smtp = $pdo->prepare("DELETE FROM KGCTBLMOD where MODCOD = $codModelo");
         $smtp->execute();
 
         $res = $smtp->rowCount();
@@ -103,7 +103,7 @@ class Versoes{
             $pdo = new PDO(server, user, senha);
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-            $smtp = $pdo->prepare("UPDATE kgctblmod SET
+            $smtp = $pdo->prepare("UPDATE KGCTBLMOD SET
             MODDESCRICAO = '$this->Descricao'
             ,MODCODMARCA = $this->Marca
             WHERE MODCOD = $this->Id");
@@ -127,7 +127,7 @@ class Versoes{
         $pdo = new PDO(server, user, senha);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $smtp = $pdo->prepare("SELECT MODCOD, MODDESCRICAO, MARDESCRICAO, MODDATCADASTRO FROM kgctblmod
+        $smtp = $pdo->prepare("SELECT MODCOD, MODDESCRICAO, MARDESCRICAO, MODDATCADASTRO FROM KGCTBLMOD
                                 INNER JOIN KGCTBLMAR ON MARCOD = MODCODMARCA order by MARDESCRICAO,MODDESCRICAO ASC");
         $smtp->execute();
 
@@ -141,7 +141,7 @@ class Versoes{
         $pdo = new PDO(server, user, senha);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $smtp = $pdo->prepare("SELECT COUNT(*) AS NUMMODELOS FROM kgctblmod");
+        $smtp = $pdo->prepare("SELECT COUNT(*) AS NUMMODELOS FROM KGCTBLMOD");
         $smtp->execute();
 
         if ($smtp->rowCount() > 0) {

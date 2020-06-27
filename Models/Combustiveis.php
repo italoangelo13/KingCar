@@ -6,7 +6,7 @@ class Combustiveis{
     public $DtCadastro;
     public $User;
 
-    public function Combustiveis()
+    public function __construct()
     {
          $Id = null;
          $Descricao = null;
@@ -19,7 +19,7 @@ class Combustiveis{
         $pdo = new PDO(server, user, senha);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $smtp = $pdo->prepare("INSERT INTO kgctblcOm 
+        $smtp = $pdo->prepare("INSERT INTO KGCTBLCOM 
         (COMDESCRICAO, COMUSER, COMDATCADASTRO)
         VALUES
         ('$this->Descricao','$this->User',CURRENT_TIMESTAMP)");
@@ -61,7 +61,7 @@ class Combustiveis{
             $pdo = new PDO(server, user, senha);
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-            $smtp = $pdo->prepare("UPDATE kgctblcOm SET
+            $smtp = $pdo->prepare("UPDATE KGCTBLCOM SET
             COMDESCRICAO = '$this->Descricao'
             WHERE COMCOD = $this->Id");
             $smtp->execute();
@@ -83,7 +83,7 @@ class Combustiveis{
         $pdo = new PDO(server, user, senha);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $smtp = $pdo->prepare("SELECT COMCOD, COMDESCRICAO, COMDATCADASTRO FROM kgctblcom");
+        $smtp = $pdo->prepare("SELECT COMCOD, COMDESCRICAO, COMDATCADASTRO FROM KGCTBLCOM");
         $smtp->execute();
 
         if ($smtp->rowCount() > 0) {
@@ -95,7 +95,7 @@ class Combustiveis{
         $pdo = new PDO(server, user, senha);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $smtp = $pdo->prepare("SELECT COMCOD, COMDESCRICAO, COMDATCADASTRO FROM kgctblcOm where COMCOD = $codComb");
+        $smtp = $pdo->prepare("SELECT COMCOD, COMDESCRICAO, COMDATCADASTRO FROM KGCTBLCOM where COMCOD = $codComb");
         $smtp->execute();
 
         if ($smtp->rowCount() > 0) {
@@ -108,7 +108,7 @@ class Combustiveis{
         $pdo = new PDO(server, user, senha);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $smtp = $pdo->prepare("DELETE FROM kgctblcom where COMCOD = $codComb");
+        $smtp = $pdo->prepare("DELETE FROM KGCTBLCOM where COMCOD = $codComb");
         $smtp->execute();
 
         $res = $smtp->rowCount();
@@ -127,7 +127,7 @@ class Combustiveis{
         $pdo = new PDO(server, user, senha);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $smtp = $pdo->prepare("SELECT COUNT(*) AS NUMCOMBUSTIVEL FROM kgctblcom");
+        $smtp = $pdo->prepare("SELECT COUNT(*) AS NUMCOMBUSTIVEL FROM KGCTBLCOM");
         $smtp->execute();
 
         if ($smtp->rowCount() > 0) {

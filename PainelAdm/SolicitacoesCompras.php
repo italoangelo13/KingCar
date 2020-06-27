@@ -56,8 +56,8 @@ if (isset($_GET['msg'])) {
                         <th>Nome</th>
                         <th>Email</th>
                         <th>Data</th>
-                        <th>Assunto</th>
-                        <th>Ir para Solicitação</th>
+                        <th>Veiculo</th>
+                        <th>Abrir Mensagem</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -95,24 +95,38 @@ if (isset($_GET['msg'])) {
         </div>
     </div>
     <div class="row bg-light">
-        <div class="col-lg-6">
+        <div class="col-lg-2">
             <label for="">Telefone</label>
             <br>
             <label class="form-control form-control-lg" id="_lblTelefone"></label>
         </div>
-
+        <div class="col-lg-2">
+            <label for="">Cod Veiculo</label>
+            <br>
+            <label class="form-control form-control-lg" id="_lblCodVeiculo"></label>
+        </div>
         <div class="col-lg-6">
-            <label for="">Assunto</label>
+            <label for="">Veiculo</label>
             <br>
             <label class="form-control form-control-lg" id="_lblAssunto"></label>
         </div>
+        <div class="col-lg-2">
+            <label for="">Preço</label>
+            <br>
+            <label class="form-control form-control-lg" id="_lblPreco"></label>
+        </div>
     </div>
     <div class="row bg-light">
-        <div class="col-lg-12">
+        <div class="col-lg-9">
             <label for="">Mensagem</label>
             <br>
             <textarea name="msg" id="_lblMensagem" class="form-control form-control-lg" style="height: 200px;resize: none;" readonly required></textarea>
 
+        </div>
+        <div class="col-lg-3">
+            <label for="">Capa do Anuncio</label>
+            <br>
+            <img style="width: 100%;" id="_imgAnuncio" src="" alt="Imagem do Veiculo">
         </div>
         <div class="col-lg-12">
             Esta mensagem foi enviada em <label for="" id="_lblDataCadastro"></label>
@@ -317,7 +331,7 @@ if (isset($_GET['msg'])) {
 
     function BuscaDadosSolicitacao(codSol) {
         $.ajax({
-            url: "../Service/BuscaDadosSolicitacao.php?cod=" + codSol,
+            url: "../Service/BuscaDadosCompra.php?cod=" + codSol,
             type: 'POST',
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -337,7 +351,10 @@ if (isset($_GET['msg'])) {
                     $('#_lblTelefone').text(dados.tel);
                     $('#_lblDataCadastro').text(dados.dataSolicitacao);
                     $('#_lblMensagem').text(dados.msg);
-                    $('#_lblAssunto').text(dados.assunto);
+                    $('#_lblPreco').text(dados.preco);
+                    $('#_lblCodVeiculo').text(dados.codVeiculo);
+                    $('#_lblAssunto').text(dados.marca + ' ' + dados.modelo + ' ' + dados.ano);
+                    $("#_imgAnuncio").attr('src', '../assets/img/Carros/' + dados.imgVeiculo);
                     hideLoad();
                 }
             }
@@ -349,7 +366,7 @@ if (isset($_GET['msg'])) {
         showLoad('Carregando Informações!');
 
         $.ajax({
-            url: "../Service/BuscaSolicitacoesContato.php",
+            url: "../Service/BuscaSolicitacoesCompra.php",
             type: 'POST',
             contentType: "application/json; charset=utf-8",
             dataType: "json",

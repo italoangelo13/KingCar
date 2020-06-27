@@ -9,7 +9,7 @@ class Marcas{
 
 
 
-    public function Marcas()
+    public function __construct()
     {
          $Id = null;
          $Descricao = null;
@@ -23,7 +23,7 @@ class Marcas{
         $pdo = new PDO(server, user, senha);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $smtp = $pdo->prepare("INSERT INTO kgctblmar 
+        $smtp = $pdo->prepare("INSERT INTO KGCTBLMAR 
         (MARDESCRICAO, MARATIVO, MARUSER, MARDATCADASTRO)
         VALUES
         ('$this->Descricao','$this->Ativo','$this->User',CURRENT_TIMESTAMP)");
@@ -65,7 +65,7 @@ class Marcas{
             $pdo = new PDO(server, user, senha);
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-            $smtp = $pdo->prepare("UPDATE kgctblmar SET
+            $smtp = $pdo->prepare("UPDATE KGCTBLMAR SET
             MARDESCRICAO = '$this->Descricao'
             ,MARATIVO = '$this->Ativo'
             WHERE MARCOD = $this->Id");
@@ -89,7 +89,7 @@ class Marcas{
         $pdo = new PDO(server, user, senha);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $smtp = $pdo->prepare("SELECT MARCOD, MARDESCRICAO FROM kgctblmar WHERE MARATIVO = 'S' order by MARDESCRICAO ASC");
+        $smtp = $pdo->prepare("SELECT MARCOD, MARDESCRICAO FROM KGCTBLMAR WHERE MARATIVO = 'S' order by MARDESCRICAO ASC");
         $smtp->execute();
 
         if ($smtp->rowCount() > 0) {
@@ -101,7 +101,7 @@ class Marcas{
         $pdo = new PDO(server, user, senha);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $smtp = $pdo->prepare("SELECT MARCOD, MARDESCRICAO, MARATIVO, MARDATCADASTRO FROM kgctblmar order by MARDESCRICAO ASC");
+        $smtp = $pdo->prepare("SELECT MARCOD, MARDESCRICAO, MARATIVO, MARDATCADASTRO FROM KGCTBLMAR order by MARDESCRICAO ASC");
         $smtp->execute();
 
         if ($smtp->rowCount() > 0) {
@@ -116,7 +116,7 @@ class Marcas{
         $pdo = new PDO(server, user, senha);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $smtp = $pdo->prepare("SELECT MARDESCRICAO, MARATIVO, MARDATCADASTRO FROM kgctblmar where MARCOD = $codMarca");
+        $smtp = $pdo->prepare("SELECT MARDESCRICAO, MARATIVO, MARDATCADASTRO FROM KGCTBLMAR where MARCOD = $codMarca");
         $smtp->execute();
 
         if ($smtp->rowCount() > 0) {
@@ -128,7 +128,7 @@ class Marcas{
         $pdo = new PDO(server, user, senha);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $smtp = $pdo->prepare("SELECT * FROM kgctblmod where MODCODMARCA = $codMarca");
+        $smtp = $pdo->prepare("SELECT * FROM KGCTBLMOD where MODCODMARCA = $codMarca");
         $smtp->execute();
 
 
@@ -142,7 +142,7 @@ class Marcas{
         $pdo = new PDO(server, user, senha);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $smtp = $pdo->prepare("DELETE FROM kgctblmar where MARCOD = $codMarca");
+        $smtp = $pdo->prepare("DELETE FROM KGCTBLMAR where MARCOD = $codMarca");
         $smtp->execute();
 
         $res = $smtp->rowCount();
@@ -161,7 +161,7 @@ class Marcas{
         $pdo = new PDO(server, user, senha);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $smtp = $pdo->prepare("SELECT COUNT(*) AS NUMMARCA FROM kgctblmar");
+        $smtp = $pdo->prepare("SELECT COUNT(*) AS NUMMARCA FROM KGCTBLMAR");
         $smtp->execute();
 
         if ($smtp->rowCount() > 0) {

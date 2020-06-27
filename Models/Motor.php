@@ -6,7 +6,7 @@ class Motor{
     public $dtCadastro;
     public $user;
 
-    public function Anuncios()
+    public function __construct()
     {
         $id = null;
         $potencia = null;
@@ -83,7 +83,7 @@ class Motor{
         SOLKM,
         SOLPRECO,
         SOLTROCA
-        FROM kgctblsolanu
+        FROM KGCTBLSOLANU
         inner join KGCTBLMAR   ON MARCOD = SOLCODMARCA
         INNER JOIN KGCTBLMOD   ON MODCOD = SOLCODMODELO
         inner join KGCTBLCOR   ON CORCOD = SOLCOR
@@ -105,7 +105,7 @@ class Motor{
         $smtp = $pdo->prepare("SELECT
                                 MOTCOD,
                                 MOTPOTENCIA
-                                FROM kgctblMOT");
+                                FROM KGCTBLMOT");
         $smtp->execute();
 
         if ($smtp->rowCount() > 0) {

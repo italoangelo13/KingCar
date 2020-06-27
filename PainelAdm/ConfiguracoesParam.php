@@ -1,6 +1,6 @@
 <?php
 include 'header.inc.php';
-require_once '../config/Util.php';
+require_once '../Config/Util.php';
 $util = new Util();
 
 if(isset($_POST['salvar'])){
@@ -61,10 +61,10 @@ if(isset($_POST['salvar'])){
                                 <label for=""><?php echo $par->PRMCOD; ?></label>
                             </td>
                             <td>
-                                <label for=""><?php echo $util->convert_from_latin1_to_utf8_recursively($par->PRMCAMPO); ?></label>
+                                <label for=""><?php echo $par->PRMCAMPO; ?></label>
                             </td>
                             <td>
-                                <label for=""><?php echo $util->convert_from_latin1_to_utf8_recursively($par->PRMDESCRICAO); ?></label>
+                                <label for=""><?php echo $par->PRMDESCRICAO; ?></label>
                             </td>
                             <td>
                                 <input class="form-control form-control-sm" type="text" name="edvalor_<?php echo $cont; ?>" id="edvalor_<?php echo $cont; ?>" value="<?php echo $par->PRMVAL; ?>">

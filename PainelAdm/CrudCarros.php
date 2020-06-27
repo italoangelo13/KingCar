@@ -463,7 +463,7 @@ function carregaGridPesq($Carro,$inicio,$maximo,$filtro,$ord){
             //var param = JSON.stringify(obj);
 
             $.ajax({
-                url: "../service/BuscaModelos.php?codMarca=" + CodMarca,
+                url: "../Service/BuscaModelos.php?codMarca=" + CodMarca,
                 type: 'GET',
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
@@ -490,7 +490,7 @@ function carregaGridPesq($Carro,$inicio,$maximo,$filtro,$ord){
 
             //var param = JSON.stringify(obj);
             $.ajax({
-                url: "../service/BuscaMunicipios.php?Uf=" + uf,
+                url: "../Service/BuscaMunicipios.php?Uf=" + uf,
                 type: 'GET',
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",

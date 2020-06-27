@@ -2,9 +2,9 @@
 header("Content-type:text/html; charset=utf8");
 
 include_once 'Config/ConexaoBD.php';
-require_once 'config/PHPMailer/src/PHPMailer.php';
-require_once 'config/PHPMailer/src/Exception.php';
-require_once 'config/PHPMailer/src/SMTP.php';
+require_once 'Config/PHPMailer/src/PHPMailer.php';
+require_once 'Config/PHPMailer/src/Exception.php';
+require_once 'Config/PHPMailer/src/SMTP.php';
 include_once 'Config/Util.php';
 require_once 'Models/Contatos.php';
 include 'header.inc.php';
@@ -145,7 +145,7 @@ $instagramCon = $parInstac[0]->PRMVAL;
 
     <div class="col-lg-6 " style="">
         <div class="container-fluid">
-            <form action="faleconosco.php" method="post">
+            <form action="faleConosco.php" method="post">
                 <div class="row" style="border: 2px solid #FFB62C; border-radius:5px;">
                     <div class="col-lg-12">
                         <label for="" class="text-center display-5 text-warning"> Se Desejar, Nos Envie uma Mensagem com a sua Duvida!</label>

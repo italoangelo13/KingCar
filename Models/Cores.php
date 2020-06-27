@@ -9,7 +9,7 @@ class Cores{
 
 
 
-    public function Cores()
+    public function __construct()
     {
         $Id = null;
         $Descricao = null;
@@ -22,7 +22,7 @@ class Cores{
         $pdo = new PDO(server, user, senha);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $smtp = $pdo->prepare("INSERT INTO kgctblcor
+        $smtp = $pdo->prepare("INSERT INTO KGCTBLCOR
         (CORDESCRICAO, CORCODHEXADECIMAL, CORUSER, CORDATCADASTRO)
         VALUES
         ('$this->Descricao','$this->Hexadecimal','$this->User',CURRENT_TIMESTAMP)");
@@ -76,7 +76,7 @@ class Cores{
             $pdo = new PDO(server, user, senha);
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-            $smtp = $pdo->prepare("UPDATE kgctblcor SET
+            $smtp = $pdo->prepare("UPDATE KGCTBLCOR SET
             CORDESCRICAO = '$this->Descricao'
             ,CORCODHEXADECIMAL = '$this->Hexadecimal'
             WHERE CORCOD = $this->Id");
@@ -99,7 +99,7 @@ class Cores{
         $pdo = new PDO(server, user, senha);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $smtp = $pdo->prepare("DELETE FROM kgctblcor where CORCOD = $codCor");
+        $smtp = $pdo->prepare("DELETE FROM KGCTBLCOR where CORCOD = $codCor");
         $smtp->execute();
 
         $res = $smtp->rowCount();
@@ -116,7 +116,7 @@ class Cores{
         $pdo = new PDO(server, user, senha);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $smtp = $pdo->prepare("SELECT CORCOD, CORDESCRICAO, CORCODHEXADECIMAL, CORDATCADASTRO FROM kgctblcor");
+        $smtp = $pdo->prepare("SELECT CORCOD, CORDESCRICAO, CORCODHEXADECIMAL, CORDATCADASTRO FROM KGCTBLCOR");
         $smtp->execute();
 
         if ($smtp->rowCount() > 0) {
@@ -129,7 +129,7 @@ class Cores{
         $pdo = new PDO(server, user, senha);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $smtp = $pdo->prepare("SELECT COUNT(*) AS NUMCORES FROM kgctblcor");
+        $smtp = $pdo->prepare("SELECT COUNT(*) AS NUMCORES FROM KGCTBLCOR");
         $smtp->execute();
 
         if ($smtp->rowCount() > 0) {

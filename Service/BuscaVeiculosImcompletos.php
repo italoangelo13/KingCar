@@ -20,9 +20,9 @@ $Json = null;
 try {
 
     $sqlQtdeCarro = "SELECT CARFOTO, CARCOD,CARANO,CARUSER,CARDATCADASTRO, MARDESCRICAO, MODDESCRICAO
-    FROM kgctblcar
-    INNER JOIN kgctblmar ON CARCODMARCA = MARCOD
-    INNER JOIN kgctblMOD ON CARCODMODELO = MODCOD
+    FROM KGCTBLCAR
+    INNER JOIN KGCTBLMAR ON CARCODMARCA = MARCOD
+    INNER JOIN KGCTBLMOD ON CARCODMODELO = MODCOD
     WHERE NOT EXISTS(SELECT 1 FROM KGCTBLDETCAR WHERE CARCOD = DETCODCARRO)";
     $listaCar = $carro->SelecionarNumCarrosDetIncompletos($sqlQtdeCarro);
     if($listaCar){
@@ -52,7 +52,7 @@ try {
             $cont++;
         }
 
-        $Json = $util->convert_from_latin1_to_utf8_recursively($Json);
+        ////$Json = $util->convert_from_latin1_to_utf8_recursively($Json);
         echo json_encode($Json);
 
         // if ($Json) {

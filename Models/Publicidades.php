@@ -11,7 +11,7 @@ class Publicidades{
 
 
 
-    public function Publicidades()
+    public function __construct()
     {
         $Id = null;
         $Empresa = null;
@@ -34,7 +34,7 @@ class Publicidades{
             PUBEMPRESA,
             PUBDATCADASTRO,
             PUBLINK
-            FROM kgctblpub
+            FROM KGCTBLPUB
             order by PUBDATCADASTRO desc");
         $smtp->execute();
 
@@ -63,7 +63,7 @@ class Publicidades{
         $pdo = new PDO(server, user, senha);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $smtp = $pdo->prepare("SELECT COUNT(*) AS NUMPUB FROM kgctblpub");
+        $smtp = $pdo->prepare("SELECT COUNT(*) AS NUMPUB FROM KGCTBLPUB");
         $smtp->execute();
 
         if ($smtp->rowCount() > 0) {
@@ -75,7 +75,7 @@ class Publicidades{
         $pdo = new PDO(server, user, senha);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $smtp = $pdo->prepare("INSERT INTO kgctblpub
+        $smtp = $pdo->prepare("INSERT INTO KGCTBLPUB
            (PUBTITULO,
             PUBIMG,
             PUBEMPRESA,
@@ -98,7 +98,7 @@ class Publicidades{
         $pdo = new PDO(server, user, senha);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $smtp = $pdo->prepare("DELETE FROM kgctblpub where PUBCOD = $codPub");
+        $smtp = $pdo->prepare("DELETE FROM KGCTBLPUB where PUBCOD = $codPub");
         $smtp->execute();
 
         $res = $smtp->rowCount();
@@ -115,7 +115,7 @@ class Publicidades{
         $pdo = new PDO(server, user, senha);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $smtp = $pdo->prepare("SELECT PUBCOD, PUBEMPRESA, PUBTITULO, PUBLINK, PUBIMG, PUBDATCADASTRO FROM kgctblpub where PUBCOD = $codPub");
+        $smtp = $pdo->prepare("SELECT PUBCOD, PUBEMPRESA, PUBTITULO, PUBLINK, PUBIMG, PUBDATCADASTRO FROM KGCTBLPUB where PUBCOD = $codPub");
         $smtp->execute();
 
         if ($smtp->rowCount() > 0) {
@@ -127,7 +127,7 @@ class Publicidades{
         $pdo = new PDO(server, user, senha);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $smtp = $pdo->prepare("SELECT PUBIMG FROM kgctblpub where PUBCOD = $codPub");
+        $smtp = $pdo->prepare("SELECT PUBIMG FROM KGCTBLPUB where PUBCOD = $codPub");
         $smtp->execute();
 
         if ($smtp->rowCount() > 0) {
@@ -141,7 +141,7 @@ class Publicidades{
             $pdo = new PDO(server, user, senha);
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-            $smtp = $pdo->prepare("UPDATE kgctblpub SET
+            $smtp = $pdo->prepare("UPDATE KGCTBLPUB SET
             PUBEMPRESA = '$this->Empresa',
             PUBTITULO = '$this->Titulo',
             PUBLINK = '$this->Link',

@@ -55,12 +55,12 @@ class Compra
         CONCAT(CARANOFAB,'/',CARANOMOD) AS CARANO,
         CARFOTO,
         CARPRECO
-        FROM kgctblsolcom
+        FROM KGCTBLSOLCOM
         inner join KGCTBLCAR
         ON COMCODCARRO = CARCOD
-        INNER JOIN kgctblmar
+        INNER JOIN KGCTBLMAR
         ON CARCODMARCA = MARCOD
-        INNER JOIN kgctblMOD
+        INNER JOIN KGCTBLMOD
         ON CARCODMODELO = MODCOD where COMCOD = $codSol");
         $smtp->execute();
         if ($smtp->rowCount() > 0) {
@@ -74,7 +74,7 @@ class Compra
         $pdo = new PDO(server, user, senha);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $smtp = $pdo->prepare("SELECT count(*) AS QTDE FROM kgctblsolcom WHERE COMLIDO = 'N'");
+        $smtp = $pdo->prepare("SELECT count(*) AS QTDE FROM KGCTBLSOLCOM WHERE COMLIDO = 'N'");
         $smtp->execute();
         if ($smtp->rowCount() > 0) {
             return $result = $smtp->fetchAll(PDO::FETCH_CLASS);
@@ -93,13 +93,13 @@ class Compra
         COMDATCADASTRO,
         COMLIDO,
         CARCOD,
-        CONCAT(CARCOD,' - ',MARDESCRICAO,' ',MODDESCRICAO,' ', CARANOFAB,'/',CARANOMOD) AS VEICULO
-        FROM kgctblsolcom
+        CONCAT(MARDESCRICAO,' ',MODDESCRICAO,' ', CARANOFAB,'/',CARANOMOD) AS VEICULO
+        FROM KGCTBLSOLCOM
         inner join KGCTBLCAR
         ON COMCODCARRO = CARCOD
-        INNER JOIN kgctblmar
+        INNER JOIN KGCTBLMAR
         ON CARCODMARCA = MARCOD
-        INNER JOIN kgctblMOD
+        INNER JOIN KGCTBLMOD
         ON CARCODMODELO = MODCOD ORDER BY COMDATCADASTRO DESC");
         $smtp->execute();
         if ($smtp->rowCount() > 0) {

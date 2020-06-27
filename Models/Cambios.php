@@ -6,7 +6,7 @@ class Cambios{
     public $DtCadastro;
     public $User;
 
-    public function Cambios()
+    public function __construct()
     {
          $Id = null;
          $Descricao = null;
@@ -19,7 +19,7 @@ class Cambios{
         $pdo = new PDO(server, user, senha);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $smtp = $pdo->prepare("INSERT INTO kgctblcam 
+        $smtp = $pdo->prepare("INSERT INTO KGCTBLCAM 
         (CAMDESCRICAO, CAMUSER, CAMDATCADASTRO)
         VALUES
         ('$this->Descricao','$this->User',CURRENT_TIMESTAMP)");
@@ -61,7 +61,7 @@ class Cambios{
             $pdo = new PDO(server, user, senha);
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-            $smtp = $pdo->prepare("UPDATE kgctblcam SET
+            $smtp = $pdo->prepare("UPDATE KGCTBLCAM SET
             CAMDESCRICAO = '$this->Descricao'
             WHERE CAMCOD = $this->Id");
             $smtp->execute();
@@ -83,7 +83,7 @@ class Cambios{
         $pdo = new PDO(server, user, senha);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $smtp = $pdo->prepare("SELECT CAMCOD, CAMDESCRICAO, CAMDATCADASTRO FROM kgctblcam");
+        $smtp = $pdo->prepare("SELECT CAMCOD, CAMDESCRICAO, CAMDATCADASTRO FROM KGCTBLCAM");
         $smtp->execute();
 
         if ($smtp->rowCount() > 0) {
@@ -95,7 +95,7 @@ class Cambios{
         $pdo = new PDO(server, user, senha);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $smtp = $pdo->prepare("SELECT CAMCOD, CAMDESCRICAO, CAMDATCADASTRO FROM kgctblcam where CAMCOD = $codCambio");
+        $smtp = $pdo->prepare("SELECT CAMCOD, CAMDESCRICAO, CAMDATCADASTRO FROM KGCTBLCAM where CAMCOD = $codCambio");
         $smtp->execute();
 
         if ($smtp->rowCount() > 0) {
@@ -108,7 +108,7 @@ class Cambios{
         $pdo = new PDO(server, user, senha);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $smtp = $pdo->prepare("DELETE FROM kgctblcam where CAMCOD = $codCambio");
+        $smtp = $pdo->prepare("DELETE FROM KGCTBLCAM where CAMCOD = $codCambio");
         $smtp->execute();
 
         $res = $smtp->rowCount();
@@ -127,7 +127,7 @@ class Cambios{
         $pdo = new PDO(server, user, senha);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $smtp = $pdo->prepare("SELECT COUNT(*) AS NUMCAMBIO FROM kgctblcam");
+        $smtp = $pdo->prepare("SELECT COUNT(*) AS NUMCAMBIO FROM KGCTBLCAM");
         $smtp->execute();
 
         if ($smtp->rowCount() > 0) {

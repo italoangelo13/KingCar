@@ -41,7 +41,7 @@ try {
         $Json = '[';
         $Json = $Json .  '{"combustivel":"' . $Comb[0]->COMDESCRICAO . '"}]';
             
-        $Json = $util->convert_from_latin1_to_utf8_recursively($Json);
+        ////$Json = $util->convert_from_latin1_to_utf8_recursively($Json);
         echo json_encode($Json);
     }
 } catch (Exception $e) {

@@ -26,7 +26,7 @@ class Util{
         $pdo = new PDO(server, user, senha);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $smtp = $pdo->prepare("UPDATE kgctblprm SET PRMVAL = '$val' WHERE PRMCOD = $codParam");
+        $smtp = $pdo->prepare("UPDATE KGCTBLPRM SET PRMVAL = '$val' WHERE PRMCOD = $codParam");
         $smtp->execute();
 
         $r = $smtp->rowCount();
@@ -46,7 +46,7 @@ class Util{
 
         $smtp = $pdo->prepare("SELECT
         PRMCOD, PRMNOMECAMPO, PRMCAMPO, PRMVAL, PRMDESCRICAO
-        FROM kgctblprm");
+        FROM KGCTBLPRM");
         $smtp->execute();
 
 
@@ -58,7 +58,7 @@ class Util{
         $pdo = new PDO(server, user, senha);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $smtp = $pdo->prepare("SELECT COMPCOD, COMPDESC, COMPNOMCAMPO FROM kgctblinfocomp");
+        $smtp = $pdo->prepare("SELECT COMPCOD, COMPDESC, COMPNOMCAMPO FROM KGCTBLINFOCOMP");
         $smtp->execute();
 
 
@@ -86,7 +86,7 @@ class Util{
 
         $smtp = $pdo->prepare("SELECT
         PRMNOMECAMPO, PRMCAMPO, PRMVAL, PRMDESCRICAO
-        FROM kgctblprm where PRMCOD = $codParametro");
+        FROM KGCTBLPRM where PRMCOD = $codParametro");
         $smtp->execute();
 
 

@@ -7,7 +7,7 @@ class Institucional{
     public $Missao;
     public $Valores;
 
-    public function Institucional()
+    public function __construct()
     {
         $Sobre = null;
         $Diferencial = null;
@@ -21,7 +21,7 @@ class Institucional{
         $pdo = new PDO(server, user, senha);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $smtp = $pdo->prepare("INSERT INTO kgctblinst 
+        $smtp = $pdo->prepare("INSERT INTO KGCTBLINST 
         (INSTSOBRENOS, INSTDIFERENCIAL, INSTVISAO, INSTMISSAO, INSTVALORES)
         VALUES
         ('$this->Sobre','$this->Diferencial','$this->Visao','$this->Missao','$this->Valores')");
@@ -42,7 +42,7 @@ class Institucional{
             $pdo = new PDO(server, user, senha);
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-            $smtp = $pdo->prepare("UPDATE kgctblinst SET
+            $smtp = $pdo->prepare("UPDATE KGCTBLINST SET
             INSTSOBRENOS = '$this->Sobre'
             ,INSTDIFERENCIAL = '$this->Diferencial'
             ,INSTVISAO = '$this->Visao'
@@ -67,7 +67,7 @@ class Institucional{
         $pdo = new PDO(server, user, senha);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $smtp = $pdo->prepare("SELECT count(*) as linhas FROM kgctblinst");
+        $smtp = $pdo->prepare("SELECT count(*) as linhas FROM KGCTBLINST");
         $smtp->execute();
 
         if ($smtp->rowCount() > 0) {
@@ -81,17 +81,6 @@ class Institucional{
         }
     }  
 
-    public function SelecionarCambioPorCod($codCambio){
-        $pdo = new PDO(server, user, senha);
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-        $smtp = $pdo->prepare("SELECT CAMCOD, CAMDESCRICAO, CAMDATCADASTRO FROM kgctblcam where CAMCOD = $codCambio");
-        $smtp->execute();
-
-        if ($smtp->rowCount() > 0) {
-            return $result = $smtp->fetchAll(PDO::FETCH_CLASS);
-        }
-    } 
 
 
     
@@ -101,8 +90,7 @@ class Institucional{
     {
         $pdo = new PDO(server, user, senha);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-        $smtp = $pdo->prepare("SELECT INSTSOBRENOS, INSTDIFERENCIAL, INSTVISAO, INSTMISSAO, INSTVALORES FROM kgctblinst");
+        $smtp = $pdo->prepare("SELECT INSTSOBRENOS, INSTDIFERENCIAL, INSTVISAO, INSTMISSAO, INSTVALORES FROM KGCTBLINST");
         $smtp->execute();
 
         if ($smtp->rowCount() > 0) {

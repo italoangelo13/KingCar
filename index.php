@@ -105,7 +105,7 @@ $listaPub = $pub->SelecionarListaPublicidades();
 
                                                     <div class="col-lg-3">
                                                         <h6 class="text-dark">Localização</h6>
-                                                        <label class="text-dark"><?php echo strtoupper(utf8_encode($destaque->LOCALIZACAO)); ?></label>
+                                                        <label class="text-dark"><?php echo strtoupper($destaque->LOCALIZACAO); ?></label>
                                                     </div>
 
                                                     <div class="col-lg-3">
@@ -179,7 +179,7 @@ $listaPub = $pub->SelecionarListaPublicidades();
 
                                                     <div class="col-lg-3">
                                                         <h6 class="text-dark">Localização</h6>
-                                                        <label class="text-dark"><?php echo strtoupper(utf8_encode($destaque->LOCALIZACAO)); ?></label>
+                                                        <label class="text-dark"><?php echo strtoupper($destaque->LOCALIZACAO); ?></label>
                                                     </div>
 
                                                     <div class="col-lg-3">
@@ -243,7 +243,7 @@ $listaPub = $pub->SelecionarListaPublicidades();
                                 <div class="container-fluid">
                                     <div class="row" style="padding: 10px;">
                                         <?php foreach ($listacarro as $carros) : ?>
-                                            <div class="col-lg-6" style="padding-top: 10px; padding-bottom: 10px;">
+                                            <div class="col-lg-4" style="padding-top: 10px; padding-bottom: 10px;">
                                                 <div class="card bg-light" style="width: 100%; padding: 5px;">
 
                                                     <img class="card-img-top" style="width: 100%; height: 260px" src="assets/img/Carros/<?php echo $carros->CARFOTO; ?>" title="<?php echo strtoupper(utf8_encode($carros->CARNOME)); ?>" alt="<?php echo utf8_encode($carros->CARNOME); ?>">
@@ -277,7 +277,7 @@ $listaPub = $pub->SelecionarListaPublicidades();
                                                                 </div>
                                                                 <div class="row">
                                                                     <div class="col-lg-12 text-center">
-                                                                        <i class="fas fa-map-marker-alt"></i> <?php echo utf8_encode($carros->mundescricao) . " - " . $carros->munuf; ?>
+                                                                        <i class="fas fa-map-marker-alt"></i> <?php echo $carros->LOCALIZACAO; ?>
                                                                     </div>
                                                                 </div>
                                                                 <div class="row">
@@ -313,7 +313,7 @@ $listaPub = $pub->SelecionarListaPublicidades();
                                 <div class="container-fluid">
                                     <div class="row" style="padding: 10px;">
                                         <?php foreach ($listacarroRepasse as $carros) : ?>
-                                            <div class="col-lg-6" style="padding-top: 10px; padding-bottom: 10px;">
+                                            <div class="col-lg-4" style="padding-top: 10px; padding-bottom: 10px;">
                                                 <div class="card bg-light" style="width: 100%; padding: 5px;">
 
                                                     <img class="card-img-top" style="width: 100%; height: 260px" src="assets/img/Carros/<?php echo $carros->CARFOTO; ?>" title="<?php echo strtoupper(utf8_encode($carros->CARNOME)); ?>" alt="<?php echo utf8_encode($carros->CARNOME); ?>">
@@ -347,7 +347,7 @@ $listaPub = $pub->SelecionarListaPublicidades();
                                                                 </div>
                                                                 <div class="row">
                                                                     <div class="col-lg-12 text-center">
-                                                                        <i class="fas fa-map-marker-alt"></i> <?php echo utf8_encode($carros->mundescricao) . " - " . $carros->munuf; ?>
+                                                                        <i class="fas fa-map-marker-alt"></i> <?php echo $carros->LOCALIZACAO; ?>
                                                                     </div>
                                                                 </div>
                                                                 <div class="row">
@@ -371,8 +371,8 @@ $listaPub = $pub->SelecionarListaPublicidades();
                     <?php } ?>
                 </div>
             </section>
-            <section class="col-lg-2" style="border-left: 2px whitesmoke solid;">
-                <div class="container-fluid">
+            <section class="col-lg-2 bg-dark" style="margin-top:12px;">
+            <div class="container-fluid ">
                     <div class="row bg-warning text-center" style="margin-top: 15px;">
                         <div class="col-lg-12">
                             <h6>Nossos Parceiros</h6>
@@ -381,9 +381,13 @@ $listaPub = $pub->SelecionarListaPublicidades();
                     <?php foreach ($listaPub as $pub) { ?>
                         <div class="row" style="margin-top: 15px;">
                             <div class="col-lg-12">
+                            <?php if($pub->PUBLINK){?>
                                 <a href="<?php echo $pub->PUBLINK; ?>" target="_blank">
-                                    <img style="width: 100%" src="assets/img/Pub/<?php echo $pub->PUBIMG; ?> " alt="Publicidade" title="<?php echo $pub->PUBLINK; ?>">
+                                    <img style="width: 100%" src="assets/img/Pub/<?php echo $pub->PUBIMG; ?> " alt="Publicidade" title="<?php echo $pub->PUBTITULO; ?>">
                                 </a>
+                                <?php } else{ ?>
+                                    <img style="width: 100%" src="assets/img/Pub/<?php echo $pub->PUBIMG; ?> " alt="Publicidade" title="<?php echo $pub->PUBTITULO; ?>">
+                                <?php } ?>
                             </div>
                         </div>
                     <?php } ?>
@@ -400,7 +404,7 @@ $listaPub = $pub->SelecionarListaPublicidades();
                     <p>Os Melhores Veículos a sua Disposição!</p>
                 </h1>
             </section>
-            <section class="col-lg-2" style="border-left: 2px whitesmoke solid;">
+            <section class="col-lg-2 bg-dark" >
                 <div class="container-fluid">
                     <div class="row bg-warning text-center" style="margin-top: 15px;">
                         <div class="col-lg-12">
@@ -474,7 +478,7 @@ $listaPub = $pub->SelecionarListaPublicidades();
                                                                 </div>
                                                                 <div class="row">
                                                                     <div class="col-lg-12 text-center">
-                                                                        <i class="fas fa-map-marker-alt"></i> <?php echo utf8_encode($carros->mundescricao) . " - " . $carros->munuf; ?>
+                                                                        <i class="fas fa-map-marker-alt"></i> <?php echo $carros->LOCALIZACAO; ?>
                                                                     </div>
                                                                 </div>
                                                                 <div class="row">
@@ -544,7 +548,7 @@ $listaPub = $pub->SelecionarListaPublicidades();
                                                                 </div>
                                                                 <div class="row">
                                                                     <div class="col-lg-12 text-center">
-                                                                        <i class="fas fa-map-marker-alt"></i> <?php echo utf8_encode($carros->mundescricao) . " - " . $carros->munuf; ?>
+                                                                        <i class="fas fa-map-marker-alt"></i> <?php echo $carros->LOCALIZACAO; ?>
                                                                     </div>
                                                                 </div>
                                                                 <div class="row">
@@ -571,9 +575,9 @@ $listaPub = $pub->SelecionarListaPublicidades();
         </div>
 
     <?php } else { ?>
-        <div class="row">
+        <div class="row" style="margin-top:5px; height: 80vh; background-image: url('assets/img/bg-Titulos.png');">
             <section class="col-lg-12">
-                <h1 class="display-3 text-warning">
+                <h1 class="display-4 text-warning">
                     <p>Em Breve!</p>
                     <p>Os Melhores Veículos a sua Disposição!</p>
                 </h1>

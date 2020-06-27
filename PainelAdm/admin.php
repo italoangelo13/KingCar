@@ -34,10 +34,6 @@ $sqlcar = "SELECT count(*) as NumCarros FROM KGCTBLCAR";
 $QtdeCar = $CARRO->SelecionarNumCarros($sqlcar);
 $CarrosMes = $QtdeCar[0]->NumCarros;
 
-$SQLCARDET = 'SELECT COUNT(*) AS QTDE FROM KGCTBLCAR
-WHERE NOT EXISTS(SELECT 1 FROM KGCTBLDETCAR WHERE CARCOD = DETCODCARRO)';
-$QTDEDETCAR = $CARRO->SelecionarNumCarrosDetIncompletos($SQLCARDET);
-$CarrosIncomp = $QTDEDETCAR[0]->QTDE;
 
 //Buscando Qtde publicidades
 $QtdePub = $Pub->SelecionarTotalPublicidade();
@@ -49,15 +45,6 @@ $SolicitacoesMes = $QtdeAnu[0]->NUMANUNCIO;
 
 
 ?>
-<?php
-if ($CarrosIncomp) {
-?>
-    <div class="row alert-warning" style="margin-top:10px;">
-        <div class="col-lg-12">
-            <h5><i class="icone-warning"></i> Existe <?php echo $CarrosIncomp; ?> Veiculo(s) com pendencias de cadastros, <a href="relatorioCarrosIncompletos.php">Clique Aqui</a> para Visualizar os Veiculos Inconsistentes.</h5>
-        </div>
-    </div>
-<?php } ?>
 <div class="row" style="margin-top:10px;">
     <!-- Box Carros -->
     <div class="col-lg-4 " style="margin-bottom: 3px;">
@@ -348,7 +335,12 @@ if ($CarrosIncomp) {
                             "data": "preco",
                             "render": function(data, type, row, meta) {
                                 if (type === 'display') {
-                                    data = '<label>R$ ' + data + '</label>';
+                                    data = parseFloat(data);
+                                    data = data.toLocaleString("pt-BR", {
+                                        style: "currency",
+                                        currency: "BRL"
+                                    });
+                                    data = '<label>' + data + '</label>';
                                 }
 
                                 return data;
@@ -385,7 +377,7 @@ if ($CarrosIncomp) {
     function CaregaGrafCarros() {
         debugger;
         $.ajax({
-            url: "../service/CarrosPorMes.php",
+            url: "../Service/CarrosPorMes.php",
             type: 'POST',
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -459,7 +451,7 @@ if ($CarrosIncomp) {
 
     function CaregaGrafPub() {
         $.ajax({
-            url: "../service/PublicidadesPorMes.php",
+            url: "../Service/PublicidadesPorMes.php",
             type: 'POST',
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -532,7 +524,7 @@ if ($CarrosIncomp) {
 
     function CaregaGrafAnun() {
         $.ajax({
-            url: "../service/AnunciosPorMes.php",
+            url: "../Service/AnunciosPorMes.php",
             type: 'POST',
             contentType: "application/json; charset=utf-8",
             dataType: "json",

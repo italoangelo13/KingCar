@@ -17,7 +17,7 @@ class Anuncios{
     public $dtCadastro;
     public $user;
 
-    public function Anuncios()
+    public function __construct()
     {
         $id = null;
         $nome = null;
@@ -89,7 +89,7 @@ class Anuncios{
         $pdo = new PDO(server, user, senha);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $smtp = $pdo->prepare("SELECT COUNT(*) AS NUMANUNCIO FROM kgctblsolanu");
+        $smtp = $pdo->prepare("SELECT COUNT(*) AS NUMANUNCIO FROM KGCTBLSOLANU");
         $smtp->execute();
 
         if ($smtp->rowCount() > 0) {
@@ -118,7 +118,7 @@ class Anuncios{
         SOLKM,
         SOLPRECO,
         SOLTROCA
-        FROM kgctblsolanu
+        FROM KGCTBLSOLANU
         inner join KGCTBLMAR   ON MARCOD = SOLCODMARCA
         INNER JOIN KGCTBLMOD   ON MODCOD = SOLCODMODELO
         inner join KGCTBLCOR   ON CORCOD = SOLCOR
@@ -144,7 +144,7 @@ class Anuncios{
                                 CONCAT(MARDESCRICAO,' ',MODDESCRICAO,' ',SOLANO) AS VEICULO,
                                 SOLDTCADASTRO,
                                 SOLFOTOCAPA
-                                FROM kgctblsolanu
+                                FROM KGCTBLSOLANU
                                 inner join KGCTBLMAR
                                 ON MARCOD = SOLCODMARCA
                                 INNER JOIN KGCTBLMOD

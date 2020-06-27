@@ -1,8 +1,8 @@
 <?php
 header("Content-type:text/html;charset=utf8");
-define("server", "mysql:host=kgcdbs01.mysql.dbaas.com.br;dbname=kgcdbs01;charset=UTF8");
-define('user', 'kgcdbs01');
-define('senha', 'kgclgn01');
+define("server", "mysql:host=localhost;dbname=kingcar");
+define('user', 'root');
+define('senha', 'root');
 setlocale(LC_MONETARY,"pt_BR", "ptb");
 
 

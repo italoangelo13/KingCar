@@ -41,7 +41,7 @@ try {
         $Json = '[';
         $Json = $Json .  '{"empresa":"' . $Publicidade[0]->PUBEMPRESA . '","titulo":"' . $Publicidade[0]->PUBTITULO . '","link":"' . $Publicidade[0]->PUBLINK . '","imagem":"' . $Publicidade[0]->PUBIMG . '"}]';
             
-        $Json = $util->convert_from_latin1_to_utf8_recursively($Json);
+        ////$Json = $util->convert_from_latin1_to_utf8_recursively($Json);
         echo json_encode($Json);
     }
 } catch (Exception $e) {

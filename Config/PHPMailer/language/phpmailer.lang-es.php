@@ -22,5 +22,5 @@ $PHPMAILER_LANG['recipients_failed']    = 'Error SMTP: Los siguientes destinos f
 $PHPMAILER_LANG['signing']              = 'Error al firmar: ';
 $PHPMAILER_LANG['smtp_connect_failed']  = 'SMTP Connect() falló.';
 $PHPMAILER_LANG['smtp_error']           = 'Error del servidor SMTP: ';
-$PHPMAILER_LANG['variable_set']         = 'No se pudo configurar la variable: ';
+$PHPMAILER_LANG['variable_set']         = 'No se pudo Configurar la variable: ';
 $PHPMAILER_LANG['extension_missing']    = 'Extensión faltante: ';

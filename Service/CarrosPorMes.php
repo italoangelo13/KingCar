@@ -15,7 +15,7 @@
 
         $smtp = $pdo->prepare('SELECT Count(*) AS QTDE,
                                 DATE_FORMAT(CARDATCADASTRO, "%b/%y") AS MES
-                               FROM kgctblcar
+                               FROM KGCTBLCAR
                                GROUP BY DATE_FORMAT(CARDATCADASTRO, "%b/%y")
                                ORDER BY CARDATCADASTRO DESC
                                LIMIT 5');

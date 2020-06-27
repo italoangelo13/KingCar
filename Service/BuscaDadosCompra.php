@@ -12,8 +12,8 @@ clearstatcache(); // limpa o cache
 
 include_once('../Config/ConexaoBD.php');
 include_once('../Config/Util.php');
-require_once('../Models/Contatos.php');
-$contato = new Contatos();
+require_once('../Models/Compra.php');
+$compra = new Compra();
 $util = new Util();
 $Json = null;
 $codSol = null;
@@ -23,9 +23,9 @@ try {
         $codSol = $_GET['cod'];
     }
 
-    $con = $contato->SelecionarContatoPorCod($codSol);
-    if($con){
-        if (count($con) === 0) {
+    $com = $compra->SelecionarSolicitacaoPorCod($codSol);
+    if($com){
+        if (count($com) === 0) {
             $Json = '[]';
             echo json_encode($Json);
         }
@@ -37,15 +37,15 @@ try {
     }
     
 
-    if (count($con)) {
-        $date = new DateTime($con[0]->CONDATCADASTRO);
+    if (count($com)) {
+        $date = new DateTime($com[0]->COMDATCADASTRO);
         $data = date_format($date,'d/m/Y');
         $hora = date_format($date,'H:i');
         $dataEnvio = $data . ' as ' . $hora;
-        $mensagem = trim($con[0]->CONMENSAGEM,"\r\n");
+        $mensagem = trim($com[0]->COMMSG,"\r\n");
         $mensagem = str_replace("\r\n","",$mensagem);
         $Json = '';
-        $Json = $Json .  '{"msg":"' . $mensagem . '","nome":"' . $con[0]->CONNOME . '","email":"' . $con[0]->CONEMAIL . '","tel":"' . $con[0]->CONTEL . '","dataSolicitacao":"' . $dataEnvio . '","assunto":"' . $con[0]->CONASSUNTO . '"}';
+        $Json = $Json .  '{"msg":"' . $mensagem . '","nome":"' . $com[0]->COMNOME . '","email":"' . $com[0]->COMEMAIL . '","tel":"' . $com[0]->COMTEL . '","dataSolicitacao":"' . $dataEnvio . '","codVeiculo":"' . $com[0]->CARCOD . '","marca":"' . $com[0]->MARDESCRICAO . '","modelo":"' . $com[0]->MODDESCRICAO . '","ano":"' . $com[0]->CARANO . '","imgVeiculo":"' . $com[0]->CARFOTO . '","preco":"' . $com[0]->CARPRECO . '"}';
             
         ////$Json = $util->convert_from_latin1_to_utf8_recursively($Json);
         echo json_encode($Json);
@@ -58,7 +58,7 @@ try {
         // echo json_encode($result);
     }
 
-    $contato->AtualizaStatusContato($codSol);
+    $compra->AtualizaStatusLido($codSol,'S');
 } catch (Exception $e) {
     echo '[{"TransCod":0, "erro":"' . $e->getMessage() . '"}]'; // opcional, apenas para teste
 }

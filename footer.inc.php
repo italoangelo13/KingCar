@@ -1,18 +1,29 @@
 <?php
-    if(isset($_POST['news'])){
-        $utilNews = new Util();
-        $email = $_POST['emailnews'];
-        try{
-            $utilNews->InserirEmailNewsletter($email);
-            echo "<script>SuccessBox('Email Cadastrado com Sucesso.');</script>";
-        }
-        catch (Exception $e){
-    
-        }
+if (isset($_POST['news'])) {
+    $utilNews = new Util();
+    $email = $_POST['emailnews'];
+    try {
+        $utilNews->InserirEmailNewsletter($email);
+        echo "<script>SuccessBox('Email Cadastrado com Sucesso.');</script>";
+    } catch (Exception $e) {
     }
+}
 ?>
 <div class="row bg-warning" style="margin-top: 15px; padding: 5px;">
-    <div class="col-lg-8">
+
+    <div class="col-lg-4">
+        <h6>Deseja receber as novidades da King Car? assine o nosso Newslatter!</h6>
+        <form action="" method="POST" class="form-inline">
+            <div class="input-group mb-2 mr-sm-2">
+                <input type="email" name="emailnews" id="_edemail" class="form-control form-control-lg" placeholder="Seu Email Aqui!">
+            </div>
+            <button name="news" class="btn btn-success btn-lg">Enviar</button>
+        </form>
+    </div>
+    <div class="col-lg-6 text-center">
+        <img src="assets/img/lets-encrypt.png"  style="width: 50%;" alt="">
+    </div>
+    <div class="col-lg-2 text-center text-lg-right">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-12">
@@ -26,20 +37,11 @@
             </div>
             <div class="row" style="margin-top: 15px;">
                 <div class="col-lg-12">
-                Desenvolvido Por <a style="text-decoration: none; color:#000;" target="_blank" href="https://www.facebook.com/fariasoft">Faria Soft</a>
+                    Desenvolvido Por <a style="text-decoration: none; color:#000;" target="_blank" href="https://www.facebook.com/fariasoft">Faria Soft</a>
                 </div>
             </div>
         </div>
 
-    </div>
-    <div class="col-lg-4">
-        <h6>Deseja receber as novidades da King Car? assine o nosso Newslatter!</h6>
-        <form action="" method="POST" class="form-inline">
-            <div class="input-group mb-2 mr-sm-2">
-                <input type="email" name="emailnews" id="_edemail" class="form-control form-control-lg" placeholder="Seu Email Aqui!">
-            </div>
-            <button name="news" class="btn btn-success btn-lg">Enviar</button>
-        </form>
     </div>
 </div>
 </div>

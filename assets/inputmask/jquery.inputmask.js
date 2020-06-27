@@ -1706,7 +1706,7 @@
                                     valueSet = valueProperty.set, Object.defineProperty(npt, "value", {
                                         get: getter,
                                         set: setter,
-                                        configurable: !0
+                                        Configurable: !0
                                     })) : "input" !== npt.tagName.toLowerCase() && (valueGet = function valueGet() {
                                         return this.textContent;
                                     }, valueSet = function valueSet(value) {
@@ -1714,7 +1714,7 @@
                                     }, Object.defineProperty(npt, "value", {
                                         get: getter,
                                         set: setter,
-                                        configurable: !0
+                                        Configurable: !0
                                     }));
                                 } else document.__lookupGetter__ && npt.__lookupGetter__("value") && (valueGet = npt.__lookupGetter__("value"), 
                                 valueSet = npt.__lookupSetter__("value"), npt.__defineGetter__("value", getter), 
@@ -1809,7 +1809,7 @@
                     valueProperty && el.inputmask.__valueGet && Object.defineProperty(el, "value", {
                         get: el.inputmask.__valueGet,
                         set: el.inputmask.__valueSet,
-                        configurable: !0
+                        Configurable: !0
                     })) : document.__lookupGetter__ && el.__lookupGetter__("value") && el.inputmask.__valueGet && (el.__defineGetter__("value", el.inputmask.__valueGet), 
                     el.__defineSetter__("value", el.inputmask.__valueSet)), el.inputmask = void 0;
                 }
@@ -2486,7 +2486,7 @@
                 constructor: {
                     value: subClass,
                     writable: !0,
-                    configurable: !0
+                    Configurable: !0
                 }
             }), superClass && _setPrototypeOf(subClass, superClass);
         }
@@ -2507,7 +2507,7 @@
                         value: Wrapper,
                         enumerable: !1,
                         writable: !0,
-                        configurable: !0
+                        Configurable: !0
                     }
                 }), _setPrototypeOf(Wrapper, Class);
             }, _wrapNativeSuper(Class);

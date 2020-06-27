@@ -15,7 +15,7 @@
     for (var i = 0; i < props.length; i++) {
       var descriptor = props[i];
       descriptor.enumerable = descriptor.enumerable || false;
-      descriptor.configurable = true;
+      descriptor.Configurable = true;
       if ("value" in descriptor) descriptor.writable = true;
       Object.defineProperty(target, descriptor.key, descriptor);
     }
@@ -32,7 +32,7 @@
       Object.defineProperty(obj, key, {
         value: value,
         enumerable: true,
-        configurable: true,
+        Configurable: true,
         writable: true
       });
     } else {
@@ -199,11 +199,11 @@
     isElement: function isElement(obj) {
       return (obj[0] || obj).nodeType;
     },
-    typeCheckConfig: function typeCheckConfig(componentName, config, configTypes) {
-      for (var property in configTypes) {
-        if (Object.prototype.hasOwnProperty.call(configTypes, property)) {
-          var expectedTypes = configTypes[property];
-          var value = config[property];
+    typeCheckConfig: function typeCheckConfig(componentName, Config, ConfigTypes) {
+      for (var property in ConfigTypes) {
+        if (Object.prototype.hasOwnProperty.call(ConfigTypes, property)) {
+          var expectedTypes = ConfigTypes[property];
+          var value = Config[property];
           var valueType = value && Util.isElement(value) ? 'element' : toType(value);
 
           if (!new RegExp(expectedTypes).test(valueType)) {
@@ -361,7 +361,7 @@
     } // Static
     ;
 
-    Alert._jQueryInterface = function _jQueryInterface(config) {
+    Alert._jQueryInterface = function _jQueryInterface(Config) {
       return this.each(function () {
         var $element = $(this);
         var data = $element.data(DATA_KEY);
@@ -371,8 +371,8 @@
           $element.data(DATA_KEY, data);
         }
 
-        if (config === 'close') {
-          data[config](this);
+        if (Config === 'close') {
+          data[Config](this);
         }
       });
     };
@@ -521,7 +521,7 @@
     } // Static
     ;
 
-    Button._jQueryInterface = function _jQueryInterface(config) {
+    Button._jQueryInterface = function _jQueryInterface(Config) {
       return this.each(function () {
         var data = $(this).data(DATA_KEY$1);
 
@@ -530,8 +530,8 @@
           $(this).data(DATA_KEY$1, data);
         }
 
-        if (config === 'toggle') {
-          data[config]();
+        if (Config === 'toggle') {
+          data[Config]();
         }
       });
     };
@@ -709,7 +709,7 @@
   var Carousel =
   /*#__PURE__*/
   function () {
-    function Carousel(element, config) {
+    function Carousel(element, Config) {
       this._items = null;
       this._interval = null;
       this._activeElement = null;
@@ -718,7 +718,7 @@
       this.touchTimeout = null;
       this.touchStartX = 0;
       this.touchDeltaX = 0;
-      this._config = this._getConfig(config);
+      this._Config = this._getConfig(Config);
       this._element = element;
       this._indicatorsElement = this._element.querySelector(Selector$2.INDICATORS);
       this._touchSupported = 'ontouchstart' in document.documentElement || navigator.maxTouchPoints > 0;
@@ -775,8 +775,8 @@
         this._interval = null;
       }
 
-      if (this._config.interval && !this._isPaused) {
-        this._interval = setInterval((document.visibilityState ? this.nextWhenVisible : this.next).bind(this), this._config.interval);
+      if (this._Config.interval && !this._isPaused) {
+        this._interval = setInterval((document.visibilityState ? this.nextWhenVisible : this.next).bind(this), this._Config.interval);
       }
     };
 
@@ -813,7 +813,7 @@
       $(this._element).off(EVENT_KEY$2);
       $.removeData(this._element, DATA_KEY$2);
       this._items = null;
-      this._config = null;
+      this._Config = null;
       this._element = null;
       this._interval = null;
       this._isPaused = null;
@@ -823,10 +823,10 @@
     } // Private
     ;
 
-    _proto._getConfig = function _getConfig(config) {
-      config = _objectSpread2({}, Default, {}, config);
-      Util.typeCheckConfig(NAME$2, config, DefaultType);
-      return config;
+    _proto._getConfig = function _getConfig(Config) {
+      Config = _objectSpread2({}, Default, {}, Config);
+      Util.typeCheckConfig(NAME$2, Config, DefaultType);
+      return Config;
     };
 
     _proto._handleSwipe = function _handleSwipe() {
@@ -852,13 +852,13 @@
     _proto._addEventListeners = function _addEventListeners() {
       var _this2 = this;
 
-      if (this._config.keyboard) {
+      if (this._Config.keyboard) {
         $(this._element).on(Event$2.KEYDOWN, function (event) {
           return _this2._keydown(event);
         });
       }
 
-      if (this._config.pause === 'hover') {
+      if (this._Config.pause === 'hover') {
         $(this._element).on(Event$2.MOUSEENTER, function (event) {
           return _this2.pause(event);
         }).on(Event$2.MOUSELEAVE, function (event) {
@@ -866,7 +866,7 @@
         });
       }
 
-      if (this._config.touch) {
+      if (this._Config.touch) {
         this._addTouchEventListeners();
       }
     };
@@ -902,7 +902,7 @@
 
         _this3._handleSwipe();
 
-        if (_this3._config.pause === 'hover') {
+        if (_this3._Config.pause === 'hover') {
           // If it's a touch-enabled device, mouseenter/leave are fired as
           // part of the mouse compatibility events on first tap - the carousel
           // would stop cycling until user tapped out of it;
@@ -918,7 +918,7 @@
 
           _this3.touchTimeout = setTimeout(function (event) {
             return _this3.cycle(event);
-          }, TOUCHEVENT_COMPAT_WAIT + _this3._config.interval);
+          }, TOUCHEVENT_COMPAT_WAIT + _this3._Config.interval);
         }
       };
 
@@ -980,7 +980,7 @@
       var lastItemIndex = this._items.length - 1;
       var isGoingToWrap = isPrevDirection && activeIndex === 0 || isNextDirection && activeIndex === lastItemIndex;
 
-      if (isGoingToWrap && !this._config.wrap) {
+      if (isGoingToWrap && !this._Config.wrap) {
         return activeElement;
       }
 
@@ -1082,10 +1082,10 @@
         var nextElementInterval = parseInt(nextElement.getAttribute('data-interval'), 10);
 
         if (nextElementInterval) {
-          this._config.defaultInterval = this._config.defaultInterval || this._config.interval;
-          this._config.interval = nextElementInterval;
+          this._Config.defaultInterval = this._Config.defaultInterval || this._Config.interval;
+          this._Config.interval = nextElementInterval;
         } else {
-          this._config.interval = this._config.defaultInterval || this._config.interval;
+          this._Config.interval = this._Config.defaultInterval || this._Config.interval;
         }
 
         var transitionDuration = Util.getTransitionDurationFromElement(activeElement);
@@ -1110,32 +1110,32 @@
     } // Static
     ;
 
-    Carousel._jQueryInterface = function _jQueryInterface(config) {
+    Carousel._jQueryInterface = function _jQueryInterface(Config) {
       return this.each(function () {
         var data = $(this).data(DATA_KEY$2);
 
-        var _config = _objectSpread2({}, Default, {}, $(this).data());
+        var _Config = _objectSpread2({}, Default, {}, $(this).data());
 
-        if (typeof config === 'object') {
-          _config = _objectSpread2({}, _config, {}, config);
+        if (typeof Config === 'object') {
+          _Config = _objectSpread2({}, _Config, {}, Config);
         }
 
-        var action = typeof config === 'string' ? config : _config.slide;
+        var action = typeof Config === 'string' ? Config : _Config.slide;
 
         if (!data) {
-          data = new Carousel(this, _config);
+          data = new Carousel(this, _Config);
           $(this).data(DATA_KEY$2, data);
         }
 
-        if (typeof config === 'number') {
-          data.to(config);
+        if (typeof Config === 'number') {
+          data.to(Config);
         } else if (typeof action === 'string') {
           if (typeof data[action] === 'undefined') {
             throw new TypeError("No method named \"" + action + "\"");
           }
 
           data[action]();
-        } else if (_config.interval && _config.ride) {
+        } else if (_Config.interval && _Config.ride) {
           data.pause();
           data.cycle();
         }
@@ -1155,15 +1155,15 @@
         return;
       }
 
-      var config = _objectSpread2({}, $(target).data(), {}, $(this).data());
+      var Config = _objectSpread2({}, $(target).data(), {}, $(this).data());
 
       var slideIndex = this.getAttribute('data-slide-to');
 
       if (slideIndex) {
-        config.interval = false;
+        Config.interval = false;
       }
 
-      Carousel._jQueryInterface.call($(target), config);
+      Carousel._jQueryInterface.call($(target), Config);
 
       if (slideIndex) {
         $(target).data(DATA_KEY$2).to(slideIndex);
@@ -1267,10 +1267,10 @@
   var Collapse =
   /*#__PURE__*/
   function () {
-    function Collapse(element, config) {
+    function Collapse(element, Config) {
       this._isTransitioning = false;
       this._element = element;
-      this._config = this._getConfig(config);
+      this._Config = this._getConfig(Config);
       this._triggerArray = [].slice.call(document.querySelectorAll("[data-toggle=\"collapse\"][href=\"#" + element.id + "\"]," + ("[data-toggle=\"collapse\"][data-target=\"#" + element.id + "\"]")));
       var toggleList = [].slice.call(document.querySelectorAll(Selector$3.DATA_TOGGLE));
 
@@ -1288,13 +1288,13 @@
         }
       }
 
-      this._parent = this._config.parent ? this._getParent() : null;
+      this._parent = this._Config.parent ? this._getParent() : null;
 
-      if (!this._config.parent) {
+      if (!this._Config.parent) {
         this._addAriaAndCollapsedClass(this._element, this._triggerArray);
       }
 
-      if (this._config.toggle) {
+      if (this._Config.toggle) {
         this.toggle();
       }
     } // Getters
@@ -1323,8 +1323,8 @@
 
       if (this._parent) {
         actives = [].slice.call(this._parent.querySelectorAll(Selector$3.ACTIVES)).filter(function (elem) {
-          if (typeof _this._config.parent === 'string') {
-            return elem.getAttribute('data-parent') === _this._config.parent;
+          if (typeof _this._Config.parent === 'string') {
+            return elem.getAttribute('data-parent') === _this._Config.parent;
           }
 
           return elem.classList.contains(ClassName$3.COLLAPSE);
@@ -1440,7 +1440,7 @@
 
     _proto.dispose = function dispose() {
       $.removeData(this._element, DATA_KEY$3);
-      this._config = null;
+      this._Config = null;
       this._parent = null;
       this._element = null;
       this._triggerArray = null;
@@ -1448,12 +1448,12 @@
     } // Private
     ;
 
-    _proto._getConfig = function _getConfig(config) {
-      config = _objectSpread2({}, Default$1, {}, config);
-      config.toggle = Boolean(config.toggle); // Coerce string values
+    _proto._getConfig = function _getConfig(Config) {
+      Config = _objectSpread2({}, Default$1, {}, Config);
+      Config.toggle = Boolean(Config.toggle); // Coerce string values
 
-      Util.typeCheckConfig(NAME$3, config, DefaultType$1);
-      return config;
+      Util.typeCheckConfig(NAME$3, Config, DefaultType$1);
+      return Config;
     };
 
     _proto._getDimension = function _getDimension() {
@@ -1466,17 +1466,17 @@
 
       var parent;
 
-      if (Util.isElement(this._config.parent)) {
-        parent = this._config.parent; // It's a jQuery object
+      if (Util.isElement(this._Config.parent)) {
+        parent = this._Config.parent; // It's a jQuery object
 
-        if (typeof this._config.parent.jquery !== 'undefined') {
-          parent = this._config.parent[0];
+        if (typeof this._Config.parent.jquery !== 'undefined') {
+          parent = this._Config.parent[0];
         }
       } else {
-        parent = document.querySelector(this._config.parent);
+        parent = document.querySelector(this._Config.parent);
       }
 
-      var selector = "[data-toggle=\"collapse\"][data-parent=\"" + this._config.parent + "\"]";
+      var selector = "[data-toggle=\"collapse\"][data-parent=\"" + this._Config.parent + "\"]";
       var children = [].slice.call(parent.querySelectorAll(selector));
       $(children).each(function (i, element) {
         _this3._addAriaAndCollapsedClass(Collapse._getTargetFromElement(element), [element]);
@@ -1498,28 +1498,28 @@
       return selector ? document.querySelector(selector) : null;
     };
 
-    Collapse._jQueryInterface = function _jQueryInterface(config) {
+    Collapse._jQueryInterface = function _jQueryInterface(Config) {
       return this.each(function () {
         var $this = $(this);
         var data = $this.data(DATA_KEY$3);
 
-        var _config = _objectSpread2({}, Default$1, {}, $this.data(), {}, typeof config === 'object' && config ? config : {});
+        var _Config = _objectSpread2({}, Default$1, {}, $this.data(), {}, typeof Config === 'object' && Config ? Config : {});
 
-        if (!data && _config.toggle && /show|hide/.test(config)) {
-          _config.toggle = false;
+        if (!data && _Config.toggle && /show|hide/.test(Config)) {
+          _Config.toggle = false;
         }
 
         if (!data) {
-          data = new Collapse(this, _config);
+          data = new Collapse(this, _Config);
           $this.data(DATA_KEY$3, data);
         }
 
-        if (typeof config === 'string') {
-          if (typeof data[config] === 'undefined') {
-            throw new TypeError("No method named \"" + config + "\"");
+        if (typeof Config === 'string') {
+          if (typeof data[Config] === 'undefined') {
+            throw new TypeError("No method named \"" + Config + "\"");
           }
 
-          data[config]();
+          data[Config]();
         }
       });
     };
@@ -1557,9 +1557,9 @@
     $(selectors).each(function () {
       var $target = $(this);
       var data = $target.data(DATA_KEY$3);
-      var config = data ? 'toggle' : $trigger.data();
+      var Config = data ? 'toggle' : $trigger.data();
 
-      Collapse._jQueryInterface.call($target, config);
+      Collapse._jQueryInterface.call($target, Config);
     });
   });
   /**
@@ -1953,7 +1953,7 @@
       for (var i = 0; i < props.length; i++) {
         var descriptor = props[i];
         descriptor.enumerable = descriptor.enumerable || false;
-        descriptor.configurable = true;
+        descriptor.Configurable = true;
         if ("value" in descriptor) descriptor.writable = true;
         Object.defineProperty(target, descriptor.key, descriptor);
       }
@@ -1975,7 +1975,7 @@
       Object.defineProperty(obj, key, {
         value: value,
         enumerable: true,
-        configurable: true,
+        Configurable: true,
         writable: true
       });
     } else {
@@ -2263,7 +2263,7 @@
    * @method
    * @memberof Popper.Utils
    * @argument {Object} data - The data object generated by update method
-   * @argument {Object} options - Modifiers configuration and options
+   * @argument {Object} options - Modifiers Configuration and options
    * @returns {Object} The data object, properly modified
    */
   function computeAutoPlacement(placement, refRect, popper, reference, boundariesElement) {
@@ -2745,7 +2745,7 @@
    * @argument {Object} data - The data object generated by `update` method
    * @argument {Object} data.styles - List of style properties - values to apply to popper element
    * @argument {Object} data.attributes - List of attribute properties - values to apply to popper element
-   * @argument {Object} options - Modifiers configuration and options
+   * @argument {Object} options - Modifiers Configuration and options
    * @returns {Object} The same data object
    */
   function applyStyle(data) {
@@ -2850,7 +2850,7 @@
    * @function
    * @memberof Modifiers
    * @argument {Object} data - The data object generated by `update` method
-   * @argument {Object} options - Modifiers configuration and options
+   * @argument {Object} options - Modifiers Configuration and options
    * @returns {Object} The data object, properly modified
    */
   function computeStyle(data, options) {
@@ -2976,7 +2976,7 @@
    * @function
    * @memberof Modifiers
    * @argument {Object} data - The data object generated by update method
-   * @argument {Object} options - Modifiers configuration and options
+   * @argument {Object} options - Modifiers Configuration and options
    * @returns {Object} The data object, properly modified
    */
   function arrow(data, options) {
@@ -3134,7 +3134,7 @@
    * @function
    * @memberof Modifiers
    * @argument {Object} data - The data object generated by update method
-   * @argument {Object} options - Modifiers configuration and options
+   * @argument {Object} options - Modifiers Configuration and options
    * @returns {Object} The data object, properly modified
    */
   function flip(data, options) {
@@ -3231,7 +3231,7 @@
    * @function
    * @memberof Modifiers
    * @argument {Object} data - The data object generated by update method
-   * @argument {Object} options - Modifiers configuration and options
+   * @argument {Object} options - Modifiers Configuration and options
    * @returns {Object} The data object, properly modified
    */
   function keepTogether(data) {
@@ -3391,7 +3391,7 @@
    * @function
    * @memberof Modifiers
    * @argument {Object} data - The data object generated by update method
-   * @argument {Object} options - Modifiers configuration and options
+   * @argument {Object} options - Modifiers Configuration and options
    * @argument {Number|String} options.offset=0
    * The offset value as described in the modifier description
    * @returns {Object} The data object, properly modified
@@ -3434,7 +3434,7 @@
    * @function
    * @memberof Modifiers
    * @argument {Object} data - The data object generated by `update` method
-   * @argument {Object} options - Modifiers configuration and options
+   * @argument {Object} options - Modifiers Configuration and options
    * @returns {Object} The data object, properly modified
    */
   function preventOverflow(data, options) {
@@ -3505,7 +3505,7 @@
    * @function
    * @memberof Modifiers
    * @argument {Object} data - The data object generated by `update` method
-   * @argument {Object} options - Modifiers configuration and options
+   * @argument {Object} options - Modifiers Configuration and options
    * @returns {Object} The data object, properly modified
    */
   function shift(data) {
@@ -3538,7 +3538,7 @@
    * @function
    * @memberof Modifiers
    * @argument {Object} data - The data object generated by update method
-   * @argument {Object} options - Modifiers configuration and options
+   * @argument {Object} options - Modifiers Configuration and options
    * @returns {Object} The data object, properly modified
    */
   function hide(data) {
@@ -3576,7 +3576,7 @@
    * @function
    * @memberof Modifiers
    * @argument {Object} data - The data object generated by `update` method
-   * @argument {Object} options - Modifiers configuration and options
+   * @argument {Object} options - Modifiers Configuration and options
    * @returns {Object} The data object, properly modified
    */
   function inner(data) {
@@ -3606,7 +3606,7 @@
    *
    * @function ModifierFn
    * @argument {dataObject} data - The data object generated by `update` method
-   * @argument {Object} options - Modifiers configuration and options
+   * @argument {Object} options - Modifiers Configuration and options
    * @returns {dataObject} The data object, properly modified
    */
 
@@ -3616,7 +3616,7 @@
    * needed by the library.
    *
    * Usually you don't want to override the `order`, `fn` and `onLoad` props.
-   * All the other properties are configurations that could be tweaked.
+   * All the other properties are Configurations that could be tweaked.
    * @namespace modifiers
    */
   var modifiers = {
@@ -4092,7 +4092,7 @@
 
       // modifiers have the ability to execute arbitrary code when Popper.js get inited
       // such code is executed in the same order of its modifier
-      // they could add new properties to their options configuration
+      // they could add new properties to their options Configuration
       // BE AWARE: don't add options to `options.modifiers.name` but to `modifierOptions`!
       this.modifiers.forEach(function (modifierOptions) {
         if (modifierOptions.enabled && isFunction(modifierOptions.onLoad)) {
@@ -4277,10 +4277,10 @@
   var Dropdown =
   /*#__PURE__*/
   function () {
-    function Dropdown(element, config) {
+    function Dropdown(element, Config) {
       this._element = element;
       this._popper = null;
-      this._config = this._getConfig(config);
+      this._Config = this._getConfig(Config);
       this._menu = this._getMenuElement();
       this._inNavbar = this._detectNavbar();
 
@@ -4341,20 +4341,20 @@
 
         var referenceElement = this._element;
 
-        if (this._config.reference === 'parent') {
+        if (this._Config.reference === 'parent') {
           referenceElement = parent;
-        } else if (Util.isElement(this._config.reference)) {
-          referenceElement = this._config.reference; // Check if it's jQuery element
+        } else if (Util.isElement(this._Config.reference)) {
+          referenceElement = this._Config.reference; // Check if it's jQuery element
 
-          if (typeof this._config.reference.jquery !== 'undefined') {
-            referenceElement = this._config.reference[0];
+          if (typeof this._Config.reference.jquery !== 'undefined') {
+            referenceElement = this._Config.reference[0];
           }
         } // If boundary is not `scrollParent`, then set position to `static`
         // to allow the menu to "escape" the scroll parent's boundaries
         // https://github.com/twbs/bootstrap/issues/24251
 
 
-        if (this._config.boundary !== 'scrollParent') {
+        if (this._Config.boundary !== 'scrollParent') {
           $(parent).addClass(ClassName$4.POSITION_STATIC);
         }
 
@@ -4436,10 +4436,10 @@
       });
     };
 
-    _proto._getConfig = function _getConfig(config) {
-      config = _objectSpread2({}, this.constructor.Default, {}, $(this._element).data(), {}, config);
-      Util.typeCheckConfig(NAME$4, config, this.constructor.DefaultType);
-      return config;
+    _proto._getConfig = function _getConfig(Config) {
+      Config = _objectSpread2({}, this.constructor.Default, {}, $(this._element).data(), {}, Config);
+      Util.typeCheckConfig(NAME$4, Config, this.constructor.DefaultType);
+      return Config;
     };
 
     _proto._getMenuElement = function _getMenuElement() {
@@ -4484,13 +4484,13 @@
 
       var offset = {};
 
-      if (typeof this._config.offset === 'function') {
+      if (typeof this._Config.offset === 'function') {
         offset.fn = function (data) {
-          data.offsets = _objectSpread2({}, data.offsets, {}, _this2._config.offset(data.offsets, _this2._element) || {});
+          data.offsets = _objectSpread2({}, data.offsets, {}, _this2._Config.offset(data.offsets, _this2._element) || {});
           return data;
         };
       } else {
-        offset.offset = this._config.offset;
+        offset.offset = this._Config.offset;
       }
 
       return offset;
@@ -4502,41 +4502,41 @@
         modifiers: {
           offset: this._getOffset(),
           flip: {
-            enabled: this._config.flip
+            enabled: this._Config.flip
           },
           preventOverflow: {
-            boundariesElement: this._config.boundary
+            boundariesElement: this._Config.boundary
           }
         }
       }; // Disable Popper.js if we have a static display
 
-      if (this._config.display === 'static') {
+      if (this._Config.display === 'static') {
         popperConfig.modifiers.applyStyle = {
           enabled: false
         };
       }
 
-      return _objectSpread2({}, popperConfig, {}, this._config.popperConfig);
+      return _objectSpread2({}, popperConfig, {}, this._Config.popperConfig);
     } // Static
     ;
 
-    Dropdown._jQueryInterface = function _jQueryInterface(config) {
+    Dropdown._jQueryInterface = function _jQueryInterface(Config) {
       return this.each(function () {
         var data = $(this).data(DATA_KEY$4);
 
-        var _config = typeof config === 'object' ? config : null;
+        var _Config = typeof Config === 'object' ? Config : null;
 
         if (!data) {
-          data = new Dropdown(this, _config);
+          data = new Dropdown(this, _Config);
           $(this).data(DATA_KEY$4, data);
         }
 
-        if (typeof config === 'string') {
-          if (typeof data[config] === 'undefined') {
-            throw new TypeError("No method named \"" + config + "\"");
+        if (typeof Config === 'string') {
+          if (typeof data[Config] === 'undefined') {
+            throw new TypeError("No method named \"" + Config + "\"");
           }
 
-          data[config]();
+          data[Config]();
         }
       });
     };
@@ -4788,8 +4788,8 @@
   var Modal =
   /*#__PURE__*/
   function () {
-    function Modal(element, config) {
-      this._config = this._getConfig(config);
+    function Modal(element, Config) {
+      this._Config = this._getConfig(Config);
       this._element = element;
       this._dialog = element.querySelector(Selector$5.DIALOG);
       this._backdrop = null;
@@ -4912,7 +4912,7 @@
 
       $(document).off(Event$5.FOCUSIN);
       $.removeData(this._element, DATA_KEY$5);
-      this._config = null;
+      this._Config = null;
       this._element = null;
       this._dialog = null;
       this._backdrop = null;
@@ -4928,16 +4928,16 @@
     } // Private
     ;
 
-    _proto._getConfig = function _getConfig(config) {
-      config = _objectSpread2({}, Default$3, {}, config);
-      Util.typeCheckConfig(NAME$5, config, DefaultType$3);
-      return config;
+    _proto._getConfig = function _getConfig(Config) {
+      Config = _objectSpread2({}, Default$3, {}, Config);
+      Util.typeCheckConfig(NAME$5, Config, DefaultType$3);
+      return Config;
     };
 
     _proto._triggerBackdropTransition = function _triggerBackdropTransition() {
       var _this3 = this;
 
-      if (this._config.backdrop === 'static') {
+      if (this._Config.backdrop === 'static') {
         var hideEventPrevented = $.Event(Event$5.HIDE_PREVENTED);
         $(this._element).trigger(hideEventPrevented);
 
@@ -4987,7 +4987,7 @@
 
       $(this._element).addClass(ClassName$5.SHOW);
 
-      if (this._config.focus) {
+      if (this._Config.focus) {
         this._enforceFocus();
       }
 
@@ -4996,7 +4996,7 @@
       });
 
       var transitionComplete = function transitionComplete() {
-        if (_this4._config.focus) {
+        if (_this4._Config.focus) {
           _this4._element.focus();
         }
 
@@ -5026,7 +5026,7 @@
     _proto._setEscapeEvent = function _setEscapeEvent() {
       var _this6 = this;
 
-      if (this._isShown && this._config.keyboard) {
+      if (this._isShown && this._Config.keyboard) {
         $(this._element).on(Event$5.KEYDOWN_DISMISS, function (event) {
           if (event.which === ESCAPE_KEYCODE$1) {
             _this6._triggerBackdropTransition();
@@ -5083,7 +5083,7 @@
 
       var animate = $(this._element).hasClass(ClassName$5.FADE) ? ClassName$5.FADE : '';
 
-      if (this._isShown && this._config.backdrop) {
+      if (this._isShown && this._Config.backdrop) {
         this._backdrop = document.createElement('div');
         this._backdrop.className = ClassName$5.BACKDROP;
 
@@ -5235,24 +5235,24 @@
     } // Static
     ;
 
-    Modal._jQueryInterface = function _jQueryInterface(config, relatedTarget) {
+    Modal._jQueryInterface = function _jQueryInterface(Config, relatedTarget) {
       return this.each(function () {
         var data = $(this).data(DATA_KEY$5);
 
-        var _config = _objectSpread2({}, Default$3, {}, $(this).data(), {}, typeof config === 'object' && config ? config : {});
+        var _Config = _objectSpread2({}, Default$3, {}, $(this).data(), {}, typeof Config === 'object' && Config ? Config : {});
 
         if (!data) {
-          data = new Modal(this, _config);
+          data = new Modal(this, _Config);
           $(this).data(DATA_KEY$5, data);
         }
 
-        if (typeof config === 'string') {
-          if (typeof data[config] === 'undefined') {
-            throw new TypeError("No method named \"" + config + "\"");
+        if (typeof Config === 'string') {
+          if (typeof data[Config] === 'undefined') {
+            throw new TypeError("No method named \"" + Config + "\"");
           }
 
-          data[config](relatedTarget);
-        } else if (_config.show) {
+          data[Config](relatedTarget);
+        } else if (_Config.show) {
           data.show(relatedTarget);
         }
       });
@@ -5289,7 +5289,7 @@
       target = document.querySelector(selector);
     }
 
-    var config = $(target).data(DATA_KEY$5) ? 'toggle' : _objectSpread2({}, $(target).data(), {}, $(this).data());
+    var Config = $(target).data(DATA_KEY$5) ? 'toggle' : _objectSpread2({}, $(target).data(), {}, $(this).data());
 
     if (this.tagName === 'A' || this.tagName === 'AREA') {
       event.preventDefault();
@@ -5308,7 +5308,7 @@
       });
     });
 
-    Modal._jQueryInterface.call($(target), config, this);
+    Modal._jQueryInterface.call($(target), Config, this);
   });
   /**
    * ------------------------------------------------------------------------
@@ -5542,7 +5542,7 @@
   var Tooltip =
   /*#__PURE__*/
   function () {
-    function Tooltip(element, config) {
+    function Tooltip(element, Config) {
       if (typeof Popper === 'undefined') {
         throw new TypeError('Bootstrap\'s tooltips require Popper.js (https://popper.js.org/)');
       } // private
@@ -5555,7 +5555,7 @@
       this._popper = null; // Protected
 
       this.element = element;
-      this.config = this._getConfig(config);
+      this.Config = this._getConfig(Config);
       this.tip = null;
 
       this._setListeners();
@@ -5630,7 +5630,7 @@
 
       this._popper = null;
       this.element = null;
-      this.config = null;
+      this.Config = null;
       this.tip = null;
     };
 
@@ -5658,11 +5658,11 @@
         this.element.setAttribute('aria-describedby', tipId);
         this.setContent();
 
-        if (this.config.animation) {
+        if (this.Config.animation) {
           $(tip).addClass(ClassName$6.FADE);
         }
 
-        var placement = typeof this.config.placement === 'function' ? this.config.placement.call(this, tip, this.element) : this.config.placement;
+        var placement = typeof this.Config.placement === 'function' ? this.Config.placement.call(this, tip, this.element) : this.Config.placement;
 
         var attachment = this._getAttachment(placement);
 
@@ -5688,7 +5688,7 @@
         }
 
         var complete = function complete() {
-          if (_this.config.animation) {
+          if (_this.Config.animation) {
             _this._fixTransition();
           }
 
@@ -5779,7 +5779,7 @@
     };
 
     _proto.getTipElement = function getTipElement() {
-      this.tip = this.tip || $(this.config.template)[0];
+      this.tip = this.tip || $(this.Config.template)[0];
       return this.tip;
     };
 
@@ -5792,7 +5792,7 @@
     _proto.setElementContent = function setElementContent($element, content) {
       if (typeof content === 'object' && (content.nodeType || content.jquery)) {
         // Content is a DOM node or a jQuery
-        if (this.config.html) {
+        if (this.Config.html) {
           if (!$(content).parent().is($element)) {
             $element.empty().append(content);
           }
@@ -5803,9 +5803,9 @@
         return;
       }
 
-      if (this.config.html) {
-        if (this.config.sanitize) {
-          content = sanitizeHtml(content, this.config.whiteList, this.config.sanitizeFn);
+      if (this.Config.html) {
+        if (this.Config.sanitize) {
+          content = sanitizeHtml(content, this.Config.whiteList, this.Config.sanitizeFn);
         }
 
         $element.html(content);
@@ -5818,7 +5818,7 @@
       var title = this.element.getAttribute('data-original-title');
 
       if (!title) {
-        title = typeof this.config.title === 'function' ? this.config.title.call(this.element) : this.config.title;
+        title = typeof this.Config.title === 'function' ? this.Config.title.call(this.element) : this.Config.title;
       }
 
       return title;
@@ -5833,13 +5833,13 @@
         modifiers: {
           offset: this._getOffset(),
           flip: {
-            behavior: this.config.fallbackPlacement
+            behavior: this.Config.fallbackPlacement
           },
           arrow: {
             element: Selector$6.ARROW
           },
           preventOverflow: {
-            boundariesElement: this.config.boundary
+            boundariesElement: this.Config.boundary
           }
         },
         onCreate: function onCreate(data) {
@@ -5851,7 +5851,7 @@
           return _this3._handlePopperPlacementChange(data);
         }
       };
-      return _objectSpread2({}, defaultBsConfig, {}, this.config.popperConfig);
+      return _objectSpread2({}, defaultBsConfig, {}, this.Config.popperConfig);
     };
 
     _proto._getOffset = function _getOffset() {
@@ -5859,28 +5859,28 @@
 
       var offset = {};
 
-      if (typeof this.config.offset === 'function') {
+      if (typeof this.Config.offset === 'function') {
         offset.fn = function (data) {
-          data.offsets = _objectSpread2({}, data.offsets, {}, _this4.config.offset(data.offsets, _this4.element) || {});
+          data.offsets = _objectSpread2({}, data.offsets, {}, _this4.Config.offset(data.offsets, _this4.element) || {});
           return data;
         };
       } else {
-        offset.offset = this.config.offset;
+        offset.offset = this.Config.offset;
       }
 
       return offset;
     };
 
     _proto._getContainer = function _getContainer() {
-      if (this.config.container === false) {
+      if (this.Config.container === false) {
         return document.body;
       }
 
-      if (Util.isElement(this.config.container)) {
-        return $(this.config.container);
+      if (Util.isElement(this.Config.container)) {
+        return $(this.Config.container);
       }
 
-      return $(document).find(this.config.container);
+      return $(document).find(this.Config.container);
     };
 
     _proto._getAttachment = function _getAttachment(placement) {
@@ -5890,18 +5890,18 @@
     _proto._setListeners = function _setListeners() {
       var _this5 = this;
 
-      var triggers = this.config.trigger.split(' ');
+      var triggers = this.Config.trigger.split(' ');
       triggers.forEach(function (trigger) {
         if (trigger === 'click') {
-          $(_this5.element).on(_this5.constructor.Event.CLICK, _this5.config.selector, function (event) {
+          $(_this5.element).on(_this5.constructor.Event.CLICK, _this5.Config.selector, function (event) {
             return _this5.toggle(event);
           });
         } else if (trigger !== Trigger.MANUAL) {
           var eventIn = trigger === Trigger.HOVER ? _this5.constructor.Event.MOUSEENTER : _this5.constructor.Event.FOCUSIN;
           var eventOut = trigger === Trigger.HOVER ? _this5.constructor.Event.MOUSELEAVE : _this5.constructor.Event.FOCUSOUT;
-          $(_this5.element).on(eventIn, _this5.config.selector, function (event) {
+          $(_this5.element).on(eventIn, _this5.Config.selector, function (event) {
             return _this5._enter(event);
-          }).on(eventOut, _this5.config.selector, function (event) {
+          }).on(eventOut, _this5.Config.selector, function (event) {
             return _this5._leave(event);
           });
         }
@@ -5915,8 +5915,8 @@
 
       $(this.element).closest('.modal').on('hide.bs.modal', this._hideModalHandler);
 
-      if (this.config.selector) {
-        this.config = _objectSpread2({}, this.config, {
+      if (this.Config.selector) {
+        this.Config = _objectSpread2({}, this.Config, {
           trigger: 'manual',
           selector: ''
         });
@@ -5955,7 +5955,7 @@
       clearTimeout(context._timeout);
       context._hoverState = HoverState.SHOW;
 
-      if (!context.config.delay || !context.config.delay.show) {
+      if (!context.Config.delay || !context.Config.delay.show) {
         context.show();
         return;
       }
@@ -5964,7 +5964,7 @@
         if (context._hoverState === HoverState.SHOW) {
           context.show();
         }
-      }, context.config.delay.show);
+      }, context.Config.delay.show);
     };
 
     _proto._leave = function _leave(event, context) {
@@ -5987,7 +5987,7 @@
       clearTimeout(context._timeout);
       context._hoverState = HoverState.OUT;
 
-      if (!context.config.delay || !context.config.delay.hide) {
+      if (!context.Config.delay || !context.Config.delay.hide) {
         context.hide();
         return;
       }
@@ -5996,7 +5996,7 @@
         if (context._hoverState === HoverState.OUT) {
           context.hide();
         }
-      }, context.config.delay.hide);
+      }, context.Config.delay.hide);
     };
 
     _proto._isWithActiveTrigger = function _isWithActiveTrigger() {
@@ -6009,51 +6009,51 @@
       return false;
     };
 
-    _proto._getConfig = function _getConfig(config) {
+    _proto._getConfig = function _getConfig(Config) {
       var dataAttributes = $(this.element).data();
       Object.keys(dataAttributes).forEach(function (dataAttr) {
         if (DISALLOWED_ATTRIBUTES.indexOf(dataAttr) !== -1) {
           delete dataAttributes[dataAttr];
         }
       });
-      config = _objectSpread2({}, this.constructor.Default, {}, dataAttributes, {}, typeof config === 'object' && config ? config : {});
+      Config = _objectSpread2({}, this.constructor.Default, {}, dataAttributes, {}, typeof Config === 'object' && Config ? Config : {});
 
-      if (typeof config.delay === 'number') {
-        config.delay = {
-          show: config.delay,
-          hide: config.delay
+      if (typeof Config.delay === 'number') {
+        Config.delay = {
+          show: Config.delay,
+          hide: Config.delay
         };
       }
 
-      if (typeof config.title === 'number') {
-        config.title = config.title.toString();
+      if (typeof Config.title === 'number') {
+        Config.title = Config.title.toString();
       }
 
-      if (typeof config.content === 'number') {
-        config.content = config.content.toString();
+      if (typeof Config.content === 'number') {
+        Config.content = Config.content.toString();
       }
 
-      Util.typeCheckConfig(NAME$6, config, this.constructor.DefaultType);
+      Util.typeCheckConfig(NAME$6, Config, this.constructor.DefaultType);
 
-      if (config.sanitize) {
-        config.template = sanitizeHtml(config.template, config.whiteList, config.sanitizeFn);
+      if (Config.sanitize) {
+        Config.template = sanitizeHtml(Config.template, Config.whiteList, Config.sanitizeFn);
       }
 
-      return config;
+      return Config;
     };
 
     _proto._getDelegateConfig = function _getDelegateConfig() {
-      var config = {};
+      var Config = {};
 
-      if (this.config) {
-        for (var key in this.config) {
-          if (this.constructor.Default[key] !== this.config[key]) {
-            config[key] = this.config[key];
+      if (this.Config) {
+        for (var key in this.Config) {
+          if (this.constructor.Default[key] !== this.Config[key]) {
+            Config[key] = this.Config[key];
           }
         }
       }
 
-      return config;
+      return Config;
     };
 
     _proto._cleanTipClass = function _cleanTipClass() {
@@ -6076,41 +6076,41 @@
 
     _proto._fixTransition = function _fixTransition() {
       var tip = this.getTipElement();
-      var initConfigAnimation = this.config.animation;
+      var initConfigAnimation = this.Config.animation;
 
       if (tip.getAttribute('x-placement') !== null) {
         return;
       }
 
       $(tip).removeClass(ClassName$6.FADE);
-      this.config.animation = false;
+      this.Config.animation = false;
       this.hide();
       this.show();
-      this.config.animation = initConfigAnimation;
+      this.Config.animation = initConfigAnimation;
     } // Static
     ;
 
-    Tooltip._jQueryInterface = function _jQueryInterface(config) {
+    Tooltip._jQueryInterface = function _jQueryInterface(Config) {
       return this.each(function () {
         var data = $(this).data(DATA_KEY$6);
 
-        var _config = typeof config === 'object' && config;
+        var _Config = typeof Config === 'object' && Config;
 
-        if (!data && /dispose|hide/.test(config)) {
+        if (!data && /dispose|hide/.test(Config)) {
           return;
         }
 
         if (!data) {
-          data = new Tooltip(this, _config);
+          data = new Tooltip(this, _Config);
           $(this).data(DATA_KEY$6, data);
         }
 
-        if (typeof config === 'string') {
-          if (typeof data[config] === 'undefined') {
-            throw new TypeError("No method named \"" + config + "\"");
+        if (typeof Config === 'string') {
+          if (typeof data[Config] === 'undefined') {
+            throw new TypeError("No method named \"" + Config + "\"");
           }
 
-          data[config]();
+          data[Config]();
         }
       });
     };
@@ -6241,7 +6241,7 @@
     };
 
     _proto.getTipElement = function getTipElement() {
-      this.tip = this.tip || $(this.config.template)[0];
+      this.tip = this.tip || $(this.Config.template)[0];
       return this.tip;
     };
 
@@ -6262,7 +6262,7 @@
     ;
 
     _proto._getContent = function _getContent() {
-      return this.element.getAttribute('data-content') || this.config.content;
+      return this.element.getAttribute('data-content') || this.Config.content;
     };
 
     _proto._cleanTipClass = function _cleanTipClass() {
@@ -6275,27 +6275,27 @@
     } // Static
     ;
 
-    Popover._jQueryInterface = function _jQueryInterface(config) {
+    Popover._jQueryInterface = function _jQueryInterface(Config) {
       return this.each(function () {
         var data = $(this).data(DATA_KEY$7);
 
-        var _config = typeof config === 'object' ? config : null;
+        var _Config = typeof Config === 'object' ? Config : null;
 
-        if (!data && /dispose|hide/.test(config)) {
+        if (!data && /dispose|hide/.test(Config)) {
           return;
         }
 
         if (!data) {
-          data = new Popover(this, _config);
+          data = new Popover(this, _Config);
           $(this).data(DATA_KEY$7, data);
         }
 
-        if (typeof config === 'string') {
-          if (typeof data[config] === 'undefined') {
-            throw new TypeError("No method named \"" + config + "\"");
+        if (typeof Config === 'string') {
+          if (typeof data[Config] === 'undefined') {
+            throw new TypeError("No method named \"" + Config + "\"");
           }
 
-          data[config]();
+          data[Config]();
         }
       });
     };
@@ -6411,13 +6411,13 @@
   var ScrollSpy =
   /*#__PURE__*/
   function () {
-    function ScrollSpy(element, config) {
+    function ScrollSpy(element, Config) {
       var _this = this;
 
       this._element = element;
       this._scrollElement = element.tagName === 'BODY' ? window : element;
-      this._config = this._getConfig(config);
-      this._selector = this._config.target + " " + Selector$8.NAV_LINKS + "," + (this._config.target + " " + Selector$8.LIST_ITEMS + ",") + (this._config.target + " " + Selector$8.DROPDOWN_ITEMS);
+      this._Config = this._getConfig(Config);
+      this._selector = this._Config.target + " " + Selector$8.NAV_LINKS + "," + (this._Config.target + " " + Selector$8.LIST_ITEMS + ",") + (this._Config.target + " " + Selector$8.DROPDOWN_ITEMS);
       this._offsets = [];
       this._targets = [];
       this._activeTarget = null;
@@ -6438,7 +6438,7 @@
       var _this2 = this;
 
       var autoMethod = this._scrollElement === this._scrollElement.window ? OffsetMethod.OFFSET : OffsetMethod.POSITION;
-      var offsetMethod = this._config.method === 'auto' ? autoMethod : this._config.method;
+      var offsetMethod = this._Config.method === 'auto' ? autoMethod : this._Config.method;
       var offsetBase = offsetMethod === OffsetMethod.POSITION ? this._getScrollTop() : 0;
       this._offsets = [];
       this._targets = [];
@@ -6478,7 +6478,7 @@
       $(this._scrollElement).off(EVENT_KEY$8);
       this._element = null;
       this._scrollElement = null;
-      this._config = null;
+      this._Config = null;
       this._selector = null;
       this._offsets = null;
       this._targets = null;
@@ -6487,22 +6487,22 @@
     } // Private
     ;
 
-    _proto._getConfig = function _getConfig(config) {
-      config = _objectSpread2({}, Default$6, {}, typeof config === 'object' && config ? config : {});
+    _proto._getConfig = function _getConfig(Config) {
+      Config = _objectSpread2({}, Default$6, {}, typeof Config === 'object' && Config ? Config : {});
 
-      if (typeof config.target !== 'string') {
-        var id = $(config.target).attr('id');
+      if (typeof Config.target !== 'string') {
+        var id = $(Config.target).attr('id');
 
         if (!id) {
           id = Util.getUID(NAME$8);
-          $(config.target).attr('id', id);
+          $(Config.target).attr('id', id);
         }
 
-        config.target = "#" + id;
+        Config.target = "#" + id;
       }
 
-      Util.typeCheckConfig(NAME$8, config, DefaultType$6);
-      return config;
+      Util.typeCheckConfig(NAME$8, Config, DefaultType$6);
+      return Config;
     };
 
     _proto._getScrollTop = function _getScrollTop() {
@@ -6518,11 +6518,11 @@
     };
 
     _proto._process = function _process() {
-      var scrollTop = this._getScrollTop() + this._config.offset;
+      var scrollTop = this._getScrollTop() + this._Config.offset;
 
       var scrollHeight = this._getScrollHeight();
 
-      var maxScroll = this._config.offset + scrollHeight - this._getOffsetHeight();
+      var maxScroll = this._Config.offset + scrollHeight - this._getOffsetHeight();
 
       if (this._scrollHeight !== scrollHeight) {
         this.refresh();
@@ -6595,23 +6595,23 @@
     } // Static
     ;
 
-    ScrollSpy._jQueryInterface = function _jQueryInterface(config) {
+    ScrollSpy._jQueryInterface = function _jQueryInterface(Config) {
       return this.each(function () {
         var data = $(this).data(DATA_KEY$8);
 
-        var _config = typeof config === 'object' && config;
+        var _Config = typeof Config === 'object' && Config;
 
         if (!data) {
-          data = new ScrollSpy(this, _config);
+          data = new ScrollSpy(this, _Config);
           $(this).data(DATA_KEY$8, data);
         }
 
-        if (typeof config === 'string') {
-          if (typeof data[config] === 'undefined') {
-            throw new TypeError("No method named \"" + config + "\"");
+        if (typeof Config === 'string') {
+          if (typeof data[Config] === 'undefined') {
+            throw new TypeError("No method named \"" + Config + "\"");
           }
 
-          data[config]();
+          data[Config]();
         }
       });
     };
@@ -6840,7 +6840,7 @@
     } // Static
     ;
 
-    Tab._jQueryInterface = function _jQueryInterface(config) {
+    Tab._jQueryInterface = function _jQueryInterface(Config) {
       return this.each(function () {
         var $this = $(this);
         var data = $this.data(DATA_KEY$9);
@@ -6850,12 +6850,12 @@
           $this.data(DATA_KEY$9, data);
         }
 
-        if (typeof config === 'string') {
-          if (typeof data[config] === 'undefined') {
-            throw new TypeError("No method named \"" + config + "\"");
+        if (typeof Config === 'string') {
+          if (typeof data[Config] === 'undefined') {
+            throw new TypeError("No method named \"" + Config + "\"");
           }
 
-          data[config]();
+          data[Config]();
         }
       });
     };
@@ -6941,9 +6941,9 @@
   var Toast =
   /*#__PURE__*/
   function () {
-    function Toast(element, config) {
+    function Toast(element, Config) {
       this._element = element;
-      this._config = this._getConfig(config);
+      this._Config = this._getConfig(Config);
       this._timeout = null;
 
       this._setListeners();
@@ -6963,7 +6963,7 @@
         return;
       }
 
-      if (this._config.animation) {
+      if (this._Config.animation) {
         this._element.classList.add(ClassName$a.FADE);
       }
 
@@ -6974,10 +6974,10 @@
 
         $(_this._element).trigger(Event$a.SHOWN);
 
-        if (_this._config.autohide) {
+        if (_this._Config.autohide) {
           _this._timeout = setTimeout(function () {
             _this.hide();
-          }, _this._config.delay);
+          }, _this._Config.delay);
         }
       };
 
@@ -6987,7 +6987,7 @@
 
       this._element.classList.add(ClassName$a.SHOWING);
 
-      if (this._config.animation) {
+      if (this._Config.animation) {
         var transitionDuration = Util.getTransitionDurationFromElement(this._element);
         $(this._element).one(Util.TRANSITION_END, complete).emulateTransitionEnd(transitionDuration);
       } else {
@@ -7021,14 +7021,14 @@
       $(this._element).off(Event$a.CLICK_DISMISS);
       $.removeData(this._element, DATA_KEY$a);
       this._element = null;
-      this._config = null;
+      this._Config = null;
     } // Private
     ;
 
-    _proto._getConfig = function _getConfig(config) {
-      config = _objectSpread2({}, Default$7, {}, $(this._element).data(), {}, typeof config === 'object' && config ? config : {});
-      Util.typeCheckConfig(NAME$a, config, this.constructor.DefaultType);
-      return config;
+    _proto._getConfig = function _getConfig(Config) {
+      Config = _objectSpread2({}, Default$7, {}, $(this._element).data(), {}, typeof Config === 'object' && Config ? Config : {});
+      Util.typeCheckConfig(NAME$a, Config, this.constructor.DefaultType);
+      return Config;
     };
 
     _proto._setListeners = function _setListeners() {
@@ -7050,7 +7050,7 @@
 
       this._element.classList.remove(ClassName$a.SHOW);
 
-      if (this._config.animation) {
+      if (this._Config.animation) {
         var transitionDuration = Util.getTransitionDurationFromElement(this._element);
         $(this._element).one(Util.TRANSITION_END, complete).emulateTransitionEnd(transitionDuration);
       } else {
@@ -7059,24 +7059,24 @@
     } // Static
     ;
 
-    Toast._jQueryInterface = function _jQueryInterface(config) {
+    Toast._jQueryInterface = function _jQueryInterface(Config) {
       return this.each(function () {
         var $element = $(this);
         var data = $element.data(DATA_KEY$a);
 
-        var _config = typeof config === 'object' && config;
+        var _Config = typeof Config === 'object' && Config;
 
         if (!data) {
-          data = new Toast(this, _config);
+          data = new Toast(this, _Config);
           $element.data(DATA_KEY$a, data);
         }
 
-        if (typeof config === 'string') {
-          if (typeof data[config] === 'undefined') {
-            throw new TypeError("No method named \"" + config + "\"");
+        if (typeof Config === 'string') {
+          if (typeof data[Config] === 'undefined') {
+            throw new TypeError("No method named \"" + Config + "\"");
           }
 
-          data[config](this);
+          data[Config](this);
         }
       });
     };

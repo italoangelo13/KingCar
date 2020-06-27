@@ -42,7 +42,7 @@ try {
         $Json = '[';
         $Json = $Json .  '{"anunciante":"' . $Anuncio[0]->SOLANOME . '","email":"' . $Anuncio[0]->SOLEMAIL . '","dtCadastro":"' . $date->format( 'd/m/Y H:i') . '","imagem":"' . $Anuncio[0]->SOLFOTOCAPA . '","veiculo":"' . $Anuncio[0]->VEICULO . '","marca":"' . $Anuncio[0]->MARDESCRICAO . '","modelo":"' . $Anuncio[0]->MODDESCRICAO . '","ano":"' . $Anuncio[0]->SOLANO . '","cor":"' . $Anuncio[0]->CORDESCRICAO . '","combustivel":"' . $Anuncio[0]->COMDESCRICAO . '","cambio":"' . $Anuncio[0]->CAMDESCRICAO . '","km":"' . $Anuncio[0]->SOLKM . '","preco":"' . $Anuncio[0]->SOLPRECO . '","troca":"' . $Anuncio[0]->SOLTROCA . '"}]';
             
-        $Json = $util->convert_from_latin1_to_utf8_recursively($Json);
+        ////$Json = $util->convert_from_latin1_to_utf8_recursively($Json);
         echo json_encode($Json);
     }
 } catch (Exception $e) {

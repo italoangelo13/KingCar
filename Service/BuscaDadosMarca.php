@@ -41,7 +41,7 @@ try {
         $Json = '[';
         $Json = $Json .  '{"marca":"' . $Marca[0]->MARDESCRICAO . '","ativo":"' . $Marca[0]->MARATIVO . '"}]';
             
-        $Json = $util->convert_from_latin1_to_utf8_recursively($Json);
+        ////$Json = $util->convert_from_latin1_to_utf8_recursively($Json);
         echo json_encode($Json);
 
         // if ($Json) {

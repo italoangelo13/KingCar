@@ -1,9 +1,9 @@
 <?php
 include 'header.inc.php';
-require_once '../config/PHPMailer/src/PHPMailer.php';
-require_once '../config/PHPMailer/src/Exception.php';
-require_once '../config/PHPMailer/src/SMTP.php';
-require_once '../config/Util.php';
+require_once '../Config/PHPMailer/src/PHPMailer.php';
+require_once '../Config/PHPMailer/src/Exception.php';
+require_once '../Config/PHPMailer/src/SMTP.php';
+require_once '../Config/Util.php';
 require_once '../Models/Compra.php';
 
 $util = new Util();

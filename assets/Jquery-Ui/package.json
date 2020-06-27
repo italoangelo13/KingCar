@@ -1,12 +1,12 @@
 {
-	"name": "jquery-ui",
+	"name": "Jquery-Ui",
 	"title": "jQuery UI",
 	"description": "A curated set of user interface interactions, effects, widgets, and themes built on top of the jQuery JavaScript Library.",
 	"version": "1.12.1",
 	"homepage": "http://jqueryui.com",
 	"author": {
 		"name": "jQuery Foundation and other contributors",
-		"url": "https://github.com/jquery/jquery-ui/blob/1.12.1/AUTHORS.txt"
+		"url": "https://github.com/jquery/Jquery-Ui/blob/1.12.1/AUTHORS.txt"
 	},
 	"main": "ui/widget.js",
 	"maintainers": [
@@ -43,7 +43,7 @@
 	],
 	"repository": {
 		"type": "git",
-		"url": "git://github.com/jquery/jquery-ui.git"
+		"url": "git://github.com/jquery/Jquery-Ui.git"
 	},
 	"bugs": "https://bugs.jqueryui.com/",
 	"license": "MIT",

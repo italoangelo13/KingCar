@@ -7,7 +7,7 @@ class Erros{
     public $classe;
     public $dtCadastro;
 
-    public function Erros()
+    public function __construct()
     {
         $id = null;
         $trace = null;

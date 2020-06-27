@@ -41,7 +41,7 @@ try {
         $Json = '[';
         $Json = $Json .  '{"nome":"' . $Usu[0]->USUNOME . '","usuario":"' . $Usu[0]->USUUSUARIO . '"}]';
             
-        $Json = $util->convert_from_latin1_to_utf8_recursively($Json);
+        ////$Json = $util->convert_from_latin1_to_utf8_recursively($Json);
         echo json_encode($Json);
 
         // if ($Json) {

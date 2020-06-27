@@ -300,12 +300,12 @@ if (count($strCount)) {
             return;
         }
 
-        if (!link) {
-            $('#_edEmpresa').focus();
-            hideLoad();
-            WarningBox('O campo link é obrigatório');
-            return;
-        }
+        // if (!link) {
+        //     $('#_edEmpresa').focus();
+        //     hideLoad();
+        //     WarningBox('O campo link é obrigatório');
+        //     return;
+        // }
 
 
         if (!codPublicidade) { //INSERT

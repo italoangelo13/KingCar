@@ -78,7 +78,7 @@
         warningLimit: 10,
         statusMessage: '',
         // These two are Bootstrap text emphasis classes
-        // that you can override in the config, or roll
+        // that you can override in the Config, or roll
         // your own of the same name
         counterClass: 'text-primary',
         warningClass: 'text-danger',

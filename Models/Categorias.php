@@ -8,7 +8,7 @@ class Categorias{
 
 
 
-    public function Categorias()
+    public function __construct()
     {
         $Id = null;
         $Descricao = null;

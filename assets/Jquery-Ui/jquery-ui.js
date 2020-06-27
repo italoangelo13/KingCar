@@ -7306,7 +7306,7 @@ function Datepicker() {
 }
 
 $.extend( Datepicker.prototype, {
-	/* Class name added to elements to indicate already configured with a date picker. */
+	/* Class name added to elements to indicate already Configured with a date picker. */
 	markerClassName: "hasDatepicker",
 
 	//Keep track of the maximum number of rows displayed (see #7043)
@@ -9152,7 +9152,7 @@ $.extend( Datepicker.prototype, {
 			( !maxYear || date.getFullYear() <= maxYear ) );
 	},
 
-	/* Provide the configuration settings for formatting/parsing. */
+	/* Provide the Configuration settings for formatting/parsing. */
 	_getFormatConfig: function( inst ) {
 		var shortYearCutoff = this._get( inst, "shortYearCutoff" );
 		shortYearCutoff = ( typeof shortYearCutoff !== "string" ? shortYearCutoff :

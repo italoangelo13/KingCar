@@ -3321,8 +3321,8 @@ function interpolate(start, view, model, ease) {
 	}
 }
 
-var Element = function(configuration) {
-	helpers$1.extend(this, configuration);
+var Element = function(Configuration) {
+	helpers$1.extend(this, Configuration);
 	this.initialize.apply(this, arguments);
 };
 
@@ -3559,7 +3559,7 @@ function listenArrayEvents(array, listener) {
 	}
 
 	Object.defineProperty(array, '_chartjs', {
-		configurable: true,
+		Configurable: true,
 		enumerable: false,
 		value: {
 			listeners: [listener]
@@ -3571,7 +3571,7 @@ function listenArrayEvents(array, listener) {
 		var base = array[key];
 
 		Object.defineProperty(array, key, {
-			configurable: true,
+			Configurable: true,
 			enumerable: false,
 			value: function() {
 				var args = Array.prototype.slice.call(arguments);
@@ -3814,9 +3814,9 @@ helpers$1.extend(DatasetController.prototype, {
 	 * Returns the merged user-supplied and default dataset-level options
 	 * @private
 	 */
-	_configure: function() {
+	_Configure: function() {
 		var me = this;
-		me._config = helpers$1.merge({}, [
+		me._Config = helpers$1.merge({}, [
 			me.chart.options.datasets[me._type],
 			me.getDataset(),
 		], {
@@ -3830,7 +3830,7 @@ helpers$1.extend(DatasetController.prototype, {
 
 	_update: function(reset) {
 		var me = this;
-		me._configure();
+		me._Configure();
 		me._cachedDataOpts = null;
 		me.update(reset);
 	},
@@ -3879,7 +3879,7 @@ helpers$1.extend(DatasetController.prototype, {
 		var dataset = meta.dataset;
 		var style;
 
-		me._configure();
+		me._Configure();
 		if (dataset && index === undefined) {
 			style = me._resolveDatasetElementOptions(dataset || {});
 		} else {
@@ -3900,7 +3900,7 @@ helpers$1.extend(DatasetController.prototype, {
 	_resolveDatasetElementOptions: function(element, hover) {
 		var me = this;
 		var chart = me.chart;
-		var datasetOpts = me._config;
+		var datasetOpts = me._Config;
 		var custom = element.custom || {};
 		var options = chart.options.elements[me.datasetElementType.prototype._type] || {};
 		var elementOptions = me._datasetElementOptions;
@@ -3939,7 +3939,7 @@ helpers$1.extend(DatasetController.prototype, {
 			return cached;
 		}
 		var chart = me.chart;
-		var datasetOpts = me._config;
+		var datasetOpts = me._Config;
 		var options = chart.options.elements[me.dataElementType.prototype._type] || {};
 		var elementOptions = me._dataElementOptions;
 		var values = {};
@@ -5313,7 +5313,7 @@ var controller_bubble = core_datasetController.extend({
 		values.radius = resolve$1([
 			custom.radius,
 			data.r,
-			me._config.radius,
+			me._Config.radius,
 			chart.options.elements.point.radius
 		], context, index);
 
@@ -5638,7 +5638,7 @@ var controller_doughnut = core_datasetController.extend({
 		for (i = 0, ilen = arcs.length; i < ilen; ++i) {
 			arc = arcs[i];
 			if (controller) {
-				controller._configure();
+				controller._Configure();
 				options = controller._resolveDataElementOptions(arc, i);
 			} else {
 				options = arc._options;
@@ -5877,8 +5877,8 @@ var controller_line = core_datasetController.extend({
 		var line = meta.dataset;
 		var points = meta.data || [];
 		var options = me.chart.options;
-		var config = me._config;
-		var showLine = me._showLine = valueOrDefault$6(config.showLine, options.showLines);
+		var Config = me._Config;
+		var showLine = me._showLine = valueOrDefault$6(Config.showLine, options.showLines);
 		var i, ilen;
 
 		me._xScale = me.getScaleForId(meta.xAxisID);
@@ -5887,8 +5887,8 @@ var controller_line = core_datasetController.extend({
 		// Update Line
 		if (showLine) {
 			// Compatibility: If the properties are defined with only the old name, use those values
-			if (config.tension !== undefined && config.lineTension === undefined) {
-				config.lineTension = config.tension;
+			if (Config.tension !== undefined && Config.lineTension === undefined) {
+				Config.lineTension = Config.tension;
 			}
 
 			// Utility
@@ -5965,7 +5965,7 @@ var controller_line = core_datasetController.extend({
 	 */
 	_resolveDatasetElementOptions: function(element) {
 		var me = this;
-		var config = me._config;
+		var Config = me._Config;
 		var custom = element.custom || {};
 		var options = me.chart.options;
 		var lineOptions = options.elements.line;
@@ -5974,10 +5974,10 @@ var controller_line = core_datasetController.extend({
 		// The default behavior of lines is to break at null values, according
 		// to https://github.com/chartjs/Chart.js/issues/2435#issuecomment-216718158
 		// This option gives lines the ability to span gaps
-		values.spanGaps = valueOrDefault$6(config.spanGaps, options.spanGaps);
-		values.tension = valueOrDefault$6(config.lineTension, lineOptions.tension);
-		values.steppedLine = resolve$2([custom.steppedLine, config.steppedLine, lineOptions.stepped]);
-		values.clip = toClip(valueOrDefault$6(config.clip, defaultClip(me._xScale, me._yScale, values.borderWidth)));
+		values.spanGaps = valueOrDefault$6(Config.spanGaps, options.spanGaps);
+		values.tension = valueOrDefault$6(Config.lineTension, lineOptions.tension);
+		values.steppedLine = resolve$2([custom.steppedLine, Config.steppedLine, lineOptions.stepped]);
+		values.clip = toClip(valueOrDefault$6(Config.clip, defaultClip(me._xScale, me._yScale, values.borderWidth)));
 
 		return values;
 	},
@@ -6495,12 +6495,12 @@ var controller_radar = core_datasetController.extend({
 		var line = meta.dataset;
 		var points = meta.data || [];
 		var scale = me.chart.scale;
-		var config = me._config;
+		var Config = me._Config;
 		var i, ilen;
 
 		// Compatibility: If the properties are defined with only the old name, use those values
-		if (config.tension !== undefined && config.lineTension === undefined) {
-			config.lineTension = config.tension;
+		if (Config.tension !== undefined && Config.lineTension === undefined) {
+			Config.lineTension = Config.tension;
 		}
 
 		// Utility
@@ -6569,12 +6569,12 @@ var controller_radar = core_datasetController.extend({
 	 */
 	_resolveDatasetElementOptions: function() {
 		var me = this;
-		var config = me._config;
+		var Config = me._Config;
 		var options = me.chart.options;
 		var values = core_datasetController.prototype._resolveDatasetElementOptions.apply(me, arguments);
 
-		values.spanGaps = valueOrDefault$7(config.spanGaps, options.spanGaps);
-		values.tension = valueOrDefault$7(config.lineTension, options.elements.line.tension);
+		values.spanGaps = valueOrDefault$7(Config.spanGaps, options.spanGaps);
+		values.tension = valueOrDefault$7(Config.lineTension, options.elements.line.tension);
 
 		return values;
 	},
@@ -7255,10 +7255,10 @@ var core_layouts = {
 	/**
 	 * Sets (or updates) options on the given `item`.
 	 * @param {Chart} chart - the chart in which the item lives (or will be added to)
-	 * @param {ILayoutItem} item - the item to configure with the given options
+	 * @param {ILayoutItem} item - the item to Configure with the given options
 	 * @param {object} options - the new item options.
 	 */
-	configure: function(chart, item, options) {
+	Configure: function(chart, item, options) {
 		var props = ['fullWidth', 'position', 'weight'];
 		var ilen = props.length;
 		var i = 0;
@@ -7440,10 +7440,10 @@ function readUsedSize(element, property) {
 
 /**
  * Initializes the canvas style and render size without modifying the canvas display size,
- * since responsiveness is handled by the controller.resize() method. The config is used
+ * since responsiveness is handled by the controller.resize() method. The Config is used
  * to determine the aspect ratio to apply in case no explicit height has been specified.
  */
-function initCanvas(canvas, config) {
+function initCanvas(canvas, Config) {
 	var style = canvas.style;
 
 	// NOTE(SB) canvas.getAttribute('width') !== canvas.width: in the first case it
@@ -7481,7 +7481,7 @@ function initCanvas(canvas, config) {
 			// If no explicit render height and style height, let's apply the aspect ratio,
 			// which one can be specified by the user but also by charts as default option
 			// (i.e. options.aspectRatio). If not specified, use canvas aspect ratio of 2.
-			canvas.height = canvas.width / (config.options.aspectRatio || 2);
+			canvas.height = canvas.width / (Config.options.aspectRatio || 2);
 		} else {
 			var displayHeight = readUsedSize(canvas, 'height');
 			if (displayWidth !== undefined) {
@@ -7737,7 +7737,7 @@ var platform_dom$2 = {
 		}
 	},
 
-	acquireContext: function(item, config) {
+	acquireContext: function(item, Config) {
 		if (typeof item === 'string') {
 			item = document.getElementById(item);
 		} else if (item.length) {
@@ -7766,7 +7766,7 @@ var platform_dom$2 = {
 			// Load platform resources on first chart creation, to make it possible to
 			// import the library before setting platform options.
 			this._ensureLoaded(item);
-			initCanvas(item, config);
+			initCanvas(item, Config);
 			return context;
 		}
 
@@ -8038,10 +8038,10 @@ var core_plugins = {
 
 		var plugins = [];
 		var descriptors = [];
-		var config = (chart && chart.config) || {};
-		var options = (config.options && config.options.plugins) || {};
+		var Config = (chart && chart.Config) || {};
+		var options = (Config.options && Config.options.plugins) || {};
 
-		this._plugins.concat(config.plugins || []).forEach(function(plugin) {
+		this._plugins.concat(Config.plugins || []).forEach(function(plugin) {
 			var idx = plugins.indexOf(plugin);
 			if (idx !== -1) {
 				return;
@@ -8087,7 +8087,7 @@ var core_scaleService = {
 	// Use a registration function so that we can move to an ES6 map when we no longer need to support
 	// old browsers
 
-	// Scale config defaults
+	// Scale Config defaults
 	defaults: {},
 	registerScaleType: function(type, scaleConstructor, scaleDefaults) {
 		this.constructors[type] = scaleConstructor;
@@ -9168,11 +9168,11 @@ core_defaults._set('global', {
 });
 
 /**
- * Recursively merge the given config objects representing the `scales` option
+ * Recursively merge the given Config objects representing the `scales` option
  * by incorporating scale defaults in `xAxes` and `yAxes` array items, then
  * returns a deep copy of the result, thus doesn't alter inputs.
  */
-function mergeScaleConfig(/* config objects ... */) {
+function mergeScaleConfig(/* Config objects ... */) {
 	return helpers$1.merge({}, [].slice.call(arguments), {
 		merger: function(key, target, source, options) {
 			if (key === 'xAxes' || key === 'yAxes') {
@@ -9208,18 +9208,18 @@ function mergeScaleConfig(/* config objects ... */) {
 }
 
 /**
- * Recursively merge the given config objects as the root options by handling
+ * Recursively merge the given Config objects as the root options by handling
  * default scale options for the `scales` and `scale` properties, then returns
  * a deep copy of the result, thus doesn't alter inputs.
  */
-function mergeConfig(/* config objects ... */) {
+function mergeConfig(/* Config objects ... */) {
 	return helpers$1.merge({}, [].slice.call(arguments), {
 		merger: function(key, target, source, options) {
 			var tval = target[key] || {};
 			var sval = source[key];
 
 			if (key === 'scales') {
-				// scale config merging is complex. Add our own function here for that
+				// scale Config merging is complex. Add our own function here for that
 				target[key] = mergeScaleConfig(tval, sval);
 			} else if (key === 'scale') {
 				// used in polar area & radar charts since there is only one scale
@@ -9231,21 +9231,21 @@ function mergeConfig(/* config objects ... */) {
 	});
 }
 
-function initConfig(config) {
-	config = config || {};
+function initConfig(Config) {
+	Config = Config || {};
 
 	// Do NOT use mergeConfig for the data object because this method merges arrays
 	// and so would change references to labels and datasets, preventing data updates.
-	var data = config.data = config.data || {};
+	var data = Config.data = Config.data || {};
 	data.datasets = data.datasets || [];
 	data.labels = data.labels || [];
 
-	config.options = mergeConfig(
+	Config.options = mergeConfig(
 		core_defaults.global,
-		core_defaults[config.type],
-		config.options || {});
+		core_defaults[Config.type],
+		Config.options || {});
 
-	return config;
+	return Config;
 }
 
 function updateConfig(chart) {
@@ -9257,10 +9257,10 @@ function updateConfig(chart) {
 
 	newOptions = mergeConfig(
 		core_defaults.global,
-		core_defaults[chart.config.type],
+		core_defaults[chart.Config.type],
 		newOptions);
 
-	chart.options = chart.config.options = newOptions;
+	chart.options = chart.Config.options = newOptions;
 	chart.ensureScalesHaveIDs();
 	chart.buildOrUpdateScales();
 
@@ -9294,8 +9294,8 @@ function compare2Level(l1, l2) {
 	};
 }
 
-var Chart = function(item, config) {
-	this.construct(item, config);
+var Chart = function(item, Config) {
+	this.construct(item, Config);
 	return this;
 };
 
@@ -9303,12 +9303,12 @@ helpers$1.extend(Chart.prototype, /** @lends Chart */ {
 	/**
 	 * @private
 	 */
-	construct: function(item, config) {
+	construct: function(item, Config) {
 		var me = this;
 
-		config = initConfig(config);
+		Config = initConfig(Config);
 
-		var context = platform.acquireContext(item, config);
+		var context = platform.acquireContext(item, Config);
 		var canvas = context && context.canvas;
 		var height = canvas && canvas.height;
 		var width = canvas && canvas.width;
@@ -9316,11 +9316,11 @@ helpers$1.extend(Chart.prototype, /** @lends Chart */ {
 		me.id = helpers$1.uid();
 		me.ctx = context;
 		me.canvas = canvas;
-		me.config = config;
+		me.Config = Config;
 		me.width = width;
 		me.height = height;
 		me.aspectRatio = height ? width / height : null;
-		me.options = config.options;
+		me.options = Config.options;
 		me._bufferedRender = false;
 		me._layers = [];
 
@@ -9338,13 +9338,13 @@ helpers$1.extend(Chart.prototype, /** @lends Chart */ {
 		// Add the chart instance to the global namespace
 		Chart.instances[me.id] = me;
 
-		// Define alias to the config data: `chart.data === chart.config.data`
+		// Define alias to the Config data: `chart.data === chart.Config.data`
 		Object.defineProperty(me, 'data', {
 			get: function() {
-				return me.config.data;
+				return me.Config.data;
 			},
 			set: function(value) {
-				me.config.data = value;
+				me.Config.data = value;
 			}
 		});
 
@@ -9555,7 +9555,7 @@ helpers$1.extend(Chart.prototype, /** @lends Chart */ {
 		for (i = 0, ilen = datasets.length; i < ilen; i++) {
 			var dataset = datasets[i];
 			var meta = me.getDatasetMeta(i);
-			var type = dataset.type || me.config.type;
+			var type = dataset.type || me.Config.type;
 
 			if (meta.type && meta.type !== type) {
 				me.destroyDatasetMeta(i);
@@ -9601,14 +9601,14 @@ helpers$1.extend(Chart.prototype, /** @lends Chart */ {
 		this.tooltip.initialize();
 	},
 
-	update: function(config) {
+	update: function(Config) {
 		var me = this;
 		var i, ilen;
 
-		if (!config || typeof config !== 'object') {
+		if (!Config || typeof Config !== 'object') {
 			// backwards compatibility
-			config = {
-				duration: config,
+			Config = {
+				duration: Config,
 				lazy: arguments[1]
 			};
 		}
@@ -9660,12 +9660,12 @@ helpers$1.extend(Chart.prototype, /** @lends Chart */ {
 
 		if (me._bufferedRender) {
 			me._bufferedRequest = {
-				duration: config.duration,
-				easing: config.easing,
-				lazy: config.lazy
+				duration: Config.duration,
+				easing: Config.easing,
+				lazy: Config.lazy
 			};
 		} else {
-			me.render(config);
+			me.render(Config);
 		}
 	},
 
@@ -9685,10 +9685,10 @@ helpers$1.extend(Chart.prototype, /** @lends Chart */ {
 
 		me._layers = [];
 		helpers$1.each(me.boxes, function(box) {
-			// _configure is called twice, once in core.scale.update and once here.
+			// _Configure is called twice, once in core.scale.update and once here.
 			// Here the boxes are fully updated and at their final positions.
-			if (box._configure) {
-				box._configure();
+			if (box._Configure) {
+				box._Configure();
 			}
 			me._layers.push.apply(me._layers, box._layers());
 		}, me);
@@ -9749,20 +9749,20 @@ helpers$1.extend(Chart.prototype, /** @lends Chart */ {
 		core_plugins.notify(me, 'afterDatasetUpdate', [args]);
 	},
 
-	render: function(config) {
+	render: function(Config) {
 		var me = this;
 
-		if (!config || typeof config !== 'object') {
+		if (!Config || typeof Config !== 'object') {
 			// backwards compatibility
-			config = {
-				duration: config,
+			Config = {
+				duration: Config,
 				lazy: arguments[1]
 			};
 		}
 
 		var animationOptions = me.options.animation;
-		var duration = valueOrDefault$9(config.duration, animationOptions && animationOptions.duration);
-		var lazy = config.lazy;
+		var duration = valueOrDefault$9(Config.duration, animationOptions && animationOptions.duration);
+		var lazy = Config.lazy;
 
 		if (core_plugins.notify(me, 'beforeRender') === false) {
 			return;
@@ -9776,7 +9776,7 @@ helpers$1.extend(Chart.prototype, /** @lends Chart */ {
 		if (animationOptions && duration) {
 			var animation = new core_animation({
 				numSteps: duration / 16.66, // 60 fps
-				easing: config.easing || animationOptions.easing,
+				easing: Config.easing || animationOptions.easing,
 
 				render: function(chart, animationObject) {
 					var easingFunction = helpers$1.easing.effects[animationObject.easing];
@@ -10268,12 +10268,12 @@ Chart.types = {};
 
 /**
  * Provided for backward compatibility, not available anymore.
- * @namespace Chart.helpers.configMerge
+ * @namespace Chart.helpers.ConfigMerge
  * @deprecated since version 2.8.0
  * @todo remove at version 3
  * @private
  */
-helpers$1.configMerge = mergeConfig;
+helpers$1.ConfigMerge = mergeConfig;
 
 /**
  * Provided for backward compatibility, not available anymore.
@@ -11540,11 +11540,11 @@ var Scale = core_element.extend({
 		samplingEnabled = sampleSize < ticks.length;
 		labels = me._convertTicksToLabels(samplingEnabled ? sample(ticks, sampleSize) : ticks);
 
-		// _configure is called twice, once here, once from core.controller.updateLayout.
+		// _Configure is called twice, once here, once from core.controller.updateLayout.
 		// Here we haven't been positioned yet, but dimensions are correct.
-		// Variables set in _configure are needed for calculateTickRotation, and
+		// Variables set in _Configure are needed for calculateTickRotation, and
 		// it's ok that coordinates are not correct there, only dimensions matter.
-		me._configure();
+		me._Configure();
 
 		// Tick Rotation
 		me.beforeCalculateTickRotation();
@@ -11577,7 +11577,7 @@ var Scale = core_element.extend({
 	/**
 	 * @private
 	 */
-	_configure: function() {
+	_Configure: function() {
 		var me = this;
 		var reversePixels = me.options.ticks.reverse;
 		var startPixel, endPixel;
@@ -12585,12 +12585,12 @@ var scale_category = core_scale.extend({
 		return me._getLabels()[index];
 	},
 
-	_configure: function() {
+	_Configure: function() {
 		var me = this;
 		var offset = me.options.offset;
 		var ticks = me.ticks;
 
-		core_scale.prototype._configure.call(me);
+		core_scale.prototype._Configure.call(me);
 
 		if (!me.isHorizontal()) {
 			// For backward compatibility, vertical category scale reverse is inverted.
@@ -12883,14 +12883,14 @@ var scale_linearbase = core_scale.extend({
 		core_scale.prototype.convertTicksToLabels.call(me);
 	},
 
-	_configure: function() {
+	_Configure: function() {
 		var me = this;
 		var ticks = me.getTicks();
 		var start = me.min;
 		var end = me.max;
 		var offset;
 
-		core_scale.prototype._configure.call(me);
+		core_scale.prototype._Configure.call(me);
 
 		if (me.options.offset && ticks.length) {
 			offset = (end - start) / Math.max(ticks.length - 1, 1) / 2;
@@ -13327,12 +13327,12 @@ var scale_logarithmic = core_scale.extend({
 		return significand * Math.pow(10, exp);
 	},
 
-	_configure: function() {
+	_Configure: function() {
 		var me = this;
 		var start = me.min;
 		var offset = 0;
 
-		core_scale.prototype._configure.call(me);
+		core_scale.prototype._Configure.call(me);
 
 		if (start === 0) {
 			start = me._getFirstTickValue(me.minNotZero);
@@ -14920,9 +14920,9 @@ var moment = createCommonjsModule(function (module, exports) {
     var updateInProgress = false;
 
     // Moment prototype object
-    function Moment(config) {
-        copyConfig(this, config);
-        this._d = new Date(config._d != null ? config._d.getTime() : NaN);
+    function Moment(Config) {
+        copyConfig(this, Config);
+        this._d = new Date(Config._d != null ? Config._d.getTime() : NaN);
         if (!this.isValid()) {
             this._d = new Date(NaN);
         }
@@ -15030,17 +15030,17 @@ var moment = createCommonjsModule(function (module, exports) {
         return input instanceof Function || Object.prototype.toString.call(input) === '[object Function]';
     }
 
-    function set (config) {
+    function set (Config) {
         var prop, i;
-        for (i in config) {
-            prop = config[i];
+        for (i in Config) {
+            prop = Config[i];
             if (isFunction(prop)) {
                 this[i] = prop;
             } else {
                 this['_' + i] = prop;
             }
         }
-        this._config = config;
+        this._Config = Config;
         // Lenient ordinal parsing accepts just a number in addition to
         // number + (possibly) stuff coming from _dayOfMonthOrdinalParse.
         // TODO: Remove "ordinalParse" fallback in next major release.
@@ -15068,16 +15068,16 @@ var moment = createCommonjsModule(function (module, exports) {
             if (hasOwnProp(parentConfig, prop) &&
                     !hasOwnProp(childConfig, prop) &&
                     isObject(parentConfig[prop])) {
-                // make sure changes to properties don't modify parent config
+                // make sure changes to properties don't modify parent Config
                 res[prop] = extend({}, res[prop]);
             }
         }
         return res;
     }
 
-    function Locale(config) {
-        if (config != null) {
-            this.set(config);
+    function Locale(Config) {
+        if (Config != null) {
+            this.set(Config);
         }
     }
 
@@ -15352,12 +15352,12 @@ var moment = createCommonjsModule(function (module, exports) {
         };
     }
 
-    function getParseRegexForToken (token, config) {
+    function getParseRegexForToken (token, Config) {
         if (!hasOwnProp(regexes, token)) {
             return new RegExp(unescapeFormat(token));
         }
 
-        return regexes[token](config._strict, config._locale);
+        return regexes[token](Config._strict, Config._locale);
     }
 
     // Code from http://stackoverflow.com/questions/3561493/is-there-a-regexp-escape-function-in-javascript
@@ -15389,15 +15389,15 @@ var moment = createCommonjsModule(function (module, exports) {
     }
 
     function addWeekParseToken (token, callback) {
-        addParseToken(token, function (input, array, config, token) {
-            config._w = config._w || {};
-            callback(input, config._w, config, token);
+        addParseToken(token, function (input, array, Config, token) {
+            Config._w = Config._w || {};
+            callback(input, Config._w, Config, token);
         });
     }
 
-    function addTimeToArrayFromToken(token, input, config) {
+    function addTimeToArrayFromToken(token, input, Config) {
         if (input != null && hasOwnProp(tokens, token)) {
-            tokens[token](input, config._a, config, token);
+            tokens[token](input, Config._a, Config, token);
         }
     }
 
@@ -15599,13 +15599,13 @@ var moment = createCommonjsModule(function (module, exports) {
         array[MONTH] = toInt(input) - 1;
     });
 
-    addParseToken(['MMM', 'MMMM'], function (input, array, config, token) {
-        var month = config._locale.monthsParse(input, token, config._strict);
+    addParseToken(['MMM', 'MMMM'], function (input, array, Config, token) {
+        var month = Config._locale.monthsParse(input, token, Config._strict);
         // if we didn't find a month name, mark the date as invalid.
         if (month != null) {
             array[MONTH] = month;
         } else {
-            getParsingFlags(config).invalidMonth = input;
+            getParsingFlags(Config).invalidMonth = input;
         }
     });
 
@@ -15946,7 +15946,7 @@ var moment = createCommonjsModule(function (module, exports) {
     addRegexToken('W',  match1to2);
     addRegexToken('WW', match1to2, match2);
 
-    addWeekParseToken(['w', 'ww', 'W', 'WW'], function (input, week, config, token) {
+    addWeekParseToken(['w', 'ww', 'W', 'WW'], function (input, week, Config, token) {
         week[token.substr(0, 1)] = toInt(input);
     });
 
@@ -16028,17 +16028,17 @@ var moment = createCommonjsModule(function (module, exports) {
         return locale.weekdaysRegex(isStrict);
     });
 
-    addWeekParseToken(['dd', 'ddd', 'dddd'], function (input, week, config, token) {
-        var weekday = config._locale.weekdaysParse(input, token, config._strict);
+    addWeekParseToken(['dd', 'ddd', 'dddd'], function (input, week, Config, token) {
+        var weekday = Config._locale.weekdaysParse(input, token, Config._strict);
         // if we didn't get a weekday name, mark the date as invalid
         if (weekday != null) {
             week.d = weekday;
         } else {
-            getParsingFlags(config).invalidWeekday = input;
+            getParsingFlags(Config).invalidWeekday = input;
         }
     });
 
-    addWeekParseToken(['d', 'e', 'E'], function (input, week, config, token) {
+    addWeekParseToken(['d', 'e', 'E'], function (input, week, Config, token) {
         week[token] = toInt(input);
     });
 
@@ -16408,38 +16408,38 @@ var moment = createCommonjsModule(function (module, exports) {
     addRegexToken('Hmmss', match5to6);
 
     addParseToken(['H', 'HH'], HOUR);
-    addParseToken(['k', 'kk'], function (input, array, config) {
+    addParseToken(['k', 'kk'], function (input, array, Config) {
         var kInput = toInt(input);
         array[HOUR] = kInput === 24 ? 0 : kInput;
     });
-    addParseToken(['a', 'A'], function (input, array, config) {
-        config._isPm = config._locale.isPM(input);
-        config._meridiem = input;
+    addParseToken(['a', 'A'], function (input, array, Config) {
+        Config._isPm = Config._locale.isPM(input);
+        Config._meridiem = input;
     });
-    addParseToken(['h', 'hh'], function (input, array, config) {
+    addParseToken(['h', 'hh'], function (input, array, Config) {
         array[HOUR] = toInt(input);
-        getParsingFlags(config).bigHour = true;
+        getParsingFlags(Config).bigHour = true;
     });
-    addParseToken('hmm', function (input, array, config) {
+    addParseToken('hmm', function (input, array, Config) {
         var pos = input.length - 2;
         array[HOUR] = toInt(input.substr(0, pos));
         array[MINUTE] = toInt(input.substr(pos));
-        getParsingFlags(config).bigHour = true;
+        getParsingFlags(Config).bigHour = true;
     });
-    addParseToken('hmmss', function (input, array, config) {
+    addParseToken('hmmss', function (input, array, Config) {
         var pos1 = input.length - 4;
         var pos2 = input.length - 2;
         array[HOUR] = toInt(input.substr(0, pos1));
         array[MINUTE] = toInt(input.substr(pos1, 2));
         array[SECOND] = toInt(input.substr(pos2));
-        getParsingFlags(config).bigHour = true;
+        getParsingFlags(Config).bigHour = true;
     });
-    addParseToken('Hmm', function (input, array, config) {
+    addParseToken('Hmm', function (input, array, Config) {
         var pos = input.length - 2;
         array[HOUR] = toInt(input.substr(0, pos));
         array[MINUTE] = toInt(input.substr(pos));
     });
-    addParseToken('Hmmss', function (input, array, config) {
+    addParseToken('Hmmss', function (input, array, Config) {
         var pos1 = input.length - 4;
         var pos2 = input.length - 2;
         array[HOUR] = toInt(input.substr(0, pos1));
@@ -16493,7 +16493,7 @@ var moment = createCommonjsModule(function (module, exports) {
         meridiemParse: defaultLocaleMeridiemParse
     };
 
-    // internal storage for locale config files
+    // internal storage for locale Config files
     var locales = {};
     var localeFamilies = {};
     var globalLocale;
@@ -16572,41 +16572,41 @@ var moment = createCommonjsModule(function (module, exports) {
         return globalLocale._abbr;
     }
 
-    function defineLocale (name, config) {
-        if (config !== null) {
+    function defineLocale (name, Config) {
+        if (Config !== null) {
             var locale, parentConfig = baseConfig;
-            config.abbr = name;
+            Config.abbr = name;
             if (locales[name] != null) {
                 deprecateSimple('defineLocaleOverride',
-                        'use moment.updateLocale(localeName, config) to change ' +
+                        'use moment.updateLocale(localeName, Config) to change ' +
                         'an existing locale. moment.defineLocale(localeName, ' +
-                        'config) should only be used for creating a new locale ' +
+                        'Config) should only be used for creating a new locale ' +
                         'See http://momentjs.com/guides/#/warnings/define-locale/ for more info.');
-                parentConfig = locales[name]._config;
-            } else if (config.parentLocale != null) {
-                if (locales[config.parentLocale] != null) {
-                    parentConfig = locales[config.parentLocale]._config;
+                parentConfig = locales[name]._Config;
+            } else if (Config.parentLocale != null) {
+                if (locales[Config.parentLocale] != null) {
+                    parentConfig = locales[Config.parentLocale]._Config;
                 } else {
-                    locale = loadLocale(config.parentLocale);
+                    locale = loadLocale(Config.parentLocale);
                     if (locale != null) {
-                        parentConfig = locale._config;
+                        parentConfig = locale._Config;
                     } else {
-                        if (!localeFamilies[config.parentLocale]) {
-                            localeFamilies[config.parentLocale] = [];
+                        if (!localeFamilies[Config.parentLocale]) {
+                            localeFamilies[Config.parentLocale] = [];
                         }
-                        localeFamilies[config.parentLocale].push({
+                        localeFamilies[Config.parentLocale].push({
                             name: name,
-                            config: config
+                            Config: Config
                         });
                         return null;
                     }
                 }
             }
-            locales[name] = new Locale(mergeConfigs(parentConfig, config));
+            locales[name] = new Locale(mergeConfigs(parentConfig, Config));
 
             if (localeFamilies[name]) {
                 localeFamilies[name].forEach(function (x) {
-                    defineLocale(x.name, x.config);
+                    defineLocale(x.name, x.Config);
                 });
             }
 
@@ -16624,23 +16624,23 @@ var moment = createCommonjsModule(function (module, exports) {
         }
     }
 
-    function updateLocale(name, config) {
-        if (config != null) {
+    function updateLocale(name, Config) {
+        if (Config != null) {
             var locale, tmpLocale, parentConfig = baseConfig;
             // MERGE
             tmpLocale = loadLocale(name);
             if (tmpLocale != null) {
-                parentConfig = tmpLocale._config;
+                parentConfig = tmpLocale._Config;
             }
-            config = mergeConfigs(parentConfig, config);
-            locale = new Locale(config);
+            Config = mergeConfigs(parentConfig, Config);
+            locale = new Locale(Config);
             locale.parentLocale = locales[name];
             locales[name] = locale;
 
             // backwards compat for now: also set the locale
             getSetGlobalLocale(name);
         } else {
-            // pass null for config to unupdate, useful for tests
+            // pass null for Config to unupdate, useful for tests
             if (locales[name] != null) {
                 if (locales[name].parentLocale != null) {
                     locales[name] = locales[name].parentLocale;
@@ -16721,10 +16721,10 @@ var moment = createCommonjsModule(function (module, exports) {
         return c;
     }
 
-    function currentDateArray(config) {
+    function currentDateArray(Config) {
         // hooks is actually the exported moment object
         var nowValue = new Date(hooks.now());
-        if (config._useUTC) {
+        if (Config._useUTC) {
             return [nowValue.getUTCFullYear(), nowValue.getUTCMonth(), nowValue.getUTCDate()];
         }
         return [nowValue.getFullYear(), nowValue.getMonth(), nowValue.getDate()];
@@ -16734,31 +16734,31 @@ var moment = createCommonjsModule(function (module, exports) {
     // the array should mirror the parameters below
     // note: all values past the year are optional and will default to the lowest possible value.
     // [year, month, day , hour, minute, second, millisecond]
-    function configFromArray (config) {
+    function ConfigFromArray (Config) {
         var i, date, input = [], currentDate, expectedWeekday, yearToUse;
 
-        if (config._d) {
+        if (Config._d) {
             return;
         }
 
-        currentDate = currentDateArray(config);
+        currentDate = currentDateArray(Config);
 
         //compute day of the year from weeks and weekdays
-        if (config._w && config._a[DATE] == null && config._a[MONTH] == null) {
-            dayOfYearFromWeekInfo(config);
+        if (Config._w && Config._a[DATE] == null && Config._a[MONTH] == null) {
+            dayOfYearFromWeekInfo(Config);
         }
 
         //if the day of the year is set, figure out what it is
-        if (config._dayOfYear != null) {
-            yearToUse = defaults(config._a[YEAR], currentDate[YEAR]);
+        if (Config._dayOfYear != null) {
+            yearToUse = defaults(Config._a[YEAR], currentDate[YEAR]);
 
-            if (config._dayOfYear > daysInYear(yearToUse) || config._dayOfYear === 0) {
-                getParsingFlags(config)._overflowDayOfYear = true;
+            if (Config._dayOfYear > daysInYear(yearToUse) || Config._dayOfYear === 0) {
+                getParsingFlags(Config)._overflowDayOfYear = true;
             }
 
-            date = createUTCDate(yearToUse, 0, config._dayOfYear);
-            config._a[MONTH] = date.getUTCMonth();
-            config._a[DATE] = date.getUTCDate();
+            date = createUTCDate(yearToUse, 0, Config._dayOfYear);
+            Config._a[MONTH] = date.getUTCMonth();
+            Config._a[DATE] = date.getUTCDate();
         }
 
         // Default to current date.
@@ -16766,68 +16766,68 @@ var moment = createCommonjsModule(function (module, exports) {
         // * if day of month is given, default month and year
         // * if month is given, default only year
         // * if year is given, don't default anything
-        for (i = 0; i < 3 && config._a[i] == null; ++i) {
-            config._a[i] = input[i] = currentDate[i];
+        for (i = 0; i < 3 && Config._a[i] == null; ++i) {
+            Config._a[i] = input[i] = currentDate[i];
         }
 
         // Zero out whatever was not defaulted, including time
         for (; i < 7; i++) {
-            config._a[i] = input[i] = (config._a[i] == null) ? (i === 2 ? 1 : 0) : config._a[i];
+            Config._a[i] = input[i] = (Config._a[i] == null) ? (i === 2 ? 1 : 0) : Config._a[i];
         }
 
         // Check for 24:00:00.000
-        if (config._a[HOUR] === 24 &&
-                config._a[MINUTE] === 0 &&
-                config._a[SECOND] === 0 &&
-                config._a[MILLISECOND] === 0) {
-            config._nextDay = true;
-            config._a[HOUR] = 0;
+        if (Config._a[HOUR] === 24 &&
+                Config._a[MINUTE] === 0 &&
+                Config._a[SECOND] === 0 &&
+                Config._a[MILLISECOND] === 0) {
+            Config._nextDay = true;
+            Config._a[HOUR] = 0;
         }
 
-        config._d = (config._useUTC ? createUTCDate : createDate).apply(null, input);
-        expectedWeekday = config._useUTC ? config._d.getUTCDay() : config._d.getDay();
+        Config._d = (Config._useUTC ? createUTCDate : createDate).apply(null, input);
+        expectedWeekday = Config._useUTC ? Config._d.getUTCDay() : Config._d.getDay();
 
         // Apply timezone offset from input. The actual utcOffset can be changed
         // with parseZone.
-        if (config._tzm != null) {
-            config._d.setUTCMinutes(config._d.getUTCMinutes() - config._tzm);
+        if (Config._tzm != null) {
+            Config._d.setUTCMinutes(Config._d.getUTCMinutes() - Config._tzm);
         }
 
-        if (config._nextDay) {
-            config._a[HOUR] = 24;
+        if (Config._nextDay) {
+            Config._a[HOUR] = 24;
         }
 
         // check for mismatching day of week
-        if (config._w && typeof config._w.d !== 'undefined' && config._w.d !== expectedWeekday) {
-            getParsingFlags(config).weekdayMismatch = true;
+        if (Config._w && typeof Config._w.d !== 'undefined' && Config._w.d !== expectedWeekday) {
+            getParsingFlags(Config).weekdayMismatch = true;
         }
     }
 
-    function dayOfYearFromWeekInfo(config) {
+    function dayOfYearFromWeekInfo(Config) {
         var w, weekYear, week, weekday, dow, doy, temp, weekdayOverflow;
 
-        w = config._w;
+        w = Config._w;
         if (w.GG != null || w.W != null || w.E != null) {
             dow = 1;
             doy = 4;
 
             // TODO: We need to take the current isoWeekYear, but that depends on
             // how we interpret now (local, utc, fixed offset). So create
-            // a now version of current config (take local/utc/offset flags, and
+            // a now version of current Config (take local/utc/offset flags, and
             // create now).
-            weekYear = defaults(w.GG, config._a[YEAR], weekOfYear(createLocal(), 1, 4).year);
+            weekYear = defaults(w.GG, Config._a[YEAR], weekOfYear(createLocal(), 1, 4).year);
             week = defaults(w.W, 1);
             weekday = defaults(w.E, 1);
             if (weekday < 1 || weekday > 7) {
                 weekdayOverflow = true;
             }
         } else {
-            dow = config._locale._week.dow;
-            doy = config._locale._week.doy;
+            dow = Config._locale._week.dow;
+            doy = Config._locale._week.doy;
 
             var curWeek = weekOfYear(createLocal(), dow, doy);
 
-            weekYear = defaults(w.gg, config._a[YEAR], curWeek.year);
+            weekYear = defaults(w.gg, Config._a[YEAR], curWeek.year);
 
             // Default to current week.
             week = defaults(w.w, curWeek.week);
@@ -16850,13 +16850,13 @@ var moment = createCommonjsModule(function (module, exports) {
             }
         }
         if (week < 1 || week > weeksInYear(weekYear, dow, doy)) {
-            getParsingFlags(config)._overflowWeeks = true;
+            getParsingFlags(Config)._overflowWeeks = true;
         } else if (weekdayOverflow != null) {
-            getParsingFlags(config)._overflowWeekday = true;
+            getParsingFlags(Config)._overflowWeekday = true;
         } else {
             temp = dayOfYearFromWeeks(weekYear, week, weekday, dow, doy);
-            config._a[YEAR] = temp.year;
-            config._dayOfYear = temp.dayOfYear;
+            Config._a[YEAR] = temp.year;
+            Config._dayOfYear = temp.dayOfYear;
         }
     }
 
@@ -16898,14 +16898,14 @@ var moment = createCommonjsModule(function (module, exports) {
     var aspNetJsonRegex = /^\/?Date\((\-?\d+)/i;
 
     // date from iso format
-    function configFromISO(config) {
+    function ConfigFromISO(Config) {
         var i, l,
-            string = config._i,
+            string = Config._i,
             match = extendedIsoRegex.exec(string) || basicIsoRegex.exec(string),
             allowTime, dateFormat, timeFormat, tzFormat;
 
         if (match) {
-            getParsingFlags(config).iso = true;
+            getParsingFlags(Config).iso = true;
 
             for (i = 0, l = isoDates.length; i < l; i++) {
                 if (isoDates[i][1].exec(match[1])) {
@@ -16915,7 +16915,7 @@ var moment = createCommonjsModule(function (module, exports) {
                 }
             }
             if (dateFormat == null) {
-                config._isValid = false;
+                Config._isValid = false;
                 return;
             }
             if (match[3]) {
@@ -16927,26 +16927,26 @@ var moment = createCommonjsModule(function (module, exports) {
                     }
                 }
                 if (timeFormat == null) {
-                    config._isValid = false;
+                    Config._isValid = false;
                     return;
                 }
             }
             if (!allowTime && timeFormat != null) {
-                config._isValid = false;
+                Config._isValid = false;
                 return;
             }
             if (match[4]) {
                 if (tzRegex.exec(match[4])) {
                     tzFormat = 'Z';
                 } else {
-                    config._isValid = false;
+                    Config._isValid = false;
                     return;
                 }
             }
-            config._f = dateFormat + (timeFormat || '') + (tzFormat || '');
-            configFromStringAndFormat(config);
+            Config._f = dateFormat + (timeFormat || '') + (tzFormat || '');
+            ConfigFromStringAndFormat(Config);
         } else {
-            config._isValid = false;
+            Config._isValid = false;
         }
     }
 
@@ -16984,14 +16984,14 @@ var moment = createCommonjsModule(function (module, exports) {
         return s.replace(/\([^)]*\)|[\n\t]/g, ' ').replace(/(\s\s+)/g, ' ').replace(/^\s\s*/, '').replace(/\s\s*$/, '');
     }
 
-    function checkWeekday(weekdayStr, parsedInput, config) {
+    function checkWeekday(weekdayStr, parsedInput, Config) {
         if (weekdayStr) {
             // TODO: Replace the vanilla JS Date object with an indepentent day-of-week check.
             var weekdayProvided = defaultLocaleWeekdaysShort.indexOf(weekdayStr),
                 weekdayActual = new Date(parsedInput[0], parsedInput[1], parsedInput[2]).getDay();
             if (weekdayProvided !== weekdayActual) {
-                getParsingFlags(config).weekdayMismatch = true;
-                config._isValid = false;
+                getParsingFlags(Config).weekdayMismatch = true;
+                Config._isValid = false;
                 return false;
             }
         }
@@ -17025,51 +17025,51 @@ var moment = createCommonjsModule(function (module, exports) {
     }
 
     // date and time from ref 2822 format
-    function configFromRFC2822(config) {
-        var match = rfc2822.exec(preprocessRFC2822(config._i));
+    function ConfigFromRFC2822(Config) {
+        var match = rfc2822.exec(preprocessRFC2822(Config._i));
         if (match) {
             var parsedArray = extractFromRFC2822Strings(match[4], match[3], match[2], match[5], match[6], match[7]);
-            if (!checkWeekday(match[1], parsedArray, config)) {
+            if (!checkWeekday(match[1], parsedArray, Config)) {
                 return;
             }
 
-            config._a = parsedArray;
-            config._tzm = calculateOffset(match[8], match[9], match[10]);
+            Config._a = parsedArray;
+            Config._tzm = calculateOffset(match[8], match[9], match[10]);
 
-            config._d = createUTCDate.apply(null, config._a);
-            config._d.setUTCMinutes(config._d.getUTCMinutes() - config._tzm);
+            Config._d = createUTCDate.apply(null, Config._a);
+            Config._d.setUTCMinutes(Config._d.getUTCMinutes() - Config._tzm);
 
-            getParsingFlags(config).rfc2822 = true;
+            getParsingFlags(Config).rfc2822 = true;
         } else {
-            config._isValid = false;
+            Config._isValid = false;
         }
     }
 
     // date from iso format or fallback
-    function configFromString(config) {
-        var matched = aspNetJsonRegex.exec(config._i);
+    function ConfigFromString(Config) {
+        var matched = aspNetJsonRegex.exec(Config._i);
 
         if (matched !== null) {
-            config._d = new Date(+matched[1]);
+            Config._d = new Date(+matched[1]);
             return;
         }
 
-        configFromISO(config);
-        if (config._isValid === false) {
-            delete config._isValid;
+        ConfigFromISO(Config);
+        if (Config._isValid === false) {
+            delete Config._isValid;
         } else {
             return;
         }
 
-        configFromRFC2822(config);
-        if (config._isValid === false) {
-            delete config._isValid;
+        ConfigFromRFC2822(Config);
+        if (Config._isValid === false) {
+            delete Config._isValid;
         } else {
             return;
         }
 
         // Final attempt, use Input Fallback
-        hooks.createFromInputFallback(config);
+        hooks.createFromInputFallback(Config);
     }
 
     hooks.createFromInputFallback = deprecate(
@@ -17077,8 +17077,8 @@ var moment = createCommonjsModule(function (module, exports) {
         'which is not reliable across all browsers and versions. Non RFC2822/ISO date formats are ' +
         'discouraged and will be removed in an upcoming major release. Please refer to ' +
         'http://momentjs.com/guides/#/warnings/js-date/ for more info.',
-        function (config) {
-            config._d = new Date(config._i + (config._useUTC ? ' UTC' : ''));
+        function (Config) {
+            Config._d = new Date(Config._i + (Config._useUTC ? ' UTC' : ''));
         }
     );
 
@@ -17089,36 +17089,36 @@ var moment = createCommonjsModule(function (module, exports) {
     hooks.RFC_2822 = function () {};
 
     // date from string and format string
-    function configFromStringAndFormat(config) {
+    function ConfigFromStringAndFormat(Config) {
         // TODO: Move this to another part of the creation flow to prevent circular deps
-        if (config._f === hooks.ISO_8601) {
-            configFromISO(config);
+        if (Config._f === hooks.ISO_8601) {
+            ConfigFromISO(Config);
             return;
         }
-        if (config._f === hooks.RFC_2822) {
-            configFromRFC2822(config);
+        if (Config._f === hooks.RFC_2822) {
+            ConfigFromRFC2822(Config);
             return;
         }
-        config._a = [];
-        getParsingFlags(config).empty = true;
+        Config._a = [];
+        getParsingFlags(Config).empty = true;
 
         // This array is used to make a Date, either with `new Date` or `Date.UTC`
-        var string = '' + config._i,
+        var string = '' + Config._i,
             i, parsedInput, tokens, token, skipped,
             stringLength = string.length,
             totalParsedInputLength = 0;
 
-        tokens = expandFormat(config._f, config._locale).match(formattingTokens) || [];
+        tokens = expandFormat(Config._f, Config._locale).match(formattingTokens) || [];
 
         for (i = 0; i < tokens.length; i++) {
             token = tokens[i];
-            parsedInput = (string.match(getParseRegexForToken(token, config)) || [])[0];
+            parsedInput = (string.match(getParseRegexForToken(token, Config)) || [])[0];
             // console.log('token', token, 'parsedInput', parsedInput,
-            //         'regex', getParseRegexForToken(token, config));
+            //         'regex', getParseRegexForToken(token, Config));
             if (parsedInput) {
                 skipped = string.substr(0, string.indexOf(parsedInput));
                 if (skipped.length > 0) {
-                    getParsingFlags(config).unusedInput.push(skipped);
+                    getParsingFlags(Config).unusedInput.push(skipped);
                 }
                 string = string.slice(string.indexOf(parsedInput) + parsedInput.length);
                 totalParsedInputLength += parsedInput.length;
@@ -17126,38 +17126,38 @@ var moment = createCommonjsModule(function (module, exports) {
             // don't parse if it's not a known token
             if (formatTokenFunctions[token]) {
                 if (parsedInput) {
-                    getParsingFlags(config).empty = false;
+                    getParsingFlags(Config).empty = false;
                 }
                 else {
-                    getParsingFlags(config).unusedTokens.push(token);
+                    getParsingFlags(Config).unusedTokens.push(token);
                 }
-                addTimeToArrayFromToken(token, parsedInput, config);
+                addTimeToArrayFromToken(token, parsedInput, Config);
             }
-            else if (config._strict && !parsedInput) {
-                getParsingFlags(config).unusedTokens.push(token);
+            else if (Config._strict && !parsedInput) {
+                getParsingFlags(Config).unusedTokens.push(token);
             }
         }
 
         // add remaining unparsed input length to the string
-        getParsingFlags(config).charsLeftOver = stringLength - totalParsedInputLength;
+        getParsingFlags(Config).charsLeftOver = stringLength - totalParsedInputLength;
         if (string.length > 0) {
-            getParsingFlags(config).unusedInput.push(string);
+            getParsingFlags(Config).unusedInput.push(string);
         }
 
         // clear _12h flag if hour is <= 12
-        if (config._a[HOUR] <= 12 &&
-            getParsingFlags(config).bigHour === true &&
-            config._a[HOUR] > 0) {
-            getParsingFlags(config).bigHour = undefined;
+        if (Config._a[HOUR] <= 12 &&
+            getParsingFlags(Config).bigHour === true &&
+            Config._a[HOUR] > 0) {
+            getParsingFlags(Config).bigHour = undefined;
         }
 
-        getParsingFlags(config).parsedDateParts = config._a.slice(0);
-        getParsingFlags(config).meridiem = config._meridiem;
+        getParsingFlags(Config).parsedDateParts = Config._a.slice(0);
+        getParsingFlags(Config).meridiem = Config._meridiem;
         // handle meridiem
-        config._a[HOUR] = meridiemFixWrap(config._locale, config._a[HOUR], config._meridiem);
+        Config._a[HOUR] = meridiemFixWrap(Config._locale, Config._a[HOUR], Config._meridiem);
 
-        configFromArray(config);
-        checkOverflow(config);
+        ConfigFromArray(Config);
+        checkOverflow(Config);
     }
 
 
@@ -17187,7 +17187,7 @@ var moment = createCommonjsModule(function (module, exports) {
     }
 
     // date from string and array of format strings
-    function configFromStringAndArray(config) {
+    function ConfigFromStringAndArray(Config) {
         var tempConfig,
             bestMoment,
 
@@ -17195,20 +17195,20 @@ var moment = createCommonjsModule(function (module, exports) {
             i,
             currentScore;
 
-        if (config._f.length === 0) {
-            getParsingFlags(config).invalidFormat = true;
-            config._d = new Date(NaN);
+        if (Config._f.length === 0) {
+            getParsingFlags(Config).invalidFormat = true;
+            Config._d = new Date(NaN);
             return;
         }
 
-        for (i = 0; i < config._f.length; i++) {
+        for (i = 0; i < Config._f.length; i++) {
             currentScore = 0;
-            tempConfig = copyConfig({}, config);
-            if (config._useUTC != null) {
-                tempConfig._useUTC = config._useUTC;
+            tempConfig = copyConfig({}, Config);
+            if (Config._useUTC != null) {
+                tempConfig._useUTC = Config._useUTC;
             }
-            tempConfig._f = config._f[i];
-            configFromStringAndFormat(tempConfig);
+            tempConfig._f = Config._f[i];
+            ConfigFromStringAndFormat(tempConfig);
 
             if (!isValid(tempConfig)) {
                 continue;
@@ -17228,24 +17228,24 @@ var moment = createCommonjsModule(function (module, exports) {
             }
         }
 
-        extend(config, bestMoment || tempConfig);
+        extend(Config, bestMoment || tempConfig);
     }
 
-    function configFromObject(config) {
-        if (config._d) {
+    function ConfigFromObject(Config) {
+        if (Config._d) {
             return;
         }
 
-        var i = normalizeObjectUnits(config._i);
-        config._a = map([i.year, i.month, i.day || i.date, i.hour, i.minute, i.second, i.millisecond], function (obj) {
+        var i = normalizeObjectUnits(Config._i);
+        Config._a = map([i.year, i.month, i.day || i.date, i.hour, i.minute, i.second, i.millisecond], function (obj) {
             return obj && parseInt(obj, 10);
         });
 
-        configFromArray(config);
+        ConfigFromArray(Config);
     }
 
-    function createFromConfig (config) {
-        var res = new Moment(checkOverflow(prepareConfig(config)));
+    function createFromConfig (Config) {
+        var res = new Moment(checkOverflow(prepareConfig(Config)));
         if (res._nextDay) {
             // Adding is smart enough around DST
             res.add(1, 'd');
@@ -17255,59 +17255,59 @@ var moment = createCommonjsModule(function (module, exports) {
         return res;
     }
 
-    function prepareConfig (config) {
-        var input = config._i,
-            format = config._f;
+    function prepareConfig (Config) {
+        var input = Config._i,
+            format = Config._f;
 
-        config._locale = config._locale || getLocale(config._l);
+        Config._locale = Config._locale || getLocale(Config._l);
 
         if (input === null || (format === undefined && input === '')) {
             return createInvalid({nullInput: true});
         }
 
         if (typeof input === 'string') {
-            config._i = input = config._locale.preparse(input);
+            Config._i = input = Config._locale.preparse(input);
         }
 
         if (isMoment(input)) {
             return new Moment(checkOverflow(input));
         } else if (isDate(input)) {
-            config._d = input;
+            Config._d = input;
         } else if (isArray(format)) {
-            configFromStringAndArray(config);
+            ConfigFromStringAndArray(Config);
         } else if (format) {
-            configFromStringAndFormat(config);
+            ConfigFromStringAndFormat(Config);
         }  else {
-            configFromInput(config);
+            ConfigFromInput(Config);
         }
 
-        if (!isValid(config)) {
-            config._d = null;
+        if (!isValid(Config)) {
+            Config._d = null;
         }
 
-        return config;
+        return Config;
     }
 
-    function configFromInput(config) {
-        var input = config._i;
+    function ConfigFromInput(Config) {
+        var input = Config._i;
         if (isUndefined(input)) {
-            config._d = new Date(hooks.now());
+            Config._d = new Date(hooks.now());
         } else if (isDate(input)) {
-            config._d = new Date(input.valueOf());
+            Config._d = new Date(input.valueOf());
         } else if (typeof input === 'string') {
-            configFromString(config);
+            ConfigFromString(Config);
         } else if (isArray(input)) {
-            config._a = map(input.slice(0), function (obj) {
+            Config._a = map(input.slice(0), function (obj) {
                 return parseInt(obj, 10);
             });
-            configFromArray(config);
+            ConfigFromArray(Config);
         } else if (isObject(input)) {
-            configFromObject(config);
+            ConfigFromObject(Config);
         } else if (isNumber(input)) {
             // from milliseconds
-            config._d = new Date(input);
+            Config._d = new Date(input);
         } else {
-            hooks.createFromInputFallback(config);
+            hooks.createFromInputFallback(Config);
         }
     }
 
@@ -17504,9 +17504,9 @@ var moment = createCommonjsModule(function (module, exports) {
 
     addRegexToken('Z',  matchShortOffset);
     addRegexToken('ZZ', matchShortOffset);
-    addParseToken(['Z', 'ZZ'], function (input, array, config) {
-        config._useUTC = true;
-        config._tzm = offsetFromString(matchShortOffset, input);
+    addParseToken(['Z', 'ZZ'], function (input, array, Config) {
+        Config._useUTC = true;
+        Config._tzm = offsetFromString(matchShortOffset, input);
     });
 
     // HELPERS
@@ -18092,7 +18092,7 @@ var moment = createCommonjsModule(function (module, exports) {
     }
 
     // If passed a locale key, it will set the locale for this
-    // instance.  Otherwise, it will return the locale configuration
+    // instance.  Otherwise, it will return the locale Configuration
     // variables for this instance.
     function locale (key) {
         var newLocaleData;
@@ -18109,7 +18109,7 @@ var moment = createCommonjsModule(function (module, exports) {
     }
 
     var lang = deprecate(
-        'moment().lang() is deprecated. Instead, use moment().localeData() to get the language configuration. Use moment().locale() to change languages.',
+        'moment().lang() is deprecated. Instead, use moment().localeData() to get the language Configuration. Use moment().locale() to change languages.',
         function (key) {
             if (key === undefined) {
                 return this.localeData();
@@ -18347,11 +18347,11 @@ var moment = createCommonjsModule(function (module, exports) {
     addRegexToken('GGGGG',  match1to6, match6);
     addRegexToken('ggggg',  match1to6, match6);
 
-    addWeekParseToken(['gggg', 'ggggg', 'GGGG', 'GGGGG'], function (input, week, config, token) {
+    addWeekParseToken(['gggg', 'ggggg', 'GGGG', 'GGGGG'], function (input, week, Config, token) {
         week[token.substr(0, 2)] = toInt(input);
     });
 
-    addWeekParseToken(['gg', 'GG'], function (input, week, config, token) {
+    addWeekParseToken(['gg', 'GG'], function (input, week, Config, token) {
         week[token] = hooks.parseTwoDigitYear(input);
     });
 
@@ -18474,8 +18474,8 @@ var moment = createCommonjsModule(function (module, exports) {
 
     addRegexToken('DDD',  match1to3);
     addRegexToken('DDDD', match3);
-    addParseToken(['DDD', 'DDDD'], function (input, array, config) {
-        config._dayOfYear = toInt(input);
+    addParseToken(['DDD', 'DDDD'], function (input, array, Config) {
+        Config._dayOfYear = toInt(input);
     });
 
     // HELPERS
@@ -19229,11 +19229,11 @@ var moment = createCommonjsModule(function (module, exports) {
 
     addRegexToken('x', matchSigned);
     addRegexToken('X', matchTimestamp);
-    addParseToken('X', function (input, array, config) {
-        config._d = new Date(parseFloat(input, 10) * 1000);
+    addParseToken('X', function (input, array, Config) {
+        Config._d = new Date(parseFloat(input, 10) * 1000);
     });
-    addParseToken('x', function (input, array, config) {
-        config._d = new Date(toInt(input));
+    addParseToken('x', function (input, array, Config) {
+        Config._d = new Date(toInt(input));
     });
 
     // Side effect imports
@@ -19834,9 +19834,9 @@ function getBoxWidth(labelOpts, fontSize) {
  */
 var Legend = core_element.extend({
 
-	initialize: function(config) {
+	initialize: function(Config) {
 		var me = this;
-		helpers$1.extend(me, config);
+		helpers$1.extend(me, Config);
 
 		// Contains hit boxes for each dataset (in dataset order)
 		me.legendHitBoxes = [];
@@ -20302,7 +20302,7 @@ function createNewLegendAndAttach(chart, legendOpts) {
 		chart: chart
 	});
 
-	core_layouts.configure(chart, legend, legendOpts);
+	core_layouts.Configure(chart, legend, legendOpts);
 	core_layouts.addBox(chart, legend);
 	chart.legend = legend;
 }
@@ -20335,7 +20335,7 @@ var plugin_legend = {
 			helpers$1.mergeIf(legendOpts, core_defaults.global.legend);
 
 			if (legend) {
-				core_layouts.configure(chart, legend, legendOpts);
+				core_layouts.Configure(chart, legend, legendOpts);
 				legend.options = legendOpts;
 			} else {
 				createNewLegendAndAttach(chart, legendOpts);
@@ -20372,9 +20372,9 @@ core_defaults._set('global', {
  * IMPORTANT: this class is exposed publicly as Chart.Legend, backward compatibility required!
  */
 var Title = core_element.extend({
-	initialize: function(config) {
+	initialize: function(Config) {
 		var me = this;
-		helpers$1.extend(me, config);
+		helpers$1.extend(me, Config);
 
 		// Contains hit boxes for each dataset (in dataset order)
 		me.legendHitBoxes = [];
@@ -20546,7 +20546,7 @@ function createNewTitleBlockAndAttach(chart, titleOpts) {
 		chart: chart
 	});
 
-	core_layouts.configure(chart, title, titleOpts);
+	core_layouts.Configure(chart, title, titleOpts);
 	core_layouts.addBox(chart, title);
 	chart.titleBlock = title;
 }
@@ -20579,7 +20579,7 @@ var plugin_title = {
 			helpers$1.mergeIf(titleOpts, core_defaults.global.title);
 
 			if (titleBlock) {
-				core_layouts.configure(chart, titleBlock, titleOpts);
+				core_layouts.Configure(chart, titleBlock, titleOpts);
 				titleBlock.options = titleOpts;
 			} else {
 				createNewTitleBlockAndAttach(chart, titleOpts);
@@ -20727,7 +20727,7 @@ core_controller.LinearScaleBase = scale_linearbase;
 
 /**
  * Provided for backward compatibility, instead we should create a new Chart
- * by setting the type in the config (`new Chart(id, {type: '{chart-type}'}`).
+ * by setting the type in the Config (`new Chart(id, {type: '{chart-type}'}`).
  * @deprecated since version 2.8.0
  * @todo remove at version 3
  */

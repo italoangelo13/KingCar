@@ -11,7 +11,7 @@ class Contatos{
     public $user;
     public $status;
 
-    public function Contatos()
+    public function __construct()
     {
         $id = null;
         $nome = null;
@@ -52,7 +52,7 @@ class Contatos{
         $pdo = new PDO(server, user, senha);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $smtp = $pdo->prepare("SELECT COUNT(*) AS NUMCONTATOS FROM kgctblcon where CONSTATUS = 'N'");
+        $smtp = $pdo->prepare("SELECT COUNT(*) AS NUMCONTATOS FROM KGCTBLCON where CONSTATUS = 'N'");
         $smtp->execute();
 
         if ($smtp->rowCount() > 0) {
@@ -65,7 +65,7 @@ class Contatos{
         $pdo = new PDO(server, user, senha);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $smtp = $pdo->prepare("SELECT CONCOD, CONNOME, CONEMAIL, CONASSUNTO, CONMENSAGEM, CONDATCADASTRO, CONSTATUS,CONTEL FROM kgctblcon
+        $smtp = $pdo->prepare("SELECT CONCOD, CONNOME, CONEMAIL, CONASSUNTO, CONMENSAGEM, CONDATCADASTRO, CONSTATUS,CONTEL FROM KGCTBLCON
         where CONCOD = $cod");
         $smtp->execute();
 
@@ -100,7 +100,7 @@ class Contatos{
         $pdo = new PDO(server, user, senha);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $smtp = $pdo->prepare("SELECT CONCOD, CONNOME, CONEMAIL, CONASSUNTO, CONMENSAGEM, CONDATCADASTRO, CONSTATUS, CONTEL FROM kgctblcon ");
+        $smtp = $pdo->prepare("SELECT CONCOD, CONNOME, CONEMAIL, CONASSUNTO, CONMENSAGEM, CONDATCADASTRO, CONSTATUS, CONTEL FROM KGCTBLCON ");
         $smtp->execute();
 
         if ($smtp->rowCount() > 0) {

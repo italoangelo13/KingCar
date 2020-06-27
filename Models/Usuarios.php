@@ -8,7 +8,7 @@ class Usuarios
     public $senha;
     public $user;
 
-    function Usuarios() {
+    public function __construct() {
          // tratado como construtor no PHP 5.3.0-5.3.2
          // tratado como método comum a partir do PHP 5.3.3
          $cod = null;
@@ -24,7 +24,7 @@ class Usuarios
         $pdo = new PDO(server, user, senha);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $smtp = $pdo->prepare("SELECT MARCOD, MARDESCRICAO FROM kgctblmar");
+        $smtp = $pdo->prepare("SELECT MARCOD, MARDESCRICAO FROM KGCTBLMAR");
         $smtp->execute();
 
         if ($smtp->rowCount() > 0) {
@@ -51,7 +51,7 @@ class Usuarios
             $pdo = new PDO(server, user, senha);
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-            $smtp = $pdo->prepare("SELECT USUUSUARIO FROM kgctblusu where usucod = $cod");
+            $smtp = $pdo->prepare("SELECT USUUSUARIO FROM KGCTBLUSU where usucod = $cod");
             $smtp->execute();
             $result = null;
             if ($smtp->rowCount() > 0) {
@@ -63,7 +63,7 @@ class Usuarios
                 }
             }
 
-            $smtp = $pdo->prepare("delete from kgctblusu where usucod = $cod");
+            $smtp = $pdo->prepare("delete from KGCTBLUSU where usucod = $cod");
 
 
             $smtp->execute();
@@ -90,7 +90,7 @@ class Usuarios
             $pdo = new PDO(server, user, senha);
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-            $smtp = $pdo->prepare("SELECT USUUSUARIO FROM kgctblusu where USUUSUARIO = '$Usu'");
+            $smtp = $pdo->prepare("SELECT USUUSUARIO FROM KGCTBLUSU where USUUSUARIO = '$Usu'");
             $smtp->execute();
             $result = null;
             if ($smtp->rowCount() > 0) {
@@ -121,7 +121,7 @@ class Usuarios
             $pdo = new PDO(server, user, senha);
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-            $smtp = $pdo->prepare("SELECT USUSENHA FROM kgctblusu where USUCOD = '$codUsu'");
+            $smtp = $pdo->prepare("SELECT USUSENHA FROM KGCTBLUSU where USUCOD = '$codUsu'");
             $smtp->execute();
             $result = null;
             if ($smtp->rowCount() > 0) {
@@ -166,7 +166,7 @@ class Usuarios
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
             $senha = md5($senha);
-            $sql = $pdo->prepare("SELECT USUNOME,USUUSUARIO FROM kgctblusu WHERE USUUSUARIO = '$usuario' AND USUSENHA = '$senha'");
+            $sql = $pdo->prepare("SELECT USUNOME,USUUSUARIO FROM KGCTBLUSU WHERE USUUSUARIO = '$usuario' AND USUSENHA = '$senha'");
             $sql->execute(array($usuario, $senha));
 
             $row = $sql->fetchObject();  // devolve um único registro
@@ -211,7 +211,7 @@ class Usuarios
                                 USUNOME,
                                 USUUSUARIO,
                                 USUDATCADASTRO
-                                FROM kgctblusu");
+                                FROM KGCTBLUSU");
         $smtp->execute();
 
         if ($smtp->rowCount() > 0) {
@@ -235,7 +235,7 @@ class Usuarios
             $pdo = new PDO(server, user, senha);
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-            $smtp = $pdo->prepare("INSERT INTO kgctblusu
+            $smtp = $pdo->prepare("INSERT INTO KGCTBLUSU
             (USUNOME
             ,USUUSUARIO
             ,USUSENHA
@@ -280,7 +280,7 @@ class Usuarios
             $pdo = new PDO(server, user, senha);
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-            $smtp = $pdo->prepare("UPDATE kgctblusu SET
+            $smtp = $pdo->prepare("UPDATE KGCTBLUSU SET
             USUNOME = '$this->nome'
             ,USUUSUARIO = '$this->usuario'
             ,USUSENHA = '$this->senha'

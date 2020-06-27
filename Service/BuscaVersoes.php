@@ -29,7 +29,7 @@ try {
     // $pdo = new PDO(server, user, senha);
     // $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    // $smtp = $pdo->prepare("SELECT MUNCODIGOIBGE, MUNDESCRICAO FROM kgctblmun where MUNUF = '".$Uf."' limit 10");
+    // $smtp = $pdo->prepare("SELECT MUNCODIGOIBGE, MUNDESCRICAO FROM KGCTBLMUN where MUNUF = '".$Uf."' limit 10");
     // $smtp->execute();
     // $result = $smtp->fetchAll(PDO::FETCH_CLASS);
     $listaVersoes = $v->SelecionarVersaoPorModelo($CODMODELO,$CODMARCA);
@@ -59,7 +59,7 @@ try {
             $cont++;
         }
 
-        $Json = $util->convert_from_latin1_to_utf8_recursively($Json);
+        //$Json = $util->convert_from_latin1_to_utf8_recursively($Json);
         echo json_encode($Json);
 
         // if ($Json) {

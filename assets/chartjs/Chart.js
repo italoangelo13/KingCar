@@ -3317,8 +3317,8 @@ function interpolate(start, view, model, ease) {
 	}
 }
 
-var Element = function(configuration) {
-	helpers$1.extend(this, configuration);
+var Element = function(Configuration) {
+	helpers$1.extend(this, Configuration);
 	this.initialize.apply(this, arguments);
 };
 
@@ -3555,7 +3555,7 @@ function listenArrayEvents(array, listener) {
 	}
 
 	Object.defineProperty(array, '_chartjs', {
-		configurable: true,
+		Configurable: true,
 		enumerable: false,
 		value: {
 			listeners: [listener]
@@ -3567,7 +3567,7 @@ function listenArrayEvents(array, listener) {
 		var base = array[key];
 
 		Object.defineProperty(array, key, {
-			configurable: true,
+			Configurable: true,
 			enumerable: false,
 			value: function() {
 				var args = Array.prototype.slice.call(arguments);
@@ -3810,9 +3810,9 @@ helpers$1.extend(DatasetController.prototype, {
 	 * Returns the merged user-supplied and default dataset-level options
 	 * @private
 	 */
-	_configure: function() {
+	_Configure: function() {
 		var me = this;
-		me._config = helpers$1.merge({}, [
+		me._Config = helpers$1.merge({}, [
 			me.chart.options.datasets[me._type],
 			me.getDataset(),
 		], {
@@ -3826,7 +3826,7 @@ helpers$1.extend(DatasetController.prototype, {
 
 	_update: function(reset) {
 		var me = this;
-		me._configure();
+		me._Configure();
 		me._cachedDataOpts = null;
 		me.update(reset);
 	},
@@ -3875,7 +3875,7 @@ helpers$1.extend(DatasetController.prototype, {
 		var dataset = meta.dataset;
 		var style;
 
-		me._configure();
+		me._Configure();
 		if (dataset && index === undefined) {
 			style = me._resolveDatasetElementOptions(dataset || {});
 		} else {
@@ -3896,7 +3896,7 @@ helpers$1.extend(DatasetController.prototype, {
 	_resolveDatasetElementOptions: function(element, hover) {
 		var me = this;
 		var chart = me.chart;
-		var datasetOpts = me._config;
+		var datasetOpts = me._Config;
 		var custom = element.custom || {};
 		var options = chart.options.elements[me.datasetElementType.prototype._type] || {};
 		var elementOptions = me._datasetElementOptions;
@@ -3935,7 +3935,7 @@ helpers$1.extend(DatasetController.prototype, {
 			return cached;
 		}
 		var chart = me.chart;
-		var datasetOpts = me._config;
+		var datasetOpts = me._Config;
 		var options = chart.options.elements[me.dataElementType.prototype._type] || {};
 		var elementOptions = me._dataElementOptions;
 		var values = {};
@@ -5309,7 +5309,7 @@ var controller_bubble = core_datasetController.extend({
 		values.radius = resolve$1([
 			custom.radius,
 			data.r,
-			me._config.radius,
+			me._Config.radius,
 			chart.options.elements.point.radius
 		], context, index);
 
@@ -5634,7 +5634,7 @@ var controller_doughnut = core_datasetController.extend({
 		for (i = 0, ilen = arcs.length; i < ilen; ++i) {
 			arc = arcs[i];
 			if (controller) {
-				controller._configure();
+				controller._Configure();
 				options = controller._resolveDataElementOptions(arc, i);
 			} else {
 				options = arc._options;
@@ -5873,8 +5873,8 @@ var controller_line = core_datasetController.extend({
 		var line = meta.dataset;
 		var points = meta.data || [];
 		var options = me.chart.options;
-		var config = me._config;
-		var showLine = me._showLine = valueOrDefault$6(config.showLine, options.showLines);
+		var Config = me._Config;
+		var showLine = me._showLine = valueOrDefault$6(Config.showLine, options.showLines);
 		var i, ilen;
 
 		me._xScale = me.getScaleForId(meta.xAxisID);
@@ -5883,8 +5883,8 @@ var controller_line = core_datasetController.extend({
 		// Update Line
 		if (showLine) {
 			// Compatibility: If the properties are defined with only the old name, use those values
-			if (config.tension !== undefined && config.lineTension === undefined) {
-				config.lineTension = config.tension;
+			if (Config.tension !== undefined && Config.lineTension === undefined) {
+				Config.lineTension = Config.tension;
 			}
 
 			// Utility
@@ -5961,7 +5961,7 @@ var controller_line = core_datasetController.extend({
 	 */
 	_resolveDatasetElementOptions: function(element) {
 		var me = this;
-		var config = me._config;
+		var Config = me._Config;
 		var custom = element.custom || {};
 		var options = me.chart.options;
 		var lineOptions = options.elements.line;
@@ -5970,10 +5970,10 @@ var controller_line = core_datasetController.extend({
 		// The default behavior of lines is to break at null values, according
 		// to https://github.com/chartjs/Chart.js/issues/2435#issuecomment-216718158
 		// This option gives lines the ability to span gaps
-		values.spanGaps = valueOrDefault$6(config.spanGaps, options.spanGaps);
-		values.tension = valueOrDefault$6(config.lineTension, lineOptions.tension);
-		values.steppedLine = resolve$2([custom.steppedLine, config.steppedLine, lineOptions.stepped]);
-		values.clip = toClip(valueOrDefault$6(config.clip, defaultClip(me._xScale, me._yScale, values.borderWidth)));
+		values.spanGaps = valueOrDefault$6(Config.spanGaps, options.spanGaps);
+		values.tension = valueOrDefault$6(Config.lineTension, lineOptions.tension);
+		values.steppedLine = resolve$2([custom.steppedLine, Config.steppedLine, lineOptions.stepped]);
+		values.clip = toClip(valueOrDefault$6(Config.clip, defaultClip(me._xScale, me._yScale, values.borderWidth)));
 
 		return values;
 	},
@@ -6491,12 +6491,12 @@ var controller_radar = core_datasetController.extend({
 		var line = meta.dataset;
 		var points = meta.data || [];
 		var scale = me.chart.scale;
-		var config = me._config;
+		var Config = me._Config;
 		var i, ilen;
 
 		// Compatibility: If the properties are defined with only the old name, use those values
-		if (config.tension !== undefined && config.lineTension === undefined) {
-			config.lineTension = config.tension;
+		if (Config.tension !== undefined && Config.lineTension === undefined) {
+			Config.lineTension = Config.tension;
 		}
 
 		// Utility
@@ -6565,12 +6565,12 @@ var controller_radar = core_datasetController.extend({
 	 */
 	_resolveDatasetElementOptions: function() {
 		var me = this;
-		var config = me._config;
+		var Config = me._Config;
 		var options = me.chart.options;
 		var values = core_datasetController.prototype._resolveDatasetElementOptions.apply(me, arguments);
 
-		values.spanGaps = valueOrDefault$7(config.spanGaps, options.spanGaps);
-		values.tension = valueOrDefault$7(config.lineTension, options.elements.line.tension);
+		values.spanGaps = valueOrDefault$7(Config.spanGaps, options.spanGaps);
+		values.tension = valueOrDefault$7(Config.lineTension, options.elements.line.tension);
 
 		return values;
 	},
@@ -7251,10 +7251,10 @@ var core_layouts = {
 	/**
 	 * Sets (or updates) options on the given `item`.
 	 * @param {Chart} chart - the chart in which the item lives (or will be added to)
-	 * @param {ILayoutItem} item - the item to configure with the given options
+	 * @param {ILayoutItem} item - the item to Configure with the given options
 	 * @param {object} options - the new item options.
 	 */
-	configure: function(chart, item, options) {
+	Configure: function(chart, item, options) {
 		var props = ['fullWidth', 'position', 'weight'];
 		var ilen = props.length;
 		var i = 0;
@@ -7436,10 +7436,10 @@ function readUsedSize(element, property) {
 
 /**
  * Initializes the canvas style and render size without modifying the canvas display size,
- * since responsiveness is handled by the controller.resize() method. The config is used
+ * since responsiveness is handled by the controller.resize() method. The Config is used
  * to determine the aspect ratio to apply in case no explicit height has been specified.
  */
-function initCanvas(canvas, config) {
+function initCanvas(canvas, Config) {
 	var style = canvas.style;
 
 	// NOTE(SB) canvas.getAttribute('width') !== canvas.width: in the first case it
@@ -7477,7 +7477,7 @@ function initCanvas(canvas, config) {
 			// If no explicit render height and style height, let's apply the aspect ratio,
 			// which one can be specified by the user but also by charts as default option
 			// (i.e. options.aspectRatio). If not specified, use canvas aspect ratio of 2.
-			canvas.height = canvas.width / (config.options.aspectRatio || 2);
+			canvas.height = canvas.width / (Config.options.aspectRatio || 2);
 		} else {
 			var displayHeight = readUsedSize(canvas, 'height');
 			if (displayWidth !== undefined) {
@@ -7733,7 +7733,7 @@ var platform_dom$2 = {
 		}
 	},
 
-	acquireContext: function(item, config) {
+	acquireContext: function(item, Config) {
 		if (typeof item === 'string') {
 			item = document.getElementById(item);
 		} else if (item.length) {
@@ -7762,7 +7762,7 @@ var platform_dom$2 = {
 			// Load platform resources on first chart creation, to make it possible to
 			// import the library before setting platform options.
 			this._ensureLoaded(item);
-			initCanvas(item, config);
+			initCanvas(item, Config);
 			return context;
 		}
 
@@ -8034,10 +8034,10 @@ var core_plugins = {
 
 		var plugins = [];
 		var descriptors = [];
-		var config = (chart && chart.config) || {};
-		var options = (config.options && config.options.plugins) || {};
+		var Config = (chart && chart.Config) || {};
+		var options = (Config.options && Config.options.plugins) || {};
 
-		this._plugins.concat(config.plugins || []).forEach(function(plugin) {
+		this._plugins.concat(Config.plugins || []).forEach(function(plugin) {
 			var idx = plugins.indexOf(plugin);
 			if (idx !== -1) {
 				return;
@@ -8083,7 +8083,7 @@ var core_scaleService = {
 	// Use a registration function so that we can move to an ES6 map when we no longer need to support
 	// old browsers
 
-	// Scale config defaults
+	// Scale Config defaults
 	defaults: {},
 	registerScaleType: function(type, scaleConstructor, scaleDefaults) {
 		this.constructors[type] = scaleConstructor;
@@ -9164,11 +9164,11 @@ core_defaults._set('global', {
 });
 
 /**
- * Recursively merge the given config objects representing the `scales` option
+ * Recursively merge the given Config objects representing the `scales` option
  * by incorporating scale defaults in `xAxes` and `yAxes` array items, then
  * returns a deep copy of the result, thus doesn't alter inputs.
  */
-function mergeScaleConfig(/* config objects ... */) {
+function mergeScaleConfig(/* Config objects ... */) {
 	return helpers$1.merge({}, [].slice.call(arguments), {
 		merger: function(key, target, source, options) {
 			if (key === 'xAxes' || key === 'yAxes') {
@@ -9204,18 +9204,18 @@ function mergeScaleConfig(/* config objects ... */) {
 }
 
 /**
- * Recursively merge the given config objects as the root options by handling
+ * Recursively merge the given Config objects as the root options by handling
  * default scale options for the `scales` and `scale` properties, then returns
  * a deep copy of the result, thus doesn't alter inputs.
  */
-function mergeConfig(/* config objects ... */) {
+function mergeConfig(/* Config objects ... */) {
 	return helpers$1.merge({}, [].slice.call(arguments), {
 		merger: function(key, target, source, options) {
 			var tval = target[key] || {};
 			var sval = source[key];
 
 			if (key === 'scales') {
-				// scale config merging is complex. Add our own function here for that
+				// scale Config merging is complex. Add our own function here for that
 				target[key] = mergeScaleConfig(tval, sval);
 			} else if (key === 'scale') {
 				// used in polar area & radar charts since there is only one scale
@@ -9227,21 +9227,21 @@ function mergeConfig(/* config objects ... */) {
 	});
 }
 
-function initConfig(config) {
-	config = config || {};
+function initConfig(Config) {
+	Config = Config || {};
 
 	// Do NOT use mergeConfig for the data object because this method merges arrays
 	// and so would change references to labels and datasets, preventing data updates.
-	var data = config.data = config.data || {};
+	var data = Config.data = Config.data || {};
 	data.datasets = data.datasets || [];
 	data.labels = data.labels || [];
 
-	config.options = mergeConfig(
+	Config.options = mergeConfig(
 		core_defaults.global,
-		core_defaults[config.type],
-		config.options || {});
+		core_defaults[Config.type],
+		Config.options || {});
 
-	return config;
+	return Config;
 }
 
 function updateConfig(chart) {
@@ -9253,10 +9253,10 @@ function updateConfig(chart) {
 
 	newOptions = mergeConfig(
 		core_defaults.global,
-		core_defaults[chart.config.type],
+		core_defaults[chart.Config.type],
 		newOptions);
 
-	chart.options = chart.config.options = newOptions;
+	chart.options = chart.Config.options = newOptions;
 	chart.ensureScalesHaveIDs();
 	chart.buildOrUpdateScales();
 
@@ -9290,8 +9290,8 @@ function compare2Level(l1, l2) {
 	};
 }
 
-var Chart = function(item, config) {
-	this.construct(item, config);
+var Chart = function(item, Config) {
+	this.construct(item, Config);
 	return this;
 };
 
@@ -9299,12 +9299,12 @@ helpers$1.extend(Chart.prototype, /** @lends Chart */ {
 	/**
 	 * @private
 	 */
-	construct: function(item, config) {
+	construct: function(item, Config) {
 		var me = this;
 
-		config = initConfig(config);
+		Config = initConfig(Config);
 
-		var context = platform.acquireContext(item, config);
+		var context = platform.acquireContext(item, Config);
 		var canvas = context && context.canvas;
 		var height = canvas && canvas.height;
 		var width = canvas && canvas.width;
@@ -9312,11 +9312,11 @@ helpers$1.extend(Chart.prototype, /** @lends Chart */ {
 		me.id = helpers$1.uid();
 		me.ctx = context;
 		me.canvas = canvas;
-		me.config = config;
+		me.Config = Config;
 		me.width = width;
 		me.height = height;
 		me.aspectRatio = height ? width / height : null;
-		me.options = config.options;
+		me.options = Config.options;
 		me._bufferedRender = false;
 		me._layers = [];
 
@@ -9334,13 +9334,13 @@ helpers$1.extend(Chart.prototype, /** @lends Chart */ {
 		// Add the chart instance to the global namespace
 		Chart.instances[me.id] = me;
 
-		// Define alias to the config data: `chart.data === chart.config.data`
+		// Define alias to the Config data: `chart.data === chart.Config.data`
 		Object.defineProperty(me, 'data', {
 			get: function() {
-				return me.config.data;
+				return me.Config.data;
 			},
 			set: function(value) {
-				me.config.data = value;
+				me.Config.data = value;
 			}
 		});
 
@@ -9551,7 +9551,7 @@ helpers$1.extend(Chart.prototype, /** @lends Chart */ {
 		for (i = 0, ilen = datasets.length; i < ilen; i++) {
 			var dataset = datasets[i];
 			var meta = me.getDatasetMeta(i);
-			var type = dataset.type || me.config.type;
+			var type = dataset.type || me.Config.type;
 
 			if (meta.type && meta.type !== type) {
 				me.destroyDatasetMeta(i);
@@ -9597,14 +9597,14 @@ helpers$1.extend(Chart.prototype, /** @lends Chart */ {
 		this.tooltip.initialize();
 	},
 
-	update: function(config) {
+	update: function(Config) {
 		var me = this;
 		var i, ilen;
 
-		if (!config || typeof config !== 'object') {
+		if (!Config || typeof Config !== 'object') {
 			// backwards compatibility
-			config = {
-				duration: config,
+			Config = {
+				duration: Config,
 				lazy: arguments[1]
 			};
 		}
@@ -9656,12 +9656,12 @@ helpers$1.extend(Chart.prototype, /** @lends Chart */ {
 
 		if (me._bufferedRender) {
 			me._bufferedRequest = {
-				duration: config.duration,
-				easing: config.easing,
-				lazy: config.lazy
+				duration: Config.duration,
+				easing: Config.easing,
+				lazy: Config.lazy
 			};
 		} else {
-			me.render(config);
+			me.render(Config);
 		}
 	},
 
@@ -9681,10 +9681,10 @@ helpers$1.extend(Chart.prototype, /** @lends Chart */ {
 
 		me._layers = [];
 		helpers$1.each(me.boxes, function(box) {
-			// _configure is called twice, once in core.scale.update and once here.
+			// _Configure is called twice, once in core.scale.update and once here.
 			// Here the boxes are fully updated and at their final positions.
-			if (box._configure) {
-				box._configure();
+			if (box._Configure) {
+				box._Configure();
 			}
 			me._layers.push.apply(me._layers, box._layers());
 		}, me);
@@ -9745,20 +9745,20 @@ helpers$1.extend(Chart.prototype, /** @lends Chart */ {
 		core_plugins.notify(me, 'afterDatasetUpdate', [args]);
 	},
 
-	render: function(config) {
+	render: function(Config) {
 		var me = this;
 
-		if (!config || typeof config !== 'object') {
+		if (!Config || typeof Config !== 'object') {
 			// backwards compatibility
-			config = {
-				duration: config,
+			Config = {
+				duration: Config,
 				lazy: arguments[1]
 			};
 		}
 
 		var animationOptions = me.options.animation;
-		var duration = valueOrDefault$9(config.duration, animationOptions && animationOptions.duration);
-		var lazy = config.lazy;
+		var duration = valueOrDefault$9(Config.duration, animationOptions && animationOptions.duration);
+		var lazy = Config.lazy;
 
 		if (core_plugins.notify(me, 'beforeRender') === false) {
 			return;
@@ -9772,7 +9772,7 @@ helpers$1.extend(Chart.prototype, /** @lends Chart */ {
 		if (animationOptions && duration) {
 			var animation = new core_animation({
 				numSteps: duration / 16.66, // 60 fps
-				easing: config.easing || animationOptions.easing,
+				easing: Config.easing || animationOptions.easing,
 
 				render: function(chart, animationObject) {
 					var easingFunction = helpers$1.easing.effects[animationObject.easing];
@@ -10264,12 +10264,12 @@ Chart.types = {};
 
 /**
  * Provided for backward compatibility, not available anymore.
- * @namespace Chart.helpers.configMerge
+ * @namespace Chart.helpers.ConfigMerge
  * @deprecated since version 2.8.0
  * @todo remove at version 3
  * @private
  */
-helpers$1.configMerge = mergeConfig;
+helpers$1.ConfigMerge = mergeConfig;
 
 /**
  * Provided for backward compatibility, not available anymore.
@@ -11536,11 +11536,11 @@ var Scale = core_element.extend({
 		samplingEnabled = sampleSize < ticks.length;
 		labels = me._convertTicksToLabels(samplingEnabled ? sample(ticks, sampleSize) : ticks);
 
-		// _configure is called twice, once here, once from core.controller.updateLayout.
+		// _Configure is called twice, once here, once from core.controller.updateLayout.
 		// Here we haven't been positioned yet, but dimensions are correct.
-		// Variables set in _configure are needed for calculateTickRotation, and
+		// Variables set in _Configure are needed for calculateTickRotation, and
 		// it's ok that coordinates are not correct there, only dimensions matter.
-		me._configure();
+		me._Configure();
 
 		// Tick Rotation
 		me.beforeCalculateTickRotation();
@@ -11573,7 +11573,7 @@ var Scale = core_element.extend({
 	/**
 	 * @private
 	 */
-	_configure: function() {
+	_Configure: function() {
 		var me = this;
 		var reversePixels = me.options.ticks.reverse;
 		var startPixel, endPixel;
@@ -12581,12 +12581,12 @@ var scale_category = core_scale.extend({
 		return me._getLabels()[index];
 	},
 
-	_configure: function() {
+	_Configure: function() {
 		var me = this;
 		var offset = me.options.offset;
 		var ticks = me.ticks;
 
-		core_scale.prototype._configure.call(me);
+		core_scale.prototype._Configure.call(me);
 
 		if (!me.isHorizontal()) {
 			// For backward compatibility, vertical category scale reverse is inverted.
@@ -12879,14 +12879,14 @@ var scale_linearbase = core_scale.extend({
 		core_scale.prototype.convertTicksToLabels.call(me);
 	},
 
-	_configure: function() {
+	_Configure: function() {
 		var me = this;
 		var ticks = me.getTicks();
 		var start = me.min;
 		var end = me.max;
 		var offset;
 
-		core_scale.prototype._configure.call(me);
+		core_scale.prototype._Configure.call(me);
 
 		if (me.options.offset && ticks.length) {
 			offset = (end - start) / Math.max(ticks.length - 1, 1) / 2;
@@ -13323,12 +13323,12 @@ var scale_logarithmic = core_scale.extend({
 		return significand * Math.pow(10, exp);
 	},
 
-	_configure: function() {
+	_Configure: function() {
 		var me = this;
 		var start = me.min;
 		var offset = 0;
 
-		core_scale.prototype._configure.call(me);
+		core_scale.prototype._Configure.call(me);
 
 		if (start === 0) {
 			start = me._getFirstTickValue(me.minNotZero);
@@ -15230,9 +15230,9 @@ function getBoxWidth(labelOpts, fontSize) {
  */
 var Legend = core_element.extend({
 
-	initialize: function(config) {
+	initialize: function(Config) {
 		var me = this;
-		helpers$1.extend(me, config);
+		helpers$1.extend(me, Config);
 
 		// Contains hit boxes for each dataset (in dataset order)
 		me.legendHitBoxes = [];
@@ -15698,7 +15698,7 @@ function createNewLegendAndAttach(chart, legendOpts) {
 		chart: chart
 	});
 
-	core_layouts.configure(chart, legend, legendOpts);
+	core_layouts.Configure(chart, legend, legendOpts);
 	core_layouts.addBox(chart, legend);
 	chart.legend = legend;
 }
@@ -15731,7 +15731,7 @@ var plugin_legend = {
 			helpers$1.mergeIf(legendOpts, core_defaults.global.legend);
 
 			if (legend) {
-				core_layouts.configure(chart, legend, legendOpts);
+				core_layouts.Configure(chart, legend, legendOpts);
 				legend.options = legendOpts;
 			} else {
 				createNewLegendAndAttach(chart, legendOpts);
@@ -15768,9 +15768,9 @@ core_defaults._set('global', {
  * IMPORTANT: this class is exposed publicly as Chart.Legend, backward compatibility required!
  */
 var Title = core_element.extend({
-	initialize: function(config) {
+	initialize: function(Config) {
 		var me = this;
-		helpers$1.extend(me, config);
+		helpers$1.extend(me, Config);
 
 		// Contains hit boxes for each dataset (in dataset order)
 		me.legendHitBoxes = [];
@@ -15942,7 +15942,7 @@ function createNewTitleBlockAndAttach(chart, titleOpts) {
 		chart: chart
 	});
 
-	core_layouts.configure(chart, title, titleOpts);
+	core_layouts.Configure(chart, title, titleOpts);
 	core_layouts.addBox(chart, title);
 	chart.titleBlock = title;
 }
@@ -15975,7 +15975,7 @@ var plugin_title = {
 			helpers$1.mergeIf(titleOpts, core_defaults.global.title);
 
 			if (titleBlock) {
-				core_layouts.configure(chart, titleBlock, titleOpts);
+				core_layouts.Configure(chart, titleBlock, titleOpts);
 				titleBlock.options = titleOpts;
 			} else {
 				createNewTitleBlockAndAttach(chart, titleOpts);
@@ -16123,7 +16123,7 @@ core_controller.LinearScaleBase = scale_linearbase;
 
 /**
  * Provided for backward compatibility, instead we should create a new Chart
- * by setting the type in the config (`new Chart(id, {type: '{chart-type}'}`).
+ * by setting the type in the Config (`new Chart(id, {type: '{chart-type}'}`).
  * @deprecated since version 2.8.0
  * @todo remove at version 3
  */

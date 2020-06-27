@@ -25,6 +25,7 @@ $r = $contato->SelecionarNumSolicitacaoContatosNaoLidos();
 
 <head>
     <meta charset="UTF-8">
+    <link rel="shortcut icon" href="../assets/img/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>KingCar - Painel Administrativo</title>
@@ -33,7 +34,7 @@ $r = $contato->SelecionarNumSolicitacaoContatosNaoLidos();
     <link rel="stylesheet" href="../assets/fontawesome/css/all.min.css">
     <link rel="stylesheet" href="../assets/kingcar.css">
     <link rel="stylesheet" href="../assets/jquery-confirm/jquery-confirm.min.css">
-    <link rel="stylesheet" href="../assets/chartjs/chart.min.css">
+    <link rel="stylesheet" href="../assets/chartjs/Chart.min.css">
     <link rel="stylesheet" href="../assets/jQueryte.1.4.0/jquery-te-1.4.0.css">
     <link rel="stylesheet" href="../assets/DataTables/datatables.min.css">
     <link rel="stylesheet" href="../assets/lightgallery/css/lightgallery.min.css">
@@ -44,11 +45,11 @@ $r = $contato->SelecionarNumSolicitacaoContatosNaoLidos();
     <script src="../assets/jquery-confirm/jquery-confirm.min.js"></script>
     <script src="../assets/Loader/jquery.loading.min.js"></script>
     <script src="../assets/Mascaras.js"></script>
-    <script src="../assets/chartjs/chart.min.js"></script>
+    <script src="../assets/chartjs/Chart.min.js"></script>
     <script src="../assets/jQueryte.1.4.0/jquery-te-1.4.0.min.js"></script>
     <script src="../assets/DataTables/datatables.min.js"></script>
     <script src="../assets/lightgallery/js/lightgallery.min.js"></script>
-    <script src="../assets/limittext/jquery.limittext.min.js"></script>
+    <script src="../assets/limitText/jquery.limitText.min.js"></script>
     <script src="../assets/jQuery-spHtmlEditor/jQuery.spHtmlEditor.js"></script>
     <script src="../assets/Jquery-Ui/jquery-ui.min.js"></script>
     <!-- <script src="../assets/inputmask/jquery.inputmask.min.js"></script> -->
@@ -62,7 +63,7 @@ $r = $contato->SelecionarNumSolicitacaoContatosNaoLidos();
 
         function atualizaNumMsg() {
             $.ajax({
-                url: "../service/BuscaNumSolicitacaoContato.php",
+                url: "../Service/BuscaNumSolicitacaoContato.php",
                 type: 'GET',
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
@@ -82,13 +83,13 @@ $r = $contato->SelecionarNumSolicitacaoContatosNaoLidos();
 <body style="height: 100vh; background-color: gainsboro;">
     <div class="container-fluid">
         <div class="row bg-dark text-white">
-            <div class="col-lg-7 text-center text-lg-left" style="height:5vh;">
+            <div class="col-lg-6 text-center text-lg-left" style="height:5vh;">
                 <strong>Painel Administrativo</strong>
             </div>
             <div class="col-lg-2 text-center text-lg-right">
-                <a href="https://webmail-seguro.com.br/kingcarseminovos.com" class="text-white"> <i class="icone-email"></i> E-mail</a>
+                <a href="https://webmail-seguro.com.br/kingcarseminovos.com" target="_blank" class="text-white"> <i class="icone-email"></i> E-mail</a>
             </div>
-            <div class="col-lg-3 text-center text-lg-right">
+            <div class="col-lg-4 text-center text-lg-right">
                 <i class="icone-user"></i> <strong> <?php echo $user; ?></strong>
                 <a href="logout.php" class="text-white"> <i class="icone-logout"></i> Sair</a>
             </div>

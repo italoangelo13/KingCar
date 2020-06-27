@@ -29,7 +29,7 @@
     for (var i = 0; i < props.length; i++) {
       var descriptor = props[i];
       descriptor.enumerable = descriptor.enumerable || false;
-      descriptor.configurable = true;
+      descriptor.Configurable = true;
       if ("value" in descriptor) descriptor.writable = true;
       Object.defineProperty(target, descriptor.key, descriptor);
     }
@@ -46,7 +46,7 @@
       Object.defineProperty(obj, key, {
         value: value,
         enumerable: true,
-        configurable: true,
+        Configurable: true,
         writable: true
       });
     } else {
@@ -268,13 +268,13 @@
     showMissingIcons: true
   };
 
-  var _config = _objectSpread({}, _default, initial);
+  var _Config = _objectSpread({}, _default, initial);
 
-  if (!_config.autoReplaceSvg) _config.observeMutations = false;
+  if (!_Config.autoReplaceSvg) _Config.observeMutations = false;
 
-  var config = _objectSpread({}, _config);
+  var Config = _objectSpread({}, _Config);
 
-  WINDOW.FontAwesomeConfig = config;
+  WINDOW.FontAwesomeConfig = Config;
 
   var w = WINDOW || {};
   if (!w[NAMESPACE_IDENTIFIER]) w[NAMESPACE_IDENTIFIER] = {};
@@ -912,7 +912,7 @@
         children = _ref.children,
         attributes = _ref.attributes,
         symbol = _ref.symbol;
-    var id = symbol === true ? "".concat(prefix, "-").concat(config.familyPrefix, "-").concat(iconName) : symbol;
+    var id = symbol === true ? "".concat(prefix, "-").concat(Config.familyPrefix, "-").concat(iconName) : symbol;
     return [{
       tag: 'svg',
       attributes: {
@@ -946,7 +946,7 @@
         height = _ref.height;
 
     var widthClass = "fa-w-".concat(Math.ceil(width / height * 16));
-    var attrClass = [config.replacementClass, iconName ? "".concat(config.familyPrefix, "-").concat(iconName) : '', widthClass].filter(function (c) {
+    var attrClass = [Config.replacementClass, iconName ? "".concat(Config.familyPrefix, "-").concat(iconName) : '', widthClass].filter(function (c) {
       return extra.classes.indexOf(c) === -1;
     }).concat(extra.classes).join(' ');
     var content = {
@@ -1092,7 +1092,7 @@
 
   var noop$1 = function noop() {};
 
-  var p = config.measurePerformance && PERFORMANCE && PERFORMANCE.mark && PERFORMANCE.measure ? PERFORMANCE : {
+  var p = Config.measurePerformance && PERFORMANCE && PERFORMANCE.mark && PERFORMANCE.measure ? PERFORMANCE : {
     mark: noop$1,
     measure: noop$1
   };
@@ -1278,17 +1278,17 @@
   };
   function getCanonicalIcon(values) {
     return values.reduce(function (acc, cls) {
-      var iconName = getIconName(config.familyPrefix, cls);
+      var iconName = getIconName(Config.familyPrefix, cls);
 
       if (styles$1[cls]) {
         acc.prefix = cls;
-      } else if (config.autoFetchSvg && ['fas', 'far', 'fal', 'fad', 'fab', 'fa'].indexOf(cls) > -1) {
+      } else if (Config.autoFetchSvg && ['fas', 'far', 'fal', 'fad', 'fab', 'fa'].indexOf(cls) > -1) {
         acc.prefix = cls;
       } else if (iconName) {
         var shim = acc.prefix === 'fa' ? byOldName(iconName) : {};
         acc.iconName = shim.iconName || iconName;
         acc.prefix = shim.prefix || acc.prefix;
-      } else if (cls !== config.replacementClass && cls.indexOf('fa-w-') !== 0) {
+      } else if (cls !== Config.replacementClass && cls.indexOf('fa-w-') !== 0) {
         acc.rest.push(cls);
       }
 
@@ -1327,11 +1327,11 @@
   }
 
   function getMutator() {
-    if (config.autoReplaceSvg === true) {
+    if (Config.autoReplaceSvg === true) {
       return mutators.replace;
     }
 
-    var mutator = mutators[config.autoReplaceSvg];
+    var mutator = mutators[Config.autoReplaceSvg];
     return mutator || mutators.replace;
   }
 
@@ -1344,7 +1344,7 @@
       }).join('\n');
 
       if (node.parentNode && node.outerHTML) {
-        node.outerHTML = newOuterHTML + (config.keepOriginalSource && node.tagName.toLowerCase() !== 'svg' ? "<!-- ".concat(node.outerHTML, " -->") : '');
+        node.outerHTML = newOuterHTML + (Config.keepOriginalSource && node.tagName.toLowerCase() !== 'svg' ? "<!-- ".concat(node.outerHTML, " -->") : '');
       } else if (node.parentNode) {
         var newNode = document.createElement('span');
         node.parentNode.replaceChild(newNode, node);
@@ -1356,15 +1356,15 @@
       var abstract = mutation[1]; // If we already have a replaced node we do not want to continue nesting within it.
       // Short-circuit to the standard replacement
 
-      if (~classArray(node).indexOf(config.replacementClass)) {
+      if (~classArray(node).indexOf(Config.replacementClass)) {
         return mutators.replace(mutation);
       }
 
-      var forSvg = new RegExp("".concat(config.familyPrefix, "-.*"));
+      var forSvg = new RegExp("".concat(Config.familyPrefix, "-.*"));
       delete abstract[0].attributes.style;
       delete abstract[0].attributes.id;
       var splitClasses = abstract[0].attributes.class.split(' ').reduce(function (acc, cls) {
-        if (cls === config.replacementClass || cls.match(forSvg)) {
+        if (cls === Config.replacementClass || cls.match(forSvg)) {
           acc.toSvg.push(cls);
         } else {
           acc.toNode.push(cls);
@@ -1397,7 +1397,7 @@
     } else {
       var frame = performOperationSync;
 
-      if (config.mutateApproach === MUTATION_APPROACH_ASYNC) {
+      if (Config.mutateApproach === MUTATION_APPROACH_ASYNC) {
         frame = WINDOW.requestAnimationFrame || performOperationSync;
       }
 
@@ -1423,7 +1423,7 @@
       return;
     }
 
-    if (!config.observeMutations) {
+    if (!Config.observeMutations) {
       return;
     }
 
@@ -1436,14 +1436,14 @@
       if (disabled) return;
       toArray(objects).forEach(function (mutationRecord) {
         if (mutationRecord.type === 'childList' && mutationRecord.addedNodes.length > 0 && !isWatched(mutationRecord.addedNodes[0])) {
-          if (config.searchPseudoElements) {
+          if (Config.searchPseudoElements) {
             pseudoElementsCallback(mutationRecord.target);
           }
 
           treeCallback(mutationRecord.target);
         }
 
-        if (mutationRecord.type === 'attributes' && mutationRecord.target.parentNode && config.searchPseudoElements) {
+        if (mutationRecord.type === 'attributes' && mutationRecord.target.parentNode && Config.searchPseudoElements) {
           pseudoElementsCallback(mutationRecord.target.parentNode);
         }
 
@@ -1602,9 +1602,9 @@
     }, {});
     var title = node.getAttribute('title');
 
-    if (config.autoA11y) {
+    if (Config.autoA11y) {
       if (title) {
-        extraAttributes['aria-labelledby'] = "".concat(config.replacementClass, "-title-").concat(nextUniqueId());
+        extraAttributes['aria-labelledby'] = "".concat(Config.replacementClass, "-title-").concat(nextUniqueId());
       } else {
         extraAttributes['aria-hidden'] = 'true';
         extraAttributes['focusable'] = 'false';
@@ -1760,19 +1760,19 @@
       element = {
         tag: 'g',
         attributes: {
-          class: "".concat(config.familyPrefix, "-").concat(DUOTONE_CLASSES.GROUP)
+          class: "".concat(Config.familyPrefix, "-").concat(DUOTONE_CLASSES.GROUP)
         },
         children: [{
           tag: 'path',
           attributes: {
-            class: "".concat(config.familyPrefix, "-").concat(DUOTONE_CLASSES.SECONDARY),
+            class: "".concat(Config.familyPrefix, "-").concat(DUOTONE_CLASSES.SECONDARY),
             fill: 'currentColor',
             d: vectorData[0]
           }
         }, {
           tag: 'path',
           attributes: {
-            class: "".concat(config.familyPrefix, "-").concat(DUOTONE_CLASSES.PRIMARY),
+            class: "".concat(Config.familyPrefix, "-").concat(DUOTONE_CLASSES.PRIMARY),
             fill: 'currentColor',
             d: vectorData[1]
           }
@@ -1815,7 +1815,7 @@
         headers['fa-kit-token'] = WINDOW.FontAwesomeKitConfig.token;
       }
 
-      if (iconName && prefix && !config.showMissingIcons) {
+      if (iconName && prefix && !Config.showMissingIcons) {
         reject(new MissingIcon("Icon is missing for prefix ".concat(prefix, " with icon name ").concat(iconName)));
       } else {
         resolve(val);
@@ -1871,7 +1871,7 @@
       height = boundingClientRect.height / computedFontSize;
     }
 
-    if (config.autoA11y && !title) {
+    if (Config.autoA11y && !title) {
       extra.attributes['aria-hidden'] = 'true';
     }
 
@@ -1909,7 +1909,7 @@
       return htmlClassList.remove("".concat(HTML_CLASS_I2SVG_BASE_CLASS, "-").concat(suffix));
     };
 
-    var prefixes = config.autoFetchSvg ? Object.keys(PREFIX_TO_STYLE) : Object.keys(styles$3);
+    var prefixes = Config.autoFetchSvg ? Object.keys(PREFIX_TO_STYLE) : Object.keys(styles$3);
     var prefixesDomQuery = [".".concat(LAYERS_TEXT_CLASSNAME, ":not([").concat(DATA_FA_I2SVG, "])")].concat(prefixes.map(function (p) {
       return ".".concat(p, ":not([").concat(DATA_FA_I2SVG, "])");
     })).join(', ');
@@ -2081,8 +2081,8 @@
   function css () {
     var dfp = DEFAULT_FAMILY_PREFIX;
     var drc = DEFAULT_REPLACEMENT_CLASS;
-    var fp = config.familyPrefix;
-    var rc = config.replacementClass;
+    var fp = Config.familyPrefix;
+    var rc = Config.replacementClass;
     var s = baseStyles;
 
     if (fp !== dfp || rc !== drc) {
@@ -2147,7 +2147,7 @@
   }();
 
   function ensureCss() {
-    if (config.autoAddCss && !_cssInserted) {
+    if (Config.autoAddCss && !_cssInserted) {
       insertCss(css());
 
       _cssInserted = true;
@@ -2202,8 +2202,8 @@
 
   var library = new Library();
   var noAuto = function noAuto() {
-    config.autoReplaceSvg = false;
-    config.observeMutations = false;
+    Config.autoReplaceSvg = false;
+    Config.observeMutations = false;
     disconnect();
   };
   var _cssInserted = false;
@@ -2218,7 +2218,7 @@
             _params$callback = params.callback,
             callback = _params$callback === void 0 ? function () {} : _params$callback;
 
-        if (config.searchPseudoElements) {
+        if (Config.searchPseudoElements) {
           searchPseudoElements(node);
         }
 
@@ -2240,11 +2240,11 @@
       var autoReplaceSvgRoot = params.autoReplaceSvgRoot,
           observeMutationsRoot = params.observeMutationsRoot;
 
-      if (config.autoReplaceSvg === false) {
-        config.autoReplaceSvg = true;
+      if (Config.autoReplaceSvg === false) {
+        Config.autoReplaceSvg = true;
       }
 
-      config.observeMutations = true;
+      Config.observeMutations = true;
       domready(function () {
         autoReplace({
           autoReplaceSvgRoot: autoReplaceSvgRoot
@@ -2288,9 +2288,9 @@
     }, iconDefinition), function () {
       ensureCss();
 
-      if (config.autoA11y) {
+      if (Config.autoA11y) {
         if (title) {
-          attributes['aria-labelledby'] = "".concat(config.replacementClass, "-title-").concat(nextUniqueId());
+          attributes['aria-labelledby'] = "".concat(Config.replacementClass, "-title-").concat(nextUniqueId());
         } else {
           attributes['aria-hidden'] = 'true';
           attributes['focusable'] = 'false';
@@ -2344,7 +2344,7 @@
         extra: {
           attributes: attributes,
           styles: styles,
-          classes: ["".concat(config.familyPrefix, "-layers-text")].concat(_toConsumableArray(classes))
+          classes: ["".concat(Config.familyPrefix, "-layers-text")].concat(_toConsumableArray(classes))
         }
       });
     });
@@ -2370,7 +2370,7 @@
         extra: {
           attributes: attributes,
           styles: styles,
-          classes: ["".concat(config.familyPrefix, "-layers-counter")].concat(_toConsumableArray(classes))
+          classes: ["".concat(Config.familyPrefix, "-layers-counter")].concat(_toConsumableArray(classes))
         }
       });
     });
@@ -2392,7 +2392,7 @@
       return [{
         tag: 'span',
         attributes: {
-          class: ["".concat(config.familyPrefix, "-layers")].concat(_toConsumableArray(classes)).join(' ')
+          class: ["".concat(Config.familyPrefix, "-layers")].concat(_toConsumableArray(classes)).join(' ')
         },
         children: children
       }];
@@ -2400,7 +2400,7 @@
   };
   var api = {
     noAuto: noAuto,
-    config: config,
+    Config: Config,
     dom: dom,
     library: library,
     parse: parse,
@@ -2416,7 +2416,7 @@
     var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
     var _params$autoReplaceSv = params.autoReplaceSvgRoot,
         autoReplaceSvgRoot = _params$autoReplaceSv === void 0 ? DOCUMENT : _params$autoReplaceSv;
-    if ((Object.keys(namespace.styles).length > 0 || config.autoFetchSvg) && IS_DOM && config.autoReplaceSvg) api.dom.i2svg({
+    if ((Object.keys(namespace.styles).length > 0 || Config.autoFetchSvg) && IS_DOM && Config.autoReplaceSvg) api.dom.i2svg({
       node: autoReplaceSvgRoot
     });
   };

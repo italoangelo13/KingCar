@@ -53,7 +53,7 @@ Note that the `vendor` folder and the `vendor/autoload.php` script are generated
 
 If you want to use the Gmail XOAUTH2 authentication class, you will also need to add a dependency on the `league/oauth2-client` package in your `composer.json`.
 
-Alternatively, if you're not using Composer, copy the contents of the PHPMailer folder into one of the `include_path` directories specified in your PHP configuration and load each class file manually:
+Alternatively, if you're not using Composer, copy the contents of the PHPMailer folder into one of the `include_path` directories specified in your PHP Configuration and load each class file manually:
 
 ```php
 <?php

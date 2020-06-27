@@ -1,5 +1,5 @@
 <?php
-require_once 'config/Util.php';
+require_once 'Config/Util.php';
 $util = new Util();
 $telefone = null;
 $facebook = null;
@@ -21,32 +21,47 @@ $instagram = $parInsta[0]->PRMVAL;
 
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 
 <head>
-    <!-- <meta charset="UTF-8"> -->
+    <!-- Google Adsense -->
+    <!-- <script data-ad-client="ca-pub-8534504796893336" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script> -->
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-169204114-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+
+        gtag('Config', 'UA-169204114-1');
+    </script>
+
     <meta charset="utf-8" />
+    <link rel="shortcut icon" href="assets/img/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>KingCar - Troca e Venda</title>
-    <link rel="stylesheet" href="assets/jquery-ui/jquery-ui.min.css">
+    <link rel="stylesheet" href="assets/Jquery-Ui/jquery-ui.min.css">
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/fontello/css/fontello.css">
     <link rel="stylesheet" href="assets/fontawesome/css/all.min.css">
     <link rel="stylesheet" href="assets/kingcar.css">
     <link rel="stylesheet" href="assets/jquery-confirm/jquery-confirm.min.css">
-    <link rel="stylesheet" href="assets/chartjs/chart.min.css">
+    <link rel="stylesheet" href="assets/chartjs/Chart.min.css">
     <link rel="stylesheet" href="assets/jQueryte.1.4.0/jquery-te-1.4.0.css">
     <link rel="stylesheet" href="assets/DataTables/datatables.min.css">
     <link rel="stylesheet" href="assets/lightgallery/css/lightgallery.min.css">
     <script src="assets/jquery-3.3.1.min.js"></script>
-    <script src="assets/jquery-ui/jquery-ui.min.js"></script>
+    <script src="assets/Jquery-Ui/jquery-ui.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/fontawesome/js/all.min.js"></script>
     <script src="assets/jquery-confirm/jquery-confirm.min.js"></script>
     <script src="assets/Loader/jquery.loading.min.js"></script>
     <script src="assets/Mascaras.js"></script>
-    <script src="assets/chartjs/chart.min.js"></script>
+    <script src="assets/chartjs/Chart.min.js"></script>
     <script src="assets/jQueryte.1.4.0/jquery-te-1.4.0.min.js"></script>
     <script src="assets/DataTables/datatables.min.js"></script>
     <script src="assets/lightgallery/js/lightgallery.min.js"></script>

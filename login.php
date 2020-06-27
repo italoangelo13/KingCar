@@ -27,7 +27,7 @@
     <link rel="stylesheet" href="assets/fontawesome/css/all.min.css">
     <link rel="stylesheet" href="assets/kingcar.css">
     <link rel="stylesheet" href="assets/jquery-confirm/jquery-confirm.min.css">
-    <link rel="stylesheet" href="assets/chartjs/chart.min.css">
+    <link rel="stylesheet" href="assets/chartjs/Chart.min.css">
     <link rel="stylesheet" href="assets/jQueryte.1.4.0/jquery-te-1.4.0.css">
     <link rel="stylesheet" href="assets/DataTables/datatables.min.css">
     <script src="assets/jquery-3.3.1.min.js"></script>
@@ -36,7 +36,7 @@
     <script src="assets/jquery-confirm/jquery-confirm.min.js"></script>
     <script src="assets/Loader/jquery.loading.min.js"></script>
     <script src="assets/Mascaras.js"></script>
-    <script src="assets/chartjs/chart.min.js"></script>
+    <script src="assets/chartjs/Chart.min.js"></script>
     <script src="assets/jQueryte.1.4.0/jquery-te-1.4.0.min.js"></script>
     <script src="assets/DataTables/datatables.min.js"></script>
     <script src="assets/kingcar.js"></script>

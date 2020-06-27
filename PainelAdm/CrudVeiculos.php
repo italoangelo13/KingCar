@@ -613,7 +613,7 @@ debugger;
         $('#box-fotos').empty();
 
         $.ajax({
-            url: "../service/BuscaFotosVeiculo.php?cod=" + cod,
+            url: "../Service/BuscaFotosVeiculo.php?cod=" + cod,
             type: 'GET',
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -650,7 +650,7 @@ debugger;
         var imagem = img.split('.');
         var nome = img;
         $.ajax({
-            url: "../service/DeletaFotoVeiculo.php?cod=" + cod + "&nome=" + nome,
+            url: "../Service/DeletaFotoVeiculo.php?cod=" + cod + "&nome=" + nome,
             type: 'GET',
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -677,7 +677,7 @@ debugger;
 
         //var param = JSON.stringify(obj);
         $.ajax({
-            url: "../service/BuscaMunicipios.php?Uf=" + uf,
+            url: "../Service/BuscaMunicipios.php?Uf=" + uf,
             type: 'GET',
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -705,7 +705,7 @@ debugger;
 
         //var param = JSON.stringify(obj);
         $.ajax({
-            url: "../service/BuscaMunicipios.php?Uf=" + uf,
+            url: "../Service/BuscaMunicipios.php?Uf=" + uf,
             type: 'GET',
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -728,7 +728,7 @@ debugger;
 
     function CarregarMotor() {
         $.ajax({
-            url: "../service/BuscaMotor.php",
+            url: "../Service/BuscaMotor.php",
             type: 'GET',
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -752,7 +752,7 @@ debugger;
 
     function CarregarItens() {
         $.ajax({
-            url: "../service/BuscaItensVeiculo.php",
+            url: "../Service/BuscaItensVeiculo.php",
             type: 'GET',
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -778,7 +778,7 @@ debugger;
 
     function CarregarCores() {
         $.ajax({
-            url: "../service/BuscaCores.php",
+            url: "../Service/BuscaCores.php",
             type: 'GET',
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -800,7 +800,7 @@ debugger;
 
     function CarregarCategorias() {
         $.ajax({
-            url: "../service/BuscaCategoria.php",
+            url: "../Service/BuscaCategoria.php",
             type: 'GET',
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -822,7 +822,7 @@ debugger;
 
     function CarregarCarrocerias() {
         $.ajax({
-            url: "../service/BuscaCarroceria.php",
+            url: "../Service/BuscaCarroceria.php",
             type: 'GET',
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -844,7 +844,7 @@ debugger;
 
     function CarregarCambios() {
         $.ajax({
-            url: "../service/BuscaCambios.php",
+            url: "../Service/BuscaCambios.php",
             type: 'GET',
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -866,7 +866,7 @@ debugger;
 
     function CarregarCombustiveis() {
         $.ajax({
-            url: "../service/BuscaCombustivel.php",
+            url: "../Service/BuscaCombustivel.php",
             type: 'GET',
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -912,7 +912,7 @@ debugger;
     function CarregarModelo() {
         let CodMarca = $("#_ddlMarca option:selected").val(); //$("#_ddlMarca").val(); 
         $.ajax({
-            url: "../service/BuscaModelos.php?codMarca=" + CodMarca,
+            url: "../Service/BuscaModelos.php?codMarca=" + CodMarca,
             type: 'GET',
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -932,7 +932,7 @@ debugger;
     function CarregarModelo(mod) {
         let CodMarca = $("#_ddlMarca option:selected").val(); //$("#_ddlMarca").val(); 
         $.ajax({
-            url: "../service/BuscaModelos.php?codMarca=" + CodMarca,
+            url: "../Service/BuscaModelos.php?codMarca=" + CodMarca,
             type: 'GET',
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -955,7 +955,7 @@ debugger;
         console.log(CodMarca);
         console.log(CodModelo);
         $.ajax({
-            url: "../service/BuscaVersoes.php?marca=" + CodMarca + "&modelo=" + CodModelo,
+            url: "../Service/BuscaVersoes.php?marca=" + CodMarca + "&modelo=" + CodModelo,
             type: 'GET',
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -982,7 +982,7 @@ debugger;
         console.log(CodMarca);
         console.log(CodModelo);
         $.ajax({
-            url: "../service/BuscaVersoes.php?marca=" + mar + "&modelo=" + mod,
+            url: "../Service/BuscaVersoes.php?marca=" + mar + "&modelo=" + mod,
             type: 'GET',
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -1175,7 +1175,7 @@ debugger;
         }
 
         /*VALIDAÇÃO DA CARROCERIA*/
-        if (!carroceria) {
+        if (!carroceria || carroceria == '0') {
             $('#_ddlCarroceria').focus();
             hideLoad();
             WarningBox('O campo Carroceria é obrigatório');

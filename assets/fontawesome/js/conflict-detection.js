@@ -27,7 +27,7 @@
       Object.defineProperty(obj, key, {
         value: value,
         enumerable: true,
-        configurable: true,
+        Configurable: true,
         writable: true
       });
     } else {
@@ -877,7 +877,7 @@
     var testCount = Object.keys(scriptsToTest).length + Object.keys(cssToTest).length; // The resultsCollectionMaxWait allows for the time between when the tests running under
     // child iframes call postMessage with their results, and when the parent window
     // receives and handles those events with window.onmessage.
-    // Making it configurable allows us to test the scenario where this timeout is exceeded.
+    // Making it Configurable allows us to test the scenario where this timeout is exceeded.
     // Naming it something very different from "timeout" is to help avoid the potential ambiguity between
     // these two timeout-related settings.
 
@@ -949,7 +949,7 @@
     resultsCollectionMaxWait: +(DOCUMENT.currentScript.getAttribute(resultsCollectionMaxWaitAttr) || "5000")
   };
 
-  var _config = _objectSpread({}, _default, initialConfig, {
+  var _Config = _objectSpread({}, _default, initialConfig, {
     // These cannot be overridden
     __pollUntil: pollUntil,
     md5ForNode: md5ForNode,
@@ -958,7 +958,7 @@
     nodesFound: null
   });
 
-  WINDOW.FontAwesomeDetection = _config;
+  WINDOW.FontAwesomeDetection = _Config;
 
   var PRODUCTION = function () {
     try {

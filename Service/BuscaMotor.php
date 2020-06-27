@@ -27,7 +27,7 @@ try {
     // $pdo = new PDO(server, user, senha);
     // $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    // $smtp = $pdo->prepare("SELECT MOTCOD, MOTPOTENCIA FROM kgctblmot where MUNUF = '".$Uf."' limit 10");
+    // $smtp = $pdo->prepare("SELECT MOTCOD, MOTPOTENCIA FROM KGCTBLMOT where MUNUF = '".$Uf."' limit 10");
     // $smtp->execute();
     // $result = $smtp->fetchAll(PDO::FETCH_CLASS);
     $listaMot = $motor->SelecionarListaMotor();
@@ -49,7 +49,7 @@ try {
             $cont++;
         }
 
-        $Json = $util->convert_from_latin1_to_utf8_recursively($Json);
+        ////$Json = $util->convert_from_latin1_to_utf8_recursively($Json);
         echo json_encode($Json);
 
         // if ($Json) {

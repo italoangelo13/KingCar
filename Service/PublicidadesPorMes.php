@@ -15,7 +15,7 @@
 
         $smtp = $pdo->prepare('SELECT Count(*) AS QTDE,
                                 DATE_FORMAT(PUBDATCADASTRO, "%b/%y") AS MES
-                               FROM kgctblpub
+                               FROM KGCTBLPUB
                                GROUP BY DATE_FORMAT(PUBDATCADASTRO, "%b/%y")
                                ORDER BY PUBDATCADASTRO DESC
                                LIMIT 5');

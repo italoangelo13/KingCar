@@ -338,7 +338,7 @@ try {
             echo "<script>hideLoad();</script>";
             echo "<script>SuccessBox('Veiculo Cadastrado com Sucesso.');</script>";
         } else {
-            $sqlUpdate = "update kgctblcar set
+            $sqlUpdate = "update KGCTBLCAR set
             CARNOME             = '" . $vxvaTitulo . "',
             CARCODMARCA         = $vxvaMarca,
             CARCODMODELO        = $vxvaModelo,
@@ -1177,7 +1177,7 @@ try {
         };
 
         $.ajax({
-            url: "../service/BuscaModelos.php?codMarca=" + CodMarca,
+            url: "../Service/BuscaModelos.php?codMarca=" + CodMarca,
             type: 'GET',
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -1202,7 +1202,7 @@ try {
 
         //var param = JSON.stringify(obj);
         $.ajax({
-            url: "../service/BuscaMunicipios.php?Uf=" + uf,
+            url: "../Service/BuscaMunicipios.php?Uf=" + uf,
             type: 'GET',
             contentType: "application/json; charset=utf-8",
             dataType: "json",

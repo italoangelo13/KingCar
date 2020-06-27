@@ -47,7 +47,7 @@
       Object.defineProperty(obj, key, {
         value: value,
         enumerable: true,
-        configurable: true,
+        Configurable: true,
         writable: true
       });
     } else {
