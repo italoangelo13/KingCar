@@ -191,7 +191,7 @@ $listaPub = $pub->SelecionarListaPublicidades();
                 </div>
             </div>
         <?php } else { ?>
-            <div class="container-fluid bg-dark" style="padding: 20px; border-radius: 5px; ">
+            <div class="container-fluid bg-dark" style="padding: 20px; border-radius: 5px; margin-top: 10px;">
                 <div class="row" style="margin-top: 5px;">
                     <div class="col-lg-12 text-warning text-center text-lg-left" style="font-weight: 600;">
                         <label for="" class="text-warning display-5 text-center">

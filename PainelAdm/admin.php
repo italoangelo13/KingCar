@@ -155,7 +155,7 @@ $SolicitacoesMes = $QtdeAnu[0]->NUMANUNCIO;
                         <th>Veiculo</th>
                         <th>Preço</th>
                         <th>Qtde. Visitas</th>
-                        <th></th>
+                        <!-- <th></th> -->
                     </tr>
                 </thead>
                 <tbody>
@@ -355,17 +355,17 @@ $SolicitacoesMes = $QtdeAnu[0]->NUMANUNCIO;
 
                                 return data;
                             }
-                        },
-                        {
-                            "data": "editar",
-                            "render": function(data, type, row, meta) {
-                                if (type === 'display') {
-                                    data = '<a  href="InsereAtualizaCarro.php?acao=editar&cod=' + data + '" class="btn btn-success"><i class="icone-forward"></i></a>';
-                                }
-
-                                return data;
-                            }
                         }
+                        // {
+                        //     "data": "editar",
+                        //     "render": function(data, type, row, meta) {
+                        //         if (type === 'display') {
+                        //             data = '<a  href="InsereAtualizaCarro.php?acao=editar&cod=' + data + '" class="btn btn-success"><i class="icone-forward"></i></a>';
+                        //         }
+
+                        //         return data;
+                        //     }
+                        // }
                     ]
                 });
             }
