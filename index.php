@@ -226,7 +226,7 @@ $listaPub = $pub->SelecionarListaPublicidades();
     </div>
 
     <!-- Para Telas Menores que LG -->
-    <div class="d-lg-none row bg-warning" style="padding:5px; margin-top: 5px;">
+    <div class="d-lg-none row bg-warning " style="padding:5px; margin-top: 5px;">
         <?php
         foreach ($listacarroDestaque as $destaque) {
         ?>
@@ -238,7 +238,7 @@ $listaPub = $pub->SelecionarListaPublicidades();
                                 <img class="card-img-top" style="width: 100%; border:2px solid #fff" src="assets/img/Carros/<?php echo $destaque->CARFOTO; ?>" alt="<?php echo strtoupper(utf8_encode($destaque->CARNOME)); ?>" title="<?php echo strtoupper(utf8_encode($destaque->CARNOME)); ?>">
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row" style="height: 12vh;">
                             <div class="col-12">
                                 <label style="width: 100%; font-size: 12pt; font-weight: 600; padding: 2px;" class=" bg-dark text-warning text-center"><?php echo "#" . strtoupper(utf8_encode($destaque->CARCOD)) . " - " . strtoupper(utf8_encode($destaque->MARDESCRICAO)) . " " . strtoupper(utf8_encode($destaque->MODDESCRICAO)) . " " . strtoupper(utf8_encode($destaque->CARANO)) ?></label>
                             </div>
@@ -280,7 +280,7 @@ $listaPub = $pub->SelecionarListaPublicidades();
                         <div class="row bg-dark" style="margin-top: 5px">
                             <div class="col-lg-12">
                                 <div class="container-fluid">
-                                    <div class="row" style="padding: 10px;">
+                                    <div class="row " style="padding: 10px;">
                                         <?php foreach ($listacarro as $carros) : ?>
                                             <div class="col-lg-4" style="padding-top: 10px; padding-bottom: 10px;">
                                                 <div class="card bg-light" style="width: 100%; padding: 5px;">
@@ -350,7 +350,7 @@ $listaPub = $pub->SelecionarListaPublicidades();
                         <div class="row bg-dark" style="margin-top: 5px">
                             <div class="col-lg-12">
                                 <div class="container-fluid">
-                                    <div class="row" style="padding: 10px;">
+                                    <div class="row " style="padding: 10px;">
                                         <?php foreach ($listacarroRepasse as $carros) : ?>
                                             <div class="col-lg-4" style="padding-top: 10px; padding-bottom: 10px;">
                                                 <div class="card bg-light" style="width: 100%; padding: 5px;">
@@ -425,7 +425,7 @@ $listaPub = $pub->SelecionarListaPublicidades();
                         <div class="row bg-dark" style="margin-top: 5px">
                             <div class="col-lg-12">
                                 <div class="container-fluid">
-                                    <div class="row" style="padding: 5px;">
+                                    <div class="row " style="padding: 5px;">
                                         <?php foreach ($listacarro as $carros) : ?>
 
                                             <div class="col-6" style="padding: 2px;">
@@ -434,7 +434,7 @@ $listaPub = $pub->SelecionarListaPublicidades();
 
                                                         <img class="card-img-top" style="width: 100%; height:20vh;" src="assets/img/Carros/<?php echo $carros->CARFOTO; ?>" title="<?php echo strtoupper(utf8_encode($carros->CARNOME)); ?>" alt="<?php echo utf8_encode($carros->CARNOME); ?>">
 
-                                                        <div class="card-title bg-dark" style="padding:2px; margin:0px;">
+                                                        <div class="card-title bg-dark" style="padding:2px; margin:0px; height: 12vh;">
                                                             <div class="row">
                                                                 <div class="col-lg-12 text-center">
                                                                     <label class="text-white" style="font-size: 12pt; font-weight: 600;"><?php echo "#" . strtoupper(utf8_encode($carros->CARCOD)) . " - " . strtoupper(utf8_encode($carros->MARDESCRICAO)) . " " . strtoupper(utf8_encode($carros->MODDESCRICAO)) . " " . strtoupper(utf8_encode($carros->CARANO)); ?></label>
@@ -483,7 +483,7 @@ $listaPub = $pub->SelecionarListaPublicidades();
                         <div class="row bg-dark" style="margin-top: 5px">
                             <div class="col-lg-12">
                                 <div class="container-fluid">
-                                    <div class="row" style="padding: 5px;">
+                                    <div class="row " style="padding: 5px;">
                                         <?php foreach ($listacarroRepasse as $carros) : ?>
                                             <div class="col-6" style="padding: 2px;">
                                                 <a href="DetCarro.php?id=<?php echo $carros->CARCOD; ?>" style="padding: 0px; box-shadow: 2px 2px 2px rgba(0,0,0,0.5); background-color: #fff;">
@@ -491,7 +491,7 @@ $listaPub = $pub->SelecionarListaPublicidades();
 
                                                         <img class="card-img-top" style="width: 100%; height:20vh;" src="assets/img/Carros/<?php echo $carros->CARFOTO; ?>" title="<?php echo strtoupper(utf8_encode($carros->CARNOME)); ?>" alt="<?php echo utf8_encode($carros->CARNOME); ?>">
 
-                                                        <div class="card-title bg-dark" style="padding:2px; margin:0px;">
+                                                        <div class="card-title bg-dark" style="padding:2px; margin:0px; height: 12vh;">
                                                             <div class="row">
                                                                 <div class="col-lg-12 text-center">
                                                                     <label class="text-white" style="font-size: 12pt; font-weight: 600;"><?php echo "#" . strtoupper(utf8_encode($carros->CARCOD)) . " - " . strtoupper(utf8_encode($carros->MARDESCRICAO)) . " " . strtoupper(utf8_encode($carros->MODDESCRICAO)) . " " . strtoupper(utf8_encode($carros->CARANO)); ?></label>
@@ -604,7 +604,7 @@ $listaPub = $pub->SelecionarListaPublicidades();
                         <div class="row bg-dark" style="margin-top: 5px">
                             <div class="col-lg-12">
                                 <div class="container-fluid">
-                                    <div class="row" style="padding: 10px;">
+                                    <div class="row " style="padding: 10px;">
                                         <?php foreach ($listacarro as $carros) : ?>
                                             <div class="col-lg-4" style="padding-top: 10px; padding-bottom: 10px;">
                                                 <div class="card bg-light" style="width: 100%; padding: 5px;">
@@ -674,7 +674,7 @@ $listaPub = $pub->SelecionarListaPublicidades();
                         <div class="row bg-dark" style="margin-top: 5px">
                             <div class="col-lg-12">
                                 <div class="container-fluid">
-                                    <div class="row" style="padding: 10px;">
+                                    <div class="row " style="padding: 10px;">
                                         <?php foreach ($listacarroRepasse as $carros) : ?>
                                             <div class="col-lg-4" style="padding-top: 10px; padding-bottom: 10px;">
                                                 <div class="card bg-light" style="width: 100%; padding: 5px;">
@@ -749,7 +749,7 @@ $listaPub = $pub->SelecionarListaPublicidades();
                         <div class="row bg-dark" style="margin-top: 5px">
                             <div class="col-lg-12">
                                 <div class="container-fluid">
-                                    <div class="row" style="padding: 5px;">
+                                    <div class="row " style="padding: 5px;">
                                         <?php foreach ($listacarro as $carros) : ?>
                                             <div class="col-6" style="padding: 2px;">
                                                 <a href="DetCarro.php?id=<?php echo $carros->CARCOD; ?>" style="padding: 0px; box-shadow: 2px 2px 2px rgba(0,0,0,0.5); background-color: #fff;">
@@ -757,7 +757,7 @@ $listaPub = $pub->SelecionarListaPublicidades();
 
                                                         <img class="card-img-top" style="width: 100%; height:20vh;" src="assets/img/Carros/<?php echo $carros->CARFOTO; ?>" title="<?php echo strtoupper(utf8_encode($carros->CARNOME)); ?>" alt="<?php echo utf8_encode($carros->CARNOME); ?>">
 
-                                                        <div class="card-title bg-dark" style="padding:2px; margin:0px;">
+                                                        <div class="card-title bg-dark" style="padding:2px; margin:0px; height: 12vh;">
                                                             <div class="row">
                                                                 <div class="col-lg-12 text-center">
                                                                     <label class="text-white" style="font-size: 12pt; font-weight: 600;"><?php echo "#" . strtoupper(utf8_encode($carros->CARCOD)) . " - " . strtoupper(utf8_encode($carros->MARDESCRICAO)) . " " . strtoupper(utf8_encode($carros->MODDESCRICAO)) . " " . strtoupper(utf8_encode($carros->CARANO)); ?></label>
@@ -805,7 +805,7 @@ $listaPub = $pub->SelecionarListaPublicidades();
                         <div class="row bg-dark" style="margin-top: 5px">
                             <div class="col-lg-12">
                                 <div class="container-fluid">
-                                    <div class="row" style="padding: 5px;">
+                                    <div class="row " style="padding: 5px;">
                                         <?php foreach ($listacarroRepasse as $carros) : ?>
                                             <div class="col-6" style="padding: 2px;">
                                                 <a href="DetCarro.php?id=<?php echo $carros->CARCOD; ?>" style="padding: 0px; box-shadow: 2px 2px 2px rgba(0,0,0,0.5); background-color: #fff;">
@@ -813,7 +813,7 @@ $listaPub = $pub->SelecionarListaPublicidades();
 
                                                         <img class="card-img-top" style="width: 100%; height:20vh;" src="assets/img/Carros/<?php echo $carros->CARFOTO; ?>" title="<?php echo strtoupper(utf8_encode($carros->CARNOME)); ?>" alt="<?php echo utf8_encode($carros->CARNOME); ?>">
 
-                                                        <div class="card-title bg-dark" style="padding:2px; margin:0px;">
+                                                        <div class="card-title bg-dark" style="padding:2px; margin:0px; height: 12vh;">
                                                             <div class="row">
                                                                 <div class="col-lg-12 text-center">
                                                                     <label class="text-white" style="font-size: 12pt; font-weight: 600;"><?php echo "#" . strtoupper(utf8_encode($carros->CARCOD)) . " - " . strtoupper(utf8_encode($carros->MARDESCRICAO)) . " " . strtoupper(utf8_encode($carros->MODDESCRICAO)) . " " . strtoupper(utf8_encode($carros->CARANO)); ?></label>
