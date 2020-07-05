@@ -152,258 +152,260 @@ if (isset($_GET['pesquisa'])) {
 
 include 'header.inc.php';
 ?>
-<div class="row bg-warning" style="margin-top: 5px;">
-    <div class="col-lg-12 text-center">
-        <label class="text-dark display-4">Encontre o Veículo que você Procura!</label>
+<!-- Para telas acima de LG -->
+<div class="d-none d-lg-block">
+    <div class="row bg-warning" style="margin-top: 5px;">
+        <div class="col-lg-12 text-center">
+            <label class="text-dark display-4">Encontre o Veículo que você Procura!</label>
+        </div>
     </div>
-</div>
 
-<div class="row" style="margin-top: 5px;margin-bottom: 5px;">
-    <?php if ($listaPub) { ?>
-        <aside class="col-lg-2 bg-warning" style="padding: 3px;">
-            <form action="carros.php" method="GET">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-lg-12 text-warning">
-                            <button class="btn btn-dark btn-block" name="pesquisa" type="submit"> <i class="icone-filter-1"></i> Filtrar Pesquisa</button>
+    <div class="row" style="margin-top: 5px;margin-bottom: 5px;">
+        <?php if ($listaPub) { ?>
+            <aside class="col-lg-2 bg-warning" style="padding: 3px;">
+                <form action="carros.php" method="GET">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-lg-12 text-warning">
+                                <button class="btn btn-dark btn-block" name="pesquisa" type="submit"> <i class="icone-filter-1"></i> Filtrar Pesquisa</button>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row" style="margin-top: 5px;">
-                        <div class="col-lg-12 text-dark">
-                            <input placeholder="Codigo do Veículo" class="form-control form-control-sm" type="text" name="_edcodCarro" id="_edcodCarro">
+                        <div class="row" style="margin-top: 5px;">
+                            <div class="col-lg-12 text-dark">
+                                <input placeholder="Codigo do Veículo" class="form-control form-control-sm" type="text" name="_edcodCarro" id="_edcodCarro">
+                            </div>
                         </div>
-                    </div>
-                    <div class="row" style="margin-top: 10px;margin-bottom: 10px;">
-                        <div class="col-lg-12">
-                            <div class="divider divider-dark"></div>
+                        <div class="row" style="margin-top: 10px;margin-bottom: 10px;">
+                            <div class="col-lg-12">
+                                <div class="divider divider-dark"></div>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="row" style="margin-top: 5px;">
-                        <div class="col-lg-12">
-                            <h6>Marcas</h6>
-                        </div>
-                        <div class="col-lg-12 text-dark box-pesquisa">
-                            <?php
-                            if ($listaMarcas) {
-                                foreach ($listaMarcas as $lMarca) {
-                            ?>
-                                    <input type="checkbox" name="marca[]" id="_ckMarca-<?php echo $lMarca->MARCOD; ?>" value="<?php echo $lMarca->MARCOD; ?>"> <label for="_ckMarca-<?php echo $lMarca->MARCOD; ?>"><?php echo $lMarca->MARDESCRICAO; ?></label> <br>
-                            <?php
+                        <div class="row" style="margin-top: 5px;">
+                            <div class="col-lg-12">
+                                <h6>Marcas</h6>
+                            </div>
+                            <div class="col-lg-12 text-dark box-pesquisa">
+                                <?php
+                                if ($listaMarcas) {
+                                    foreach ($listaMarcas as $lMarca) {
+                                ?>
+                                        <input type="checkbox" name="marca[]" id="_ckMarca-<?php echo $lMarca->MARCOD; ?>" value="<?php echo $lMarca->MARCOD; ?>"> <label for="_ckMarca-<?php echo $lMarca->MARCOD; ?>"><?php echo $lMarca->MARDESCRICAO; ?></label> <br>
+                                <?php
+                                    }
                                 }
-                            }
-                            ?>
+                                ?>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row" style="margin-top: 10px;margin-bottom: 10px;">
-                        <div class="col-lg-12">
-                            <div class="divider divider-dark"></div>
+                        <div class="row" style="margin-top: 10px;margin-bottom: 10px;">
+                            <div class="col-lg-12">
+                                <div class="divider divider-dark"></div>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="row" style="margin-top: 5px;">
-                        <div class="col-lg-12">
-                            <h6>Modelos</h6>
-                        </div>
-                        <div class="col-lg-12 text-dark box-pesquisa">
-                            <?php
-                            if ($listaModelo) {
-                                foreach ($listaModelo as $lMod) {
-                            ?>
-                                    <input type="checkbox" name="modelo[]" id="_ckModelo-<?php echo $lMod->MODCOD; ?>" value="<?php echo $lMod->MODCOD; ?>"><label for="_ckModelo-<?php echo $lMod->MODCOD; ?>"><?php echo $lMod->MODDESCRICAO; ?></label> <br>
+                        <div class="row" style="margin-top: 5px;">
+                            <div class="col-lg-12">
+                                <h6>Modelos</h6>
+                            </div>
+                            <div class="col-lg-12 text-dark box-pesquisa">
+                                <?php
+                                if ($listaModelo) {
+                                    foreach ($listaModelo as $lMod) {
+                                ?>
+                                        <input type="checkbox" name="modelo[]" id="_ckModelo-<?php echo $lMod->MODCOD; ?>" value="<?php echo $lMod->MODCOD; ?>"><label for="_ckModelo-<?php echo $lMod->MODCOD; ?>"><?php echo $lMod->MODDESCRICAO; ?></label> <br>
+                                    <?php
+                                    }
+                                } else {
+                                    ?>
+                                    <label style="font-size: 10pt;" for="">Nenhuma Marca Selecionada.</label>
                                 <?php
                                 }
-                            } else {
                                 ?>
-                                <label style="font-size: 10pt;" for="">Nenhuma Marca Selecionada.</label>
-                            <?php
-                            }
-                            ?>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row" style="margin-top: 10px;margin-bottom: 10px;">
-                        <div class="col-lg-12">
-                            <div class="divider divider-dark"></div>
+                        <div class="row" style="margin-top: 10px;margin-bottom: 10px;">
+                            <div class="col-lg-12">
+                                <div class="divider divider-dark"></div>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="row" style="margin-top: 5px;">
-                        <div class="col-lg-12">
-                            <h6>Ano</h6>
+                        <div class="row" style="margin-top: 5px;">
+                            <div class="col-lg-12">
+                                <h6>Ano</h6>
+                            </div>
+                            <div class="col-lg-12">
+                                <input type="text" name="ano" id="_lblAno" readonly class="form-control bg-warning text-dark" style="border: 0px; font-weight: 500;">
+                            </div>
+                            <div class="col-lg-12">
+                                <div id="slider-ano"></div>
+                            </div>
                         </div>
-                        <div class="col-lg-12">
-                            <input type="text" name="ano" id="_lblAno" readonly class="form-control bg-warning text-dark" style="border: 0px; font-weight: 500;">
+                        <div class="row" style="margin-top: 10px;margin-bottom: 10px;">
+                            <div class="col-lg-12">
+                                <div class="divider divider-dark"></div>
+                            </div>
                         </div>
-                        <div class="col-lg-12">
-                            <div id="slider-ano"></div>
-                        </div>
-                    </div>
-                    <div class="row" style="margin-top: 10px;margin-bottom: 10px;">
-                        <div class="col-lg-12">
-                            <div class="divider divider-dark"></div>
-                        </div>
-                    </div>
 
-                    <div class="row" style="margin-top: 5px;">
-                        <div class="col-lg-12">
-                            <h6>Cambio</h6>
-                        </div>
-                        <div class="col-lg-12 text-dark box-pesquisa">
-                            <?php
-                            if ($listacambio) {
-                                foreach ($listacambio as $lCambio) {
-                            ?>
-                                    <input type="checkbox" name="cambio[]" id="_ckCambio-<?php echo $lCambio->CAMCOD; ?>" value="<?php echo $lCambio->CAMCOD; ?>"> <label for="_ckCambio-<?php echo $lCambio->CAMCOD; ?>"><?php echo $lCambio->CAMDESCRICAO; ?></label> <br>
-                            <?php
+                        <div class="row" style="margin-top: 5px;">
+                            <div class="col-lg-12">
+                                <h6>Cambio</h6>
+                            </div>
+                            <div class="col-lg-12 text-dark box-pesquisa">
+                                <?php
+                                if ($listacambio) {
+                                    foreach ($listacambio as $lCambio) {
+                                ?>
+                                        <input type="checkbox" name="cambio[]" id="_ckCambio-<?php echo $lCambio->CAMCOD; ?>" value="<?php echo $lCambio->CAMCOD; ?>"> <label for="_ckCambio-<?php echo $lCambio->CAMCOD; ?>"><?php echo $lCambio->CAMDESCRICAO; ?></label> <br>
+                                <?php
+                                    }
                                 }
-                            }
-                            ?>
+                                ?>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row" style="margin-top: 10px;margin-bottom: 10px;">
-                        <div class="col-lg-12">
-                            <div class="divider divider-dark"></div>
+                        <div class="row" style="margin-top: 10px;margin-bottom: 10px;">
+                            <div class="col-lg-12">
+                                <div class="divider divider-dark"></div>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="row" style="margin-top: 5px;">
-                        <div class="col-lg-12">
-                            <h6>Combustivel</h6>
-                        </div>
-                        <div class="col-lg-12 text-dark box-pesquisa">
-                            <?php
-                            if ($listacombus) {
-                                foreach ($listacombus as $lCom) {
-                            ?>
-                                    <input type="checkbox" name="combustivel[]" id="_ckCombustivel-<?php echo $lCom->COMCOD; ?>" value="<?php echo $lCom->COMCOD; ?>"> <label for="_ckCombustivel-<?php echo $lCom->COMCOD; ?>"><?php echo $lCom->COMDESCRICAO; ?></label> <br>
-                            <?php
+                        <div class="row" style="margin-top: 5px;">
+                            <div class="col-lg-12">
+                                <h6>Combustivel</h6>
+                            </div>
+                            <div class="col-lg-12 text-dark box-pesquisa">
+                                <?php
+                                if ($listacombus) {
+                                    foreach ($listacombus as $lCom) {
+                                ?>
+                                        <input type="checkbox" name="combustivel[]" id="_ckCombustivel-<?php echo $lCom->COMCOD; ?>" value="<?php echo $lCom->COMCOD; ?>"> <label for="_ckCombustivel-<?php echo $lCom->COMCOD; ?>"><?php echo $lCom->COMDESCRICAO; ?></label> <br>
+                                <?php
+                                    }
                                 }
-                            }
-                            ?>
+                                ?>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row" style="margin-top: 10px;margin-bottom: 10px;">
-                        <div class="col-lg-12">
-                            <div class="divider divider-dark"></div>
+                        <div class="row" style="margin-top: 10px;margin-bottom: 10px;">
+                            <div class="col-lg-12">
+                                <div class="divider divider-dark"></div>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="row" style="margin-top: 5px;">
-                        <div class="col-lg-12">
-                            <h6>Cor</h6>
-                        </div>
-                        <div class="col-lg-12 text-dark box-pesquisa">
-                            <?php
-                            if ($listaCor) {
-                                foreach ($listaCor as $lCor) {
-                            ?>
-                                    <input type="checkbox" name="cor[]" id="_ckCor-<?php echo $lCor->CORCOD; ?>" value="<?php echo $lCor->CORCOD; ?>"> <label for="_ckCor-<?php echo $lCor->CORCOD; ?>"> <i class="icone-tint-1" style="color: <?php echo $lCor->CORCODHEXADECIMAL; ?>"></i> <?php echo $lCor->CORDESCRICAO; ?></label> <br>
-                            <?php
+                        <div class="row" style="margin-top: 5px;">
+                            <div class="col-lg-12">
+                                <h6>Cor</h6>
+                            </div>
+                            <div class="col-lg-12 text-dark box-pesquisa">
+                                <?php
+                                if ($listaCor) {
+                                    foreach ($listaCor as $lCor) {
+                                ?>
+                                        <input type="checkbox" name="cor[]" id="_ckCor-<?php echo $lCor->CORCOD; ?>" value="<?php echo $lCor->CORCOD; ?>"> <label for="_ckCor-<?php echo $lCor->CORCOD; ?>"> <i class="icone-tint-1" style="color: <?php echo $lCor->CORCODHEXADECIMAL; ?>"></i> <?php echo $lCor->CORDESCRICAO; ?></label> <br>
+                                <?php
+                                    }
                                 }
-                            }
-                            ?>
+                                ?>
+                            </div>
                         </div>
+                        <div class="row" style="margin-top: 10px;margin-bottom: 10px;">
+                            <div class="col-lg-12">
+                                <div class="divider divider-dark"></div>
+                            </div>
+                        </div>
+
+
+                        <div class="row" style="margin-top: 5px;">
+                            <div class="col-lg-12">
+                                <h6>Preço</h6>
+                            </div>
+                            <div class="col-lg-12">
+                                <input type="text" name="preco" id="_lblPreco" readonly class="form-control bg-warning text-dark" style="border: 0px; font-weight: 500;">
+                            </div>
+                            <div class="col-lg-12">
+                                <div id="slider-preco"></div>
+                            </div>
+                        </div>
+                        <div class="row" style="margin-top: 10px;margin-bottom: 10px;">
+                            <div class="col-lg-12">
+                                <div class="divider divider-dark"></div>
+                            </div>
+                        </div>
+
                     </div>
-                    <div class="row" style="margin-top: 10px;margin-bottom: 10px;">
-                        <div class="col-lg-12">
-                            <div class="divider divider-dark"></div>
-                        </div>
-                    </div>
+                </form>
+            </aside>
 
+            <section class="col-lg-8 bg-dark">
+                <div class="container-fluid">
+                    <div class="row" style="padding: 10px;">
+                        <?php if ($listacarro) :
+                            $numCarros = count($listacarro);
+                        ?>
+                            <div class="col-lg-12">
+                                <label class="text-warning"><?php echo $numCarros . ' Registro(s) Encontrado(s).'; ?></label>
+                            </div>
+                            <?php foreach ($listacarro as $carros) : ?>
+                                <div class="col-lg-6" style="padding-top: 10px; padding-bottom: 10px;">
+                                    <div class="card bg-light" style="width: 100%; padding: 5px;">
 
-                    <div class="row" style="margin-top: 5px;">
-                        <div class="col-lg-12">
-                            <h6>Preço</h6>
-                        </div>
-                        <div class="col-lg-12">
-                            <input type="text" name="preco" id="_lblPreco" readonly class="form-control bg-warning text-dark" style="border: 0px; font-weight: 500;">
-                        </div>
-                        <div class="col-lg-12">
-                            <div id="slider-preco"></div>
-                        </div>
-                    </div>
-                    <div class="row" style="margin-top: 10px;margin-bottom: 10px;">
-                        <div class="col-lg-12">
-                            <div class="divider divider-dark"></div>
-                        </div>
-                    </div>
+                                        <img class="card-img-top" style="width: 100%; height: 260px" src="assets/img/Carros/<?php echo $carros->CARFOTO; ?>" title="<?php echo strtoupper($carros->CARNOME); ?>" alt="<?php echo $carros->CARNOME; ?>">
 
-                </div>
-            </form>
-        </aside>
-
-        <section class="col-lg-8 bg-dark">
-            <div class="container-fluid">
-                <div class="row" style="padding: 10px;">
-                    <?php if ($listacarro) :
-                        $numCarros = count($listacarro);
-                    ?>
-                        <div class="col-lg-12">
-                            <label class="text-warning"><?php echo $numCarros . ' Registro(s) Encontrado(s).'; ?></label>
-                        </div>
-                        <?php foreach ($listacarro as $carros) : ?>
-                            <div class="col-lg-6" style="padding-top: 10px; padding-bottom: 10px;">
-                                <div class="card bg-light" style="width: 100%; padding: 5px;">
-
-                                    <img class="card-img-top" style="width: 100%; height: 260px" src="assets/img/Carros/<?php echo $carros->CARFOTO; ?>" title="<?php echo strtoupper($carros->CARNOME); ?>" alt="<?php echo $carros->CARNOME; ?>">
-
-                                    <div class="card-title bg-dark" style="padding-left:5px; margin:0px;">
-                                        <div class="row">
-                                            <div class="col-lg-12">
-                                                <h6 class="text-white"><?php echo "#" . strtoupper($carros->CARCOD) . " - " . strtoupper($carros->MARDESCRICAO) . " " . strtoupper($carros->MODDESCRICAO) . " " . strtoupper($carros->CARANO) . " " . strtoupper($carros->COMDESCRICAO); ?></h6>
+                                        <div class="card-title bg-dark" style="padding-left:5px; margin:0px;">
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <h6 class="text-white"><?php echo "#" . strtoupper($carros->CARCOD) . " - " . strtoupper($carros->MARDESCRICAO) . " " . strtoupper($carros->MODDESCRICAO) . " " . strtoupper($carros->CARANO) . " " . strtoupper($carros->COMDESCRICAO); ?></h6>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
 
-                                    <div class="card-body " style="width: 100%">
+                                        <div class="card-body " style="width: 100%">
 
-                                        <p class="card-text" style="margin:0px">
-                                            <div class="container-fluid">
-                                                <div class="row">
-                                                    <div class="col-lg-12 text-center">
-                                                        <i class="fas fa-gas-pump"></i> <?php echo $carros->COMDESCRICAO; ?>
+                                            <p class="card-text" style="margin:0px">
+                                                <div class="container-fluid">
+                                                    <div class="row">
+                                                        <div class="col-lg-12 text-center">
+                                                            <i class="fas fa-gas-pump"></i> <?php echo $carros->COMDESCRICAO; ?>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-lg-12 text-center">
-                                                        <i class="fas fa-car-side"></i> <?php echo $carros->CORDESCRICAO; ?>
+                                                    <div class="row">
+                                                        <div class="col-lg-12 text-center">
+                                                            <i class="fas fa-car-side"></i> <?php echo $carros->CORDESCRICAO; ?>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-lg-12 text-center">
-                                                        <i class="fas fa-tachometer-alt"></i> <?php echo FormatarValorDecimal($carros->CARKM) . " km"; ?>
+                                                    <div class="row">
+                                                        <div class="col-lg-12 text-center">
+                                                            <i class="fas fa-tachometer-alt"></i> <?php echo FormatarValorDecimal($carros->CARKM) . " km"; ?>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-lg-12 text-center">
-                                                        <i class="fas fa-map-marker-alt"></i> <?php echo $carros->LOCALIZACAO; ?>
+                                                    <div class="row">
+                                                        <div class="col-lg-12 text-center">
+                                                            <i class="fas fa-map-marker-alt"></i> <?php echo $carros->LOCALIZACAO; ?>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-lg-12">
-                                                        <h3 class="text-danger text-center"><?php echo "R$ " . FormatarMoeda($carros->CARPRECO); ?></h3>
-                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-lg-12">
+                                                            <h3 class="text-danger text-center"><?php echo "R$ " . FormatarMoeda($carros->CARPRECO); ?></h3>
+                                                        </div>
 
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </p>
-                                        <a href="DetCarro.php?id=<?php echo $carros->CARCOD; ?>" class="btn btn-primary btn-block"><i class="icone-doc"></i> Detalhes do Veiculo</a>
+                                            </p>
+                                            <a href="DetCarro.php?id=<?php echo $carros->CARCOD; ?>" class="btn btn-primary btn-block"><i class="icone-doc"></i> Detalhes do Veiculo</a>
+                                        </div>
                                     </div>
                                 </div>
+                            <?php endforeach; ?>
+                        <?php else : ?>
+                            <div class="col-lg-12">
+                                <h4 class="alert alert-warning">Nenhum Automovel encontrado!</h4>
                             </div>
-                        <?php endforeach; ?>
-                    <?php else : ?>
-                        <div class="col-lg-12">
-                            <h4 class="alert alert-warning">Nenhum Automovel encontrado!</h4>
-                        </div>
-                    <?php endif; ?>
+                        <?php endif; ?>
+                    </div>
+
                 </div>
+            </section>
 
-            </div>
-        </section>
-
-        <section class="col-lg-2 bg-dark" style="border-left:#bfa404 2px solid; border-right:#bfa404 2px solid; padding: 0px;">
-            <div class="container-fluid ">
+            <section class="col-lg-2 bg-dark" style="border-left:#bfa404 2px solid; border-right:#bfa404 2px solid; padding: 0px;">
+                <div class="container-fluid ">
                     <div class="row bg-warning text-center" style="margin-top: 15px; padding: 4px;">
                         <div class="col-lg-12">
                             <h6>Nossos Parceiros</h6>
@@ -412,11 +414,11 @@ include 'header.inc.php';
                     <?php foreach ($listaPub as $pub) { ?>
                         <div class="row" style="margin-top: 7.5px; margin-top: 7.5px;">
                             <div class="col-lg-12">
-                            <?php if($pub->PUBLINK){?>
-                                <a href="<?php echo $pub->PUBLINK; ?>" target="_blank">
-                                    <img style="width: 100%" src="assets/img/Pub/<?php echo $pub->PUBIMG; ?> " alt="Publicidade" title="<?php echo $pub->PUBTITULO; ?>">
-                                </a>
-                                <?php } else{ ?>
+                                <?php if ($pub->PUBLINK) { ?>
+                                    <a href="<?php echo $pub->PUBLINK; ?>" target="_blank">
+                                        <img style="width: 100%" src="assets/img/Pub/<?php echo $pub->PUBIMG; ?> " alt="Publicidade" title="<?php echo $pub->PUBTITULO; ?>">
+                                    </a>
+                                <?php } else { ?>
                                     <img style="width: 100%" src="assets/img/Pub/<?php echo $pub->PUBIMG; ?> " alt="Publicidade" title="<?php echo $pub->PUBTITULO; ?>">
                                 <?php } ?>
                             </div>
@@ -425,256 +427,329 @@ include 'header.inc.php';
                 </div>
 
             </section>
-    <?php } else { ?>
-        <aside class="col-lg-2 bg-warning" style="padding: 3px;">
-            <form action="carros.php" method="GET">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-lg-12 text-warning">
-                            <button class="btn btn-dark btn-block" name="pesquisa" type="submit"> <i class="icone-filter-1"></i> Filtrar Pesquisa</button>
+        <?php } else { ?>
+            <aside class="col-lg-2 bg-warning" style="padding: 3px;">
+                <form action="carros.php" method="GET">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-lg-12 text-warning">
+                                <button class="btn btn-dark btn-block" name="pesquisa" type="submit"> <i class="icone-filter-1"></i> Filtrar Pesquisa</button>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row" style="margin-top: 5px;">
-                        <div class="col-lg-12 text-dark">
-                            <input placeholder="Codigo do Veículo" class="form-control form-control-sm" type="text" name="_edcodCarro" id="_edcodCarro">
+                        <div class="row" style="margin-top: 5px;">
+                            <div class="col-lg-12 text-dark">
+                                <input placeholder="Codigo do Veículo" class="form-control form-control-sm" type="text" name="_edcodCarro" id="_edcodCarro">
+                            </div>
                         </div>
-                    </div>
-                    <div class="row" style="margin-top: 10px;margin-bottom: 10px;">
-                        <div class="col-lg-12">
-                            <div class="divider divider-dark"></div>
+                        <div class="row" style="margin-top: 10px;margin-bottom: 10px;">
+                            <div class="col-lg-12">
+                                <div class="divider divider-dark"></div>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="row" style="margin-top: 5px;">
-                        <div class="col-lg-12">
-                            <h6>Marcas</h6>
-                        </div>
-                        <div class="col-lg-12 text-dark box-pesquisa">
-                            <?php
-                            if ($listaMarcas) {
-                                foreach ($listaMarcas as $lMarca) {
-                            ?>
-                                    <input type="checkbox" name="marca[]" id="_ckMarca-<?php echo $lMarca->MARCOD; ?>" value="<?php echo $lMarca->MARCOD; ?>"> <label for="_ckMarca-<?php echo $lMarca->MARCOD; ?>"><?php echo $lMarca->MARDESCRICAO; ?></label> <br>
-                            <?php
+                        <div class="row" style="margin-top: 5px;">
+                            <div class="col-lg-12">
+                                <h6>Marcas</h6>
+                            </div>
+                            <div class="col-lg-12 text-dark box-pesquisa">
+                                <?php
+                                if ($listaMarcas) {
+                                    foreach ($listaMarcas as $lMarca) {
+                                ?>
+                                        <input type="checkbox" name="marca[]" id="_ckMarca-<?php echo $lMarca->MARCOD; ?>" value="<?php echo $lMarca->MARCOD; ?>"> <label for="_ckMarca-<?php echo $lMarca->MARCOD; ?>"><?php echo $lMarca->MARDESCRICAO; ?></label> <br>
+                                <?php
+                                    }
                                 }
-                            }
-                            ?>
+                                ?>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row" style="margin-top: 10px;margin-bottom: 10px;">
-                        <div class="col-lg-12">
-                            <div class="divider divider-dark"></div>
+                        <div class="row" style="margin-top: 10px;margin-bottom: 10px;">
+                            <div class="col-lg-12">
+                                <div class="divider divider-dark"></div>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="row" style="margin-top: 5px;">
-                        <div class="col-lg-12">
-                            <h6>Modelos</h6>
-                        </div>
-                        <div class="col-lg-12 text-dark box-pesquisa">
-                            <?php
-                            if ($listaModelo) {
-                                foreach ($listaModelo as $lMod) {
-                            ?>
-                                    <input type="checkbox" name="modelo[]" id="_ckModelo-<?php echo $lMod->MODCOD; ?>" value="<?php echo $lMod->MODCOD; ?>"><label for="_ckModelo-<?php echo $lMod->MODCOD; ?>"><?php echo $lMod->MODDESCRICAO; ?></label> <br>
+                        <div class="row" style="margin-top: 5px;">
+                            <div class="col-lg-12">
+                                <h6>Modelos</h6>
+                            </div>
+                            <div class="col-lg-12 text-dark box-pesquisa">
+                                <?php
+                                if ($listaModelo) {
+                                    foreach ($listaModelo as $lMod) {
+                                ?>
+                                        <input type="checkbox" name="modelo[]" id="_ckModelo-<?php echo $lMod->MODCOD; ?>" value="<?php echo $lMod->MODCOD; ?>"><label for="_ckModelo-<?php echo $lMod->MODCOD; ?>"><?php echo $lMod->MODDESCRICAO; ?></label> <br>
+                                    <?php
+                                    }
+                                } else {
+                                    ?>
+                                    <label style="font-size: 10pt;" for="">Nenhuma Marca Selecionada.</label>
                                 <?php
                                 }
-                            } else {
                                 ?>
-                                <label style="font-size: 10pt;" for="">Nenhuma Marca Selecionada.</label>
-                            <?php
-                            }
-                            ?>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row" style="margin-top: 10px;margin-bottom: 10px;">
-                        <div class="col-lg-12">
-                            <div class="divider divider-dark"></div>
+                        <div class="row" style="margin-top: 10px;margin-bottom: 10px;">
+                            <div class="col-lg-12">
+                                <div class="divider divider-dark"></div>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="row" style="margin-top: 5px;">
-                        <div class="col-lg-12">
-                            <h6>Ano</h6>
+                        <div class="row" style="margin-top: 5px;">
+                            <div class="col-lg-12">
+                                <h6>Ano</h6>
+                            </div>
+                            <div class="col-lg-12">
+                                <input type="text" name="ano" id="_lblAno" readonly class="form-control bg-warning text-dark" style="border: 0px; font-weight: 500;">
+                            </div>
+                            <div class="col-lg-12">
+                                <div id="slider-ano"></div>
+                            </div>
                         </div>
-                        <div class="col-lg-12">
-                            <input type="text" name="ano" id="_lblAno" readonly class="form-control bg-warning text-dark" style="border: 0px; font-weight: 500;">
+                        <div class="row" style="margin-top: 10px;margin-bottom: 10px;">
+                            <div class="col-lg-12">
+                                <div class="divider divider-dark"></div>
+                            </div>
                         </div>
-                        <div class="col-lg-12">
-                            <div id="slider-ano"></div>
-                        </div>
-                    </div>
-                    <div class="row" style="margin-top: 10px;margin-bottom: 10px;">
-                        <div class="col-lg-12">
-                            <div class="divider divider-dark"></div>
-                        </div>
-                    </div>
 
-                    <div class="row" style="margin-top: 5px;">
-                        <div class="col-lg-12">
-                            <h6>Cambio</h6>
-                        </div>
-                        <div class="col-lg-12 text-dark box-pesquisa">
-                            <?php
-                            if ($listacambio) {
-                                foreach ($listacambio as $lCambio) {
-                            ?>
-                                    <input type="checkbox" name="cambio[]" id="_ckCambio-<?php echo $lCambio->CAMCOD; ?>" value="<?php echo $lCambio->CAMCOD; ?>"> <label for="_ckCambio-<?php echo $lCambio->CAMCOD; ?>"><?php echo $lCambio->CAMDESCRICAO; ?></label> <br>
-                            <?php
+                        <div class="row" style="margin-top: 5px;">
+                            <div class="col-lg-12">
+                                <h6>Cambio</h6>
+                            </div>
+                            <div class="col-lg-12 text-dark box-pesquisa">
+                                <?php
+                                if ($listacambio) {
+                                    foreach ($listacambio as $lCambio) {
+                                ?>
+                                        <input type="checkbox" name="cambio[]" id="_ckCambio-<?php echo $lCambio->CAMCOD; ?>" value="<?php echo $lCambio->CAMCOD; ?>"> <label for="_ckCambio-<?php echo $lCambio->CAMCOD; ?>"><?php echo $lCambio->CAMDESCRICAO; ?></label> <br>
+                                <?php
+                                    }
                                 }
-                            }
-                            ?>
+                                ?>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row" style="margin-top: 10px;margin-bottom: 10px;">
-                        <div class="col-lg-12">
-                            <div class="divider divider-dark"></div>
+                        <div class="row" style="margin-top: 10px;margin-bottom: 10px;">
+                            <div class="col-lg-12">
+                                <div class="divider divider-dark"></div>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="row" style="margin-top: 5px;">
-                        <div class="col-lg-12">
-                            <h6>Combustivel</h6>
-                        </div>
-                        <div class="col-lg-12 text-dark box-pesquisa">
-                            <?php
-                            if ($listacombus) {
-                                foreach ($listacombus as $lCom) {
-                            ?>
-                                    <input type="checkbox" name="combustivel[]" id="_ckCombustivel-<?php echo $lCom->COMCOD; ?>" value="<?php echo $lCom->COMCOD; ?>"> <label for="_ckCombustivel-<?php echo $lCom->COMCOD; ?>"><?php echo $lCom->COMDESCRICAO; ?></label> <br>
-                            <?php
+                        <div class="row" style="margin-top: 5px;">
+                            <div class="col-lg-12">
+                                <h6>Combustivel</h6>
+                            </div>
+                            <div class="col-lg-12 text-dark box-pesquisa">
+                                <?php
+                                if ($listacombus) {
+                                    foreach ($listacombus as $lCom) {
+                                ?>
+                                        <input type="checkbox" name="combustivel[]" id="_ckCombustivel-<?php echo $lCom->COMCOD; ?>" value="<?php echo $lCom->COMCOD; ?>"> <label for="_ckCombustivel-<?php echo $lCom->COMCOD; ?>"><?php echo $lCom->COMDESCRICAO; ?></label> <br>
+                                <?php
+                                    }
                                 }
-                            }
-                            ?>
+                                ?>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row" style="margin-top: 10px;margin-bottom: 10px;">
-                        <div class="col-lg-12">
-                            <div class="divider divider-dark"></div>
+                        <div class="row" style="margin-top: 10px;margin-bottom: 10px;">
+                            <div class="col-lg-12">
+                                <div class="divider divider-dark"></div>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="row" style="margin-top: 5px;">
-                        <div class="col-lg-12">
-                            <h6>Cor</h6>
-                        </div>
-                        <div class="col-lg-12 text-dark box-pesquisa">
-                            <?php
-                            if ($listaCor) {
-                                foreach ($listaCor as $lCor) {
-                            ?>
-                                    <input type="checkbox" name="cor[]" id="_ckCor-<?php echo $lCor->CORCOD; ?>" value="<?php echo $lCor->CORCOD; ?>"> <label for="_ckCor-<?php echo $lCor->CORCOD; ?>"> <i class="icone-tint-1" style="color: <?php echo $lCor->CORCODHEXADECIMAL; ?>"></i> <?php echo $lCor->CORDESCRICAO; ?></label> <br>
-                            <?php
+                        <div class="row" style="margin-top: 5px;">
+                            <div class="col-lg-12">
+                                <h6>Cor</h6>
+                            </div>
+                            <div class="col-lg-12 text-dark box-pesquisa">
+                                <?php
+                                if ($listaCor) {
+                                    foreach ($listaCor as $lCor) {
+                                ?>
+                                        <input type="checkbox" name="cor[]" id="_ckCor-<?php echo $lCor->CORCOD; ?>" value="<?php echo $lCor->CORCOD; ?>"> <label for="_ckCor-<?php echo $lCor->CORCOD; ?>"> <i class="icone-tint-1" style="color: <?php echo $lCor->CORCODHEXADECIMAL; ?>"></i> <?php echo $lCor->CORDESCRICAO; ?></label> <br>
+                                <?php
+                                    }
                                 }
-                            }
-                            ?>
+                                ?>
+                            </div>
                         </div>
+                        <div class="row" style="margin-top: 10px;margin-bottom: 10px;">
+                            <div class="col-lg-12">
+                                <div class="divider divider-dark"></div>
+                            </div>
+                        </div>
+
+
+                        <div class="row" style="margin-top: 5px;">
+                            <div class="col-lg-12">
+                                <h6>Preço</h6>
+                            </div>
+                            <div class="col-lg-12">
+                                <input type="text" name="preco" id="_lblPreco" readonly class="form-control bg-warning text-dark" style="border: 0px; font-weight: 500;">
+                            </div>
+                            <div class="col-lg-12">
+                                <div id="slider-preco"></div>
+                            </div>
+                        </div>
+                        <div class="row" style="margin-top: 10px;margin-bottom: 10px;">
+                            <div class="col-lg-12">
+                                <div class="divider divider-dark"></div>
+                            </div>
+                        </div>
+
                     </div>
-                    <div class="row" style="margin-top: 10px;margin-bottom: 10px;">
-                        <div class="col-lg-12">
-                            <div class="divider divider-dark"></div>
-                        </div>
-                    </div>
+                </form>
+            </aside>
 
+            <section class="col-lg-10 bg-dark">
+                <div class="container-fluid">
+                    <div class="row" style="padding: 10px;">
+                        <?php if ($listacarro) :
+                            $numCarros = count($listacarro);
+                        ?>
+                            <div class="col-lg-12">
+                                <label class="text-warning"><?php echo $numCarros . ' Registro(s) Encontrado(s).'; ?></label>
+                            </div>
+                            <?php foreach ($listacarro as $carros) : ?>
+                                <div class="col-lg-4" style="padding-top: 10px; padding-bottom: 10px;">
+                                    <div class="card bg-light" style="width: 100%; padding: 5px;">
 
-                    <div class="row" style="margin-top: 5px;">
-                        <div class="col-lg-12">
-                            <h6>Preço</h6>
-                        </div>
-                        <div class="col-lg-12">
-                            <input type="text" name="preco" id="_lblPreco" readonly class="form-control bg-warning text-dark" style="border: 0px; font-weight: 500;">
-                        </div>
-                        <div class="col-lg-12">
-                            <div id="slider-preco"></div>
-                        </div>
-                    </div>
-                    <div class="row" style="margin-top: 10px;margin-bottom: 10px;">
-                        <div class="col-lg-12">
-                            <div class="divider divider-dark"></div>
-                        </div>
-                    </div>
+                                        <img class="card-img-top" style="width: 100%; height: 260px" src="assets/img/Carros/<?php echo $carros->CARFOTO; ?>" title="<?php echo strtoupper($carros->CARNOME); ?>" alt="<?php echo $carros->CARNOME; ?>">
 
-                </div>
-            </form>
-        </aside>
-
-        <section class="col-lg-10 bg-dark">
-            <div class="container-fluid">
-                <div class="row" style="padding: 10px;">
-                    <?php if ($listacarro) :
-                        $numCarros = count($listacarro);
-                    ?>
-                        <div class="col-lg-12">
-                            <label class="text-warning"><?php echo $numCarros . ' Registro(s) Encontrado(s).'; ?></label>
-                        </div>
-                        <?php foreach ($listacarro as $carros) : ?>
-                            <div class="col-lg-4" style="padding-top: 10px; padding-bottom: 10px;">
-                                <div class="card bg-light" style="width: 100%; padding: 5px;">
-
-                                    <img class="card-img-top" style="width: 100%; height: 260px" src="assets/img/Carros/<?php echo $carros->CARFOTO; ?>" title="<?php echo strtoupper($carros->CARNOME); ?>" alt="<?php echo $carros->CARNOME; ?>">
-
-                                    <div class="card-title bg-dark" style="padding-left:5px; margin:0px;">
-                                        <div class="row">
-                                            <div class="col-lg-12">
-                                                <h6 class="text-white"><?php echo "#" . strtoupper($carros->CARCOD) . " - " . strtoupper($carros->MARDESCRICAO) . " " . strtoupper($carros->MODDESCRICAO) . " " . strtoupper($carros->CARANO) . " " . strtoupper($carros->COMDESCRICAO); ?></h6>
+                                        <div class="card-title bg-dark" style="padding-left:5px; margin:0px;">
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <h6 class="text-white"><?php echo "#" . strtoupper($carros->CARCOD) . " - " . strtoupper($carros->MARDESCRICAO) . " " . strtoupper($carros->MODDESCRICAO) . " " . strtoupper($carros->CARANO) . " " . strtoupper($carros->COMDESCRICAO); ?></h6>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
 
-                                    <div class="card-body " style="width: 100%">
+                                        <div class="card-body " style="width: 100%">
 
-                                        <p class="card-text" style="margin:0px">
-                                            <div class="container-fluid">
-                                                <div class="row">
-                                                    <div class="col-lg-12 text-center">
-                                                        <i class="fas fa-gas-pump"></i> <?php echo $carros->COMDESCRICAO; ?>
+                                            <p class="card-text" style="margin:0px">
+                                                <div class="container-fluid">
+                                                    <div class="row">
+                                                        <div class="col-lg-12 text-center">
+                                                            <i class="fas fa-gas-pump"></i> <?php echo $carros->COMDESCRICAO; ?>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-lg-12 text-center">
-                                                        <i class="fas fa-car-side"></i> <?php echo $carros->CORDESCRICAO; ?>
+                                                    <div class="row">
+                                                        <div class="col-lg-12 text-center">
+                                                            <i class="fas fa-car-side"></i> <?php echo $carros->CORDESCRICAO; ?>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-lg-12 text-center">
-                                                        <i class="fas fa-tachometer-alt"></i> <?php echo FormatarValorDecimal($carros->CARKM) . " km"; ?>
+                                                    <div class="row">
+                                                        <div class="col-lg-12 text-center">
+                                                            <i class="fas fa-tachometer-alt"></i> <?php echo FormatarValorDecimal($carros->CARKM) . " km"; ?>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-lg-12 text-center">
-                                                        <i class="fas fa-map-marker-alt"></i> <?php echo $carros->LOCALIZACAO; ?>
+                                                    <div class="row">
+                                                        <div class="col-lg-12 text-center">
+                                                            <i class="fas fa-map-marker-alt"></i> <?php echo $carros->LOCALIZACAO; ?>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-lg-12">
-                                                        <h3 class="text-danger text-center"><?php echo "R$ " . FormatarMoeda($carros->CARPRECO); ?></h3>
-                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-lg-12">
+                                                            <h3 class="text-danger text-center"><?php echo "R$ " . FormatarMoeda($carros->CARPRECO); ?></h3>
+                                                        </div>
 
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </p>
-                                        <a href="DetCarro.php?id=<?php echo $carros->CARCOD; ?>" class="btn btn-primary btn-block"><i class="icone-doc"></i> Detalhes do Veiculo</a>
+                                            </p>
+                                            <a href="DetCarro.php?id=<?php echo $carros->CARCOD; ?>" class="btn btn-primary btn-block"><i class="icone-doc"></i> Detalhes do Veiculo</a>
+                                        </div>
                                     </div>
                                 </div>
+                            <?php endforeach; ?>
+                        <?php else : ?>
+                            <div class="col-lg-12">
+                                <h4 class="alert alert-warning">Nenhum Automovel encontrado!</h4>
                             </div>
-                        <?php endforeach; ?>
-                    <?php else : ?>
-                        <div class="col-lg-12">
-                            <h4 class="alert alert-warning">Nenhum Automovel encontrado!</h4>
-                        </div>
-                    <?php endif; ?>
-                </div>
+                        <?php endif; ?>
+                    </div>
 
-            </div>
-        </section>
-    <?php } ?>
+                </div>
+            </section>
+        <?php } ?>
+    </div>
 </div>
 
+
+<!-- Para Telas Menores que LG -->
+<div class="d-lg-none">
+    <div class="row" style="margin-top: 5px; background: url('assets/img/bg-Titulos.png') center">
+        <div class="col-lg-12 text-left">
+            <label class="text-warning display-5">Veículos Semi-novos</label>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <!-- Future navigation panel -->
+        <div class="col-12 holder pagination"></div>
+        <!-- Item container (doesn't need to be an UL) -->
+        <ul class="col-12" id="itemContainer">
+            <!-- Items -->
+            <li>...</li>
+            <li>...</li>
+            <li>...</li>
+            <li>...</li>
+            <li>...</li>
+            <li>...</li>
+            <li>...</li>
+            <li>...</li>
+            <li>...</li>
+            <li>...</li>
+            <li>...</li>
+            <li>...</li>
+            <li>...</li>
+            <li>...</li>
+            <li>...</li>
+            <li>...</li>
+            <li>...</li>
+            <li>...</li>
+            <li>...</li>
+            <li>...</li>
+            <li>...</li>
+            <li>...</li>
+            <li>...</li>
+            <li>...</li>
+            <li>...</li>
+            <li>...</li>
+            <li>...</li>
+            <li>...</li>
+            <li>...</li>
+            <li>...</li>
+            <li>...</li>
+            <li>...</li>
+            <li>...</li>
+            <li>...</li>
+            <li>...</li>
+            <li>...</li>
+            <li>...</li>
+            <li>...</li>
+            <li>...</li>
+            <li>...</li>
+        </ul>
+    </div>
+</div>
 <?php include 'footer.inc.php'; ?>
 
 
 
 <script>
+    $(function() {
+
+        $("div.holder").jPages({
+            containerID: "itemContainer",
+            perPage: 10,
+            first: false,
+            previous: "<<",
+            next: ">>",
+            last: false
+        });
+
+    });
+
     $("#slider-ano").slider({
         range: true,
         min: <?php echo $anoMin; ?>,

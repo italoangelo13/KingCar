@@ -54,6 +54,8 @@ $instagram = $parInsta[0]->PRMVAL;
     <link rel="stylesheet" href="assets/jQueryte.1.4.0/jquery-te-1.4.0.css">
     <link rel="stylesheet" href="assets/DataTables/datatables.min.css">
     <link rel="stylesheet" href="assets/lightgallery/css/lightgallery.min.css">
+    <link rel="stylesheet" href="assets/JPages/css/jPages.css">
+    <link rel="stylesheet" href="assets/JPages/css/animate.css">
     <script src="assets/jquery-3.3.1.min.js"></script>
     <script src="assets/Jquery-Ui/jquery-ui.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
@@ -65,7 +67,20 @@ $instagram = $parInsta[0]->PRMVAL;
     <script src="assets/jQueryte.1.4.0/jquery-te-1.4.0.min.js"></script>
     <script src="assets/DataTables/datatables.min.js"></script>
     <script src="assets/lightgallery/js/lightgallery.min.js"></script>
+    <script src="assets/JPages/js/jPages.js"></script>
     <script src="assets/kingcar.js"></script>
+    <style>
+        .holder a {
+            position: relative;
+            display: block;
+            padding: .5rem .75rem;
+            margin-left: -1px;
+            line-height: 1.25;
+            color: #007bff;
+            background-color: #fff;
+            border: 1px solid #dee2e6;
+        }
+    </style>
     <script>
         $(document).ready(function() {
             $("#_ddlMarca").change(function() {
